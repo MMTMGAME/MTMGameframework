@@ -1,0 +1,130 @@
+v2.5.11p1
+- Fix AnimatorEvent not initializing correctly in the editor.
+
+v2.5.11
+- Fix inline events aren't large enough in the GUI of the EventSMB and so can't be edited.
+- Potential fixes to execute events on the same frame destroy has been called.
+- Added option to support AnimatorEvent being in a children or parent of the Animator.
+
+v2.5.10
+- Fix thrown Exception when clicking "What uses this" in an AnimatorEvent when the Animator uses an AnimatorController with at least one state which has a StateMachineBehaviour that isn't of type EventSMB.
+
+v2.5.9
+- Button "Where is it used? (shown in the Console)" can now be pressed during play mode.
+- Fix editor function "StatesUsingEvent" throwing an error when the Animator uses an AnimatorOverrideController instead of an AnimatorController.
+- Test cases now only compile if NUnit is in the project.
+
+v2.5.8
+- Made possible to specify the default settings for newly created events. Available in "Edit/Project Settings.../Animator Events Settings".
+- Fix Animated properties spam thousands of warnings on the console when scrubbing time in an animation event.
+- Fix NullReferenceException when inspecting an AnimationState with an EventSMB attached to it while the AnimatorWindow has no AnimatorController selected.
+- Removed uneeded debug code from debug builds that is only useful in the editor.
+- Added tooltip to the "View" button next to the scrubbing bar.
+
+v2.5.7
+- Fix integers way to large were casted to floats, losing precision. Now double is used as a way to hold ints and floats.
+- Fix if an event removes/disables an AnimatorEvent, errors show up.
+
+v2.5.6
+- Fix error reporting showing "UnityEngine.Transform" instead of the path of the transform on the Console when reporting an event that failed to execute.
+- Added partial support for Hot Reloading (Only works with serializable events).
+- UNITY_2021_1_OR_NEWER added to code that's obsolete since Unity 2021.
+- Fix strange new error on Reorderable Arrays since Unity 2021.
+
+v2.5.5
+- Fix "On State Enter, Transition Start",  "On State Enter, Transition End" and  "On State Exit, Transition Start" were firing if there was also an extra condition that evaluated to false at the moment they should fire and later became true.
+- Added advanced conditions "On/Enter transition starts", "On/Enter transition ends" and "On/Exit transition starts"
+
+v2.5.4
+- Fix scrubbing an animation of type BlendTree throws warnings because at least one of the parameters that drives it is controlled by a curve.
+- Added BeforeEtc... condition versions to all the AfterEtc... existing ones (e.g. After Normalized Time => Before Normalized Time).
+- PDF manual instead of a .txt one.
+
+v2.5.3
+- Fix setting an action to change a float or int parameter with an operation (instead of using the mode replace), then changing the parameter used by the action to one of type bool or trigger, doesn't update the mode to replace.
+
+v2.5.2
+- Added static bool EventSMB.AllConditionsEvaluateToFalse to temporarily force conditions to be evaluated to false.
+- Fix condition OnNormalizedTimePerLoop in the case the state has looping disabled.
+- Added condition "After/Normalized time per loop".
+
+v2.5.1
+- Fix EventSMB blendtree preview parameters weren't being culled to show only the parameters that drive the relevant blendtrees, showing all float parameters instead.
+- "Copy" button for an entry didn't show if the entry was using the mode "Advanced".
+- Added the ability to manually call events with the function "AnimatorEvent.CallEvent(string name or int id)".
+
+v2.5
+- Fix Exception not allowing to edit Advanced Events. (regression from v2.4.9).
+
+v2.4.9
+- Fix inline events on EventSMB not showing correctly in the editor, making it impossible to use them.
+- Updated Readme.
+- Fix debugging required determining when the execution of an Animator ended, but there's no API for checking it and the workaround put in place was incorrect, resulting in thrown exceptions. Changed the logic to not require that check.
+- Animation scrubbing while previewing improved.
+
+v2.4.8
+- Error messages originated by code not related to AnimatorEvents isn't shown incorrectly as if related to AnimatorEvents anymore.
+- Fix v2.4.7 fallback for events from ids to functionName not working.
+- Default Event is now "Normalized Event" instead of "Always" as it's the most used one.
+- Fix preview error when scrubbing the animation with Unity 2017 and an animation that changes a parameter of the GameObject (like the active boolean).
+
+v2.4.7
+- Each EventSMB can avoid playing events if the currently playing AnimatorController matches (or not) one of the listed controllers for that EventSMB.
+- Added fallback for when an event's id isn't on an AnimatorEvent but the name of one of the events matches.
+- Fix OnNormalizedTime and OnNormalizedTimePerLoop with event time = 0 and starting playing at 0.
+- Fix tests work again after breaking them when adding debugging on v2.4.4.
+
+v2.4.6
+- Fixed warnings being spammed to the console when scrubbing some animations.
+- Fixed some properties where not being reverted back after scrubbing animations.
+- Fixed colors for dark and white skins.
+- Support "Domain Reloading disabled"
+
+v2.4.5
+- Better UI, more compact and similar to the original UI.
+- Fix bug AfterExitStart set to true while still playing an entering transition, skipping "entering" and "updating" modes going directly to "exiting".
+
+v2.4.4
+- Fix Old OR grouping method returning always true if it was the first condition on the list.
+- Improved debugging by showing "OK" or "NO" next to conditions to know if they were checked and their result, and to actions to know if an action was executed.
+
+v2.4.3
+- Fix not all ConditionsExtra where being evaluated.
+- Fix OnNormalizedTime and OnNormalizedTimePerLoop not taking into account correctly the special case of having a time condition = 0.
+
+v2.4.2
+- Fix reordering groups of events where one was of type "On Normalized Time Reached" resulted on conditions being resetted.
+
+v2.4.1
+- Fix compatible again with Unity 2017.
+
+v2.4
+- Modifying content inside EventSMB and AnimatorEvent while playing is now possible, but alongside a warning message that changes won't be saved.
+- Added support for several AnimatorEvent with the same Animator.
+- Added a button to not show errors when trying to execute an event that isn't present on any AnimatorEvent attached to the Animator.
+- Added a button to not execute events if it's on a layer with 0 weight. Now the default is to not execute events on 0-weight layers.
+- Default EventSMB color now depends on the Unity skin (dark or white).
+- EventSMB now changes it's text color depending on the brightness of it's background.
+- Fix Copy-paste feature now supports the undo system.
+- Added a block of extra conditions to all EventSMB blocks called "Conditions Extra" that makes it easier to further specify when an event can be fired.
+- Fixed previsualization of animations, now BlendTrees can be fully previsualized instead of only previsualizing the first animation it has.
+- Advanced events are now displayed and edited inside the EventSMB instead of using a secondary window.
+- Better text that sumarizes what an advanced condition does.
+- Added AND and OR condition groups that are easier to use and understand that old AND and OR.
+- Added support to copy, paste and save into an asset a group an advanced condition.
+- Added Less, Greater, LessEqual and Distinct parameter conditions.
+- Added a condition to check the current Layer.
+- Added a condition to check the layer weight.
+- Added MIN and MAX operators for parameters.
+- Added "copy all entries" button.
+- Added inline events (Show the event setup window that's shown inside the AnimatorEvent directly into EventSMB).
+- Fix null delegate conditions now have a better error message.
+- Improved Readme file.
+
+v2.3
+- Fixed on an EventSMB the last entry's Time  gets changed in certain situations when another element gets removed.
+- Better error message for when there's no AnimatorEvent attached to the Animator.
+- Added a button to enumerate all the states a even is used in.
+
+v2.1
+- Fixed: Setting parameter values from an EventSMB throws an error.

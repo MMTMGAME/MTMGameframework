@@ -1,5 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameFramework.ObjectPool;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -25,7 +26,7 @@ public class GameObjectPoolContainer:ObjectBase
 
     protected override void Release(bool isShutdown)
     {
-        Object.Destroy((GameObject)Target);
+        UnityEngine.Object.Destroy((GameObject)Target);
     }
 }
 
