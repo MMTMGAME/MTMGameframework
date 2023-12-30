@@ -135,6 +135,11 @@ using UnityGameFramework.Runtime;
             get;
             private set;
         }
+        public static InterfacePool InterfacePool
+        {
+            get;
+            private set;
+        }
 
 
         /// <summary>
@@ -223,5 +228,6 @@ using UnityGameFramework.Runtime;
             UI = UnityGameFramework.Runtime.GameEntry.GetComponent<UIComponent>();
             WebRequest = UnityGameFramework.Runtime.GameEntry.GetComponent<WebRequestComponent>();
             GameObjectPool = UnityGameFramework.Runtime.GameEntry.GetComponent<GameObjectPool>();
+            InterfacePool = UnityGameFramework.Runtime.GameEntry.GetComponent<InterfacePool>();
         }
 }

@@ -70,6 +70,7 @@ public class GameObjectPool:GameFrameworkComponent
             obj.name = obj.name.Replace("(Clone)", "");
             spawned.SetGameObject(obj);
             newpool.Register(spawned,true);
+            GameEntry.InterfacePool.RegisterGameObject(obj);
         }
         return (GameObject)spawned.Target;
     }
@@ -80,6 +81,7 @@ public class GameObjectPool:GameFrameworkComponent
     public void Despawn(GameObject go)
     {
         GameEntry.ObjectPool.GetObjectPool<GameObjectPoolContainer>(go.name).Unspawn(go);
+        GameEntry.InterfacePool.Remove(go.GetInstanceID());
     }
     /// <summary>
     /// 释放这个对象

@@ -7,12 +7,21 @@ using UnityGameFramework.Runtime;
 
 public class InterfacePool : GameFrameworkComponent
 {
-    
+    public int count;
     private Dictionary<int, Dictionary<Type, List<Component>>> interfaceContainer;
     protected override void Awake()
     {
         base.Awake();
         interfaceContainer = new();
+    }
+
+    public void Remove(int instanceid)
+    {
+        if (interfaceContainer.ContainsKey(instanceid))
+        {
+            interfaceContainer.Remove(instanceid);
+            count--;
+        }
     }
 
     /// <summary>
@@ -96,10 +105,11 @@ public class InterfacePool : GameFrameworkComponent
     /// 注册物体
     /// </summary>
     /// <param name="prefab"></param>
-    public void RegisterPrefab(GameObject prefab)
+    public void RegisterGameObject(GameObject prefab)
     {
         var instanceId = prefab.GetInstanceID();
         CacheInterfaces(instanceId,prefab);
+
     }
     /// <summary>
     /// 获取物体身上所有接口
@@ -111,6 +121,11 @@ public class InterfacePool : GameFrameworkComponent
         if (!interfaceContainer.ContainsKey(instanceId))
         {
             interfaceContainer[instanceId] = new Dictionary<Type, List<Component>>();
+            count++;
+        }
+        else
+        {
+            return;
         }
 
         var components = gameObject.GetComponents<Component>();

@@ -337,7 +337,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2754684832520247472, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
       propertyPath: m_EditorResourceMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3589108853282089954, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
       propertyPath: m_AudioMixer
@@ -406,6 +406,30 @@ PrefabInstance:
     - target: {fileID: 5087136176160824561, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
       propertyPath: m_Name
       value: GameEntry
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898670679701429305, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
+      propertyPath: m_EntityHelperTypeName
+      value: EntityInterfaceHelp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898670679701429305, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
+      propertyPath: m_EntityGroups.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898670679701429305, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
+      propertyPath: m_EntityGroups.Array.data[0].m_Name
+      value: Cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898670679701429305, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
+      propertyPath: m_EntityGroups.Array.data[0].m_InstanceCapacity
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898670679701429305, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
+      propertyPath: m_EntityGroups.Array.data[0].m_InstanceExpireTime
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898670679701429305, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
+      propertyPath: m_EntityGroups.Array.data[0].m_InstanceAutoReleaseInterval
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36feca0dd4e2aad4b88a650e4a5ab2d2, type: 3}
