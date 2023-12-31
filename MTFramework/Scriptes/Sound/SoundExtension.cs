@@ -17,7 +17,7 @@ public static class SoundExtension
 		playSoundParams.Loop = true;
 		playSoundParams.VolumeInSoundGroup = 1f;
 		playSoundParams.SpatialBlend = 0f;
-		GameEntry.Sound.PlaySound($"Assets/Audio/{assetsName}.mp3", "Music", playSoundParams);
+		GameEntryGet.Sound.PlaySound($"Assets/Audio/{assetsName}.mp3", "Music", playSoundParams);
 	}
 	public static void PlaySound(this SoundComponent soundComponent, string assetsName)
 	{
@@ -27,7 +27,7 @@ public static class SoundExtension
 		playSoundParams.Loop = false;
 		playSoundParams.VolumeInSoundGroup = 1f;
 		playSoundParams.SpatialBlend = 0f;
-		GameEntry.Sound.PlaySound($"Assets/Audio/{assetsName}.wav", "SoundEffect", playSoundParams);
+		GameEntryGet.Sound.PlaySound($"Assets/Audio/{assetsName}.wav", "SoundEffect", playSoundParams);
 	}
 	public static void PlayUISound(this SoundComponent soundComponent, string assetsName)
 	{
@@ -37,7 +37,7 @@ public static class SoundExtension
 		playSoundParams.Loop = false;
 		playSoundParams.VolumeInSoundGroup = 1f;
 		playSoundParams.SpatialBlend = 0f;
-		GameEntry.Sound.PlaySound($"Assets/Audio/{assetsName}.wav", "UISoundEffect", playSoundParams);
+		GameEntryGet.Sound.PlaySound($"Assets/Audio/{assetsName}.wav", "UISoundEffect", playSoundParams);
 	}
 	public static void SetVolume(this SoundComponent soundComponent, string soundGroupName, float volume)
 	{

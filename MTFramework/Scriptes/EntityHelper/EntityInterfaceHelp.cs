@@ -34,7 +34,7 @@ public class EntityInterfaceHelp : EntityHelperBase
             Transform transform = gameObject.transform;
             transform.SetParent(((MonoBehaviour)entityGroup.Helper).transform);
             var get = gameObject.GetOrAddComponent<Entity>();
-            GameEntry.InterfacePool.RegisterGameObject(gameObject);
+            GameEntryGet.InterfacePool.RegisterGameObject(gameObject);
             return get;
         }
 
@@ -46,7 +46,7 @@ public class EntityInterfaceHelp : EntityHelperBase
         public override void ReleaseEntity(object entityAsset, object entityInstance)
         {
             m_ResourceComponent.UnloadAsset(entityAsset);
-            GameEntry.InterfacePool.Remove(((GameObject)entityInstance).GetInstanceID());
+            GameEntryGet.InterfacePool.Remove(((GameObject)entityInstance).GetInstanceID());
             Destroy((Object)entityInstance);
         }
         

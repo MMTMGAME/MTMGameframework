@@ -10,7 +10,7 @@ using UnityEngine;
     /// <summary>
     /// 游戏入口。
     /// </summary>
-    public partial class GameEntry : MonoBehaviour
+    public partial class GameEntryGet : MonoBehaviour
     {
         private void Start()
         {

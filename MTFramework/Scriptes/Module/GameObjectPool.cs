@@ -52,7 +52,7 @@ public class GameObjectPool:GameFrameworkComponent
         IObjectPool<GameObjectPoolContainer> newpool = null;
         if (!allGo.ContainsKey(prefab))
         {
-            newpool = GameEntry.ObjectPool.CreateSingleSpawnObjectPool<GameObjectPoolContainer>(prefab.name);
+            newpool = GameEntryGet.ObjectPool.CreateSingleSpawnObjectPool<GameObjectPoolContainer>(prefab.name);
             allGo.Add(prefab, newpool);
             pools.Add(prefab);
         }
@@ -70,7 +70,7 @@ public class GameObjectPool:GameFrameworkComponent
             obj.name = obj.name.Replace("(Clone)", "");
             spawned.SetGameObject(obj);
             newpool.Register(spawned,true);
-            GameEntry.InterfacePool.RegisterGameObject(obj);
+            GameEntryGet.InterfacePool.RegisterGameObject(obj);
         }
         return (GameObject)spawned.Target;
     }
@@ -80,8 +80,8 @@ public class GameObjectPool:GameFrameworkComponent
     /// <param name="go">对象</param>
     public void Despawn(GameObject go)
     {
-        GameEntry.ObjectPool.GetObjectPool<GameObjectPoolContainer>(go.name).Unspawn(go);
-        GameEntry.InterfacePool.Remove(go.GetInstanceID());
+        GameEntryGet.ObjectPool.GetObjectPool<GameObjectPoolContainer>(go.name).Unspawn(go);
+        GameEntryGet.InterfacePool.Remove(go.GetInstanceID());
     }
     /// <summary>
     /// 释放这个对象
@@ -89,6 +89,6 @@ public class GameObjectPool:GameFrameworkComponent
     /// <param name="go">对象</param>
     public void ReleaseObject(GameObject go)
     {
-        GameEntry.ObjectPool.GetObjectPool<GameObjectPoolContainer>(go.name).ReleaseObject(go);
+        GameEntryGet.ObjectPool.GetObjectPool<GameObjectPoolContainer>(go.name).ReleaseObject(go);
     }
 }
