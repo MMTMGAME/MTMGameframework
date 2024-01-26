@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Dictionaries>
+  <Dictionary Language="ChineseSimplified">
+    <String Key="Game.Name" Value="放烟花咯" />
+    <String Key="Game.Description" Value="===由 MMTM 制作===" />
+    <String Key="Game.Website" Value="https://www.mgamem.com/" />
+    <String Key="Game.Summary" Value="烟花易逝，人情长存。" />
+    <String Key="Game.Introduction" Value="紫禁烟花一万重，鳌山宫阙倚晴空。玉皇端拱彤云上，人物嬉游陆海中。
+星转斗，驾回龙。五侯池馆醉春风。而今白发三千丈，愁对寒灯数点红。" />
+    <String Key="Menu.StartButton" Value="开始" />
+    <String Key="Menu.SettingButton" Value="设置" />
+    <String Key="Menu.AboutButton" Value="关于" />
+    <String Key="Menu.QuitButton" Value="退出" />
+    <String Key="Dialog.ConfirmButton" Value="确定" />
+    <String Key="Dialog.CancelButton" Value="取消" />
+    <String Key="Dialog.OtherButton" Value="" />
+    <String Key="ForceUpdate.Title" Value="强制更新" />
+    <String Key="ForceUpdate.Message" Value="当前游戏版本过旧，是否前往更新？" />
+    <String Key="ForceUpdate.UpdateButton" Value="更新" />
+    <String Key="ForceUpdate.QuitButton" Value="退出" />
+    <String Key="AskQuitGame.Title" Value="确认退出" />
+    <String Key="AskQuitGame.Message" Value="是否确认退出游戏？" />
+    <String Key="Setting.Title" Value="设置" />
+    <String Key="Setting.Music" Value="音乐" />
+    <String Key="Setting.Sound" Value="音效" />
+    <String Key="Setting.UISound" Value="界面音效" />
+    <String Key="Setting.Language" Value="语言" />
+    <String Key="Setting.LanguageTips" Value="更改语言需要重启游戏" />
+    <String Key="Pause.Title" Value="暂停" />
+    <String Key="Pause.Continue" Value="继续" />
+    <String Key="Pause.MainMenu" Value="主菜单" />
+    <String Key="Pause.Retry" Value="重试" />
+    <String Key="Pause.Quit" Value="退出游戏" />
+    <String Key="GameWin.Title" Value="游戏胜利" />
+    <String Key="GameWin.Message" Value="可以，你赢了，nb" />
+    <String Key="GameWin.NextLevel" Value="下一关" />
+    <String Key="GameWin.MainMenu" Value="主菜单" />
+    <String Key="GameOver.Title" Value="游戏失败" />
+    <String Key="GameOver.Message" Value="莫得事，重来" />
+    <String Key="GameOver.Retry" Value="重试" />
+    <String Key="GameOver.MainMenu" Value="主菜单" />
+    <String Key="GameControl.DropItemTip" Value="[F] 丢弃道具" />
+    <String Key="GameControl.UseItemTip" Value="[鼠标右键] 使用道具" />
+    <String Key="LevelTarget.Level1" Value="目标：拾取打火机点燃冲天炮" />
+    <String Key="LevelTarget.Level2" Value="目标：拾取打火机点燃炮仗" />
+    <String Key="LevelTarget.Level3" Value="目标：拾取打火机点燃炮仗" />
+    <String Key="LevelTarget.Level4" Value="目标：将冲天炮插入地面并点燃" />
+    <String Key="LevelTarget.Level5" Value="目标：不被发现偷偷炸掉大白菜" />
+    <String Key="LevelTarget.Level6" Value="目标：点燃牛粪上的炮仗并且别碰到牛粪" />
+    <String Key="LevelTarget.Level7" Value="目标：点绕鞭炮并不被炸到" />
+    <String Key="GameLevelName.Level1" Value="关卡1" />
+    <String Key="GameLevelName.Level2" Value="关卡2" />
+    <String Key="GameLevelName.Level3" Value="关卡3" />
+    <String Key="GameLevelName.Level4" Value="关卡4" />
+    <String Key="GameLevelName.Level5" Value="关卡5" />
+    <String Key="GameLevelName.Level6" Value="关卡6" />
+    <String Key="GameLevelName.Level7" Value="关卡7" />
+    <String Key="LevelSelect.Title" Value="选择关卡" />
+    <String Key="LevelSelect.MainMenu" Value="主菜单" />
+    <String Key="GameClear.Title" Value="恭喜通关" />
+    <String Key="GameClear.Message" Value="牛哇牛哇，通关啦" />
+    <String Key="GameClear.MainMenu" Value="主菜单" />
+  </Dictionary>
+</Dictionaries>
