@@ -592,6 +592,7 @@ namespace UnityGameFramework.Runtime
             transform.SetParent(soundGroupHelper.transform);
             transform.localScale = Vector3.one;
 
+            
             if (m_AudioMixer != null)
             {
                 AudioMixerGroup[] audioMixerGroups = m_AudioMixer.FindMatchingGroups(Utility.Text.Format("Master/{0}/{1}", soundGroupName, index));

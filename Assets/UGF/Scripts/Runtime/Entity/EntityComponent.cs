@@ -922,7 +922,7 @@ namespace UnityGameFramework.Runtime
                 parentTransform = parentEntity.Logic.CachedTransform.Find(parentTransformPath);
                 if (parentTransform == null)
                 {
-                    Log.Warning("Can not find transform path '{0}' from parent entity '{1}'.", parentTransformPath, parentEntity.Logic.Name);
+                    Log.Error("Can not find transform path '{0}' from parent entity '{1}'.", parentTransformPath, parentEntity.Logic.Name);
                     parentTransform = parentEntity.Logic.CachedTransform;
                 }
             }

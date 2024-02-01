@@ -121,55 +121,33 @@ namespace GameMain
             return (toTransform.position - fromTransform.position).magnitude;
         }
 
-        public static void PerformCollision(TargetableObject entity, Entity other)
+
+        public static void Attack(TargetableObject attacker, TargetableObject victim)
         {
-            if (entity == null || other == null)
+            if (attacker == null || victim == null)
+            {
+                return;
+            }
+            
+            ImpactData attackerImpactData = attacker.GetImpactData();
+            ImpactData victimImpactData = victim.GetImpactData();
+            if (GetRelation(attackerImpactData.Camp, victimImpactData.Camp) == RelationType.Friendly)
             {
                 return;
             }
 
-            TargetableObject target = other as TargetableObject;
-            if (target != null)
-            {
-                ImpactData entityImpactData = entity.GetImpactData();
-                ImpactData targetImpactData = target.GetImpactData();
-                if (GetRelation(entityImpactData.Camp, targetImpactData.Camp) == RelationType.Friendly)
-                {
-                    return;
-                }
+           
+            int targetDamageHP = CalcDamageHP(attackerImpactData.Attack, victimImpactData.Defense);
 
-                int entityDamageHP = CalcDamageHP(targetImpactData.Attack, entityImpactData.Defense);
-                int targetDamageHP = CalcDamageHP(entityImpactData.Attack, targetImpactData.Defense);
+           
 
-                int delta = Mathf.Min(entityImpactData.HP - entityDamageHP, targetImpactData.HP - targetDamageHP);
-                if (delta > 0)
-                {
-                    entityDamageHP += delta;
-                    targetDamageHP += delta;
-                }
-
-                entity.ApplyDamage(target, entityDamageHP);
-                target.ApplyDamage(entity, targetDamageHP);
-                return;
-            }
-
-            Bullet bullet = other as Bullet;
-            if (bullet != null)
-            {
-                ImpactData entityImpactData = entity.GetImpactData();
-                ImpactData bulletImpactData = bullet.GetImpactData();
-                if (GetRelation(entityImpactData.Camp, bulletImpactData.Camp) == RelationType.Friendly)
-                {
-                    return;
-                }
-
-                int entityDamageHP = CalcDamageHP(bulletImpactData.Attack, entityImpactData.Defense);
-
-                entity.ApplyDamage(bullet, entityDamageHP);
-                GameEntry.Entity.HideEntity(bullet);
-                return;
-            }
+           
+            victim.ApplyDamage(attacker, targetDamageHP);
+            
         }
+        
+        
+       
 
         public static void ExplosionWithForce(TargetableObject attacker, Vector3 center, float radius, int power)
         {
@@ -227,14 +205,14 @@ namespace GameMain
             // 对每个 Rigidbody 施加合力
             foreach (var rbForcePair in forceOnRigidbodies)
             {
-                rbForcePair.Key.AddForce(rbForcePair.Value*1000);
+                rbForcePair.Key.AddForce(rbForcePair.Value);
             }
         }
 
         // 计算力的方法（示例，您可以根据需求调整）
         private static float CalculateForce(int power, Rigidbody rb, Vector3 explosionCenter, Vector3 colliderPosition)
         {
-            float distance = Vector3.Distance(explosionCenter, colliderPosition)*1000;
+            float distance = Vector3.Distance(explosionCenter, colliderPosition);
             float forceMagnitude = power / distance; // 举例：力量随距离递减
             return forceMagnitude * rb.mass; // 根据质量调整力的大小
         }

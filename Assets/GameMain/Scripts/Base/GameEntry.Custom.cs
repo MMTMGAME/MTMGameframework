@@ -19,14 +19,8 @@ namespace GameMain
             get;
             private set;
         }
-
-        public static HPBarComponent HPBar
-        {
-            get;
-            private set;
-        }
-
-        public static InteractTipItemComponent InteractTip
+        
+        public static EntityUiComponent EntityUi
         {
             get;
             private set;
@@ -35,8 +29,8 @@ namespace GameMain
         private static void InitCustomComponents()
         {
             BuiltinData = UnityGameFramework.Runtime.GameEntry.GetComponent<BuiltinDataComponent>();
-            HPBar = UnityGameFramework.Runtime.GameEntry.GetComponent<HPBarComponent>();
-            InteractTip = UnityGameFramework.Runtime.GameEntry.GetComponent<InteractTipItemComponent>();
+            EntityUi = UnityGameFramework.Runtime.GameEntry.GetComponent<EntityUiComponent>();
+            
         }
     }
 }

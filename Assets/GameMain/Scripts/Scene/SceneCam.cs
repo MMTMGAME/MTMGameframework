@@ -2,22 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using GameMain;
 using UnityEngine;
 
-public class SceneCam : MonoBehaviour
+public class SceneCam : Entity
 {
    public CinemachineVirtualCamera cinemachine;
 
    public CinemachineTargetGroup cinemachineTargetGroup;
+
+   protected override void OnInit(object userData)
+   {
+      base.OnInit(userData);
+      cinemachine = GetComponentInChildren<CinemachineVirtualCamera>();
+      cinemachineTargetGroup = GetComponentInChildren<CinemachineTargetGroup>();
+      cinemachine.LookAt = cinemachineTargetGroup.Transform;
+   }
+
    public void SetFollow(Transform target)
    {
       cinemachine.Follow = target;
    }
 
-   private void Start()
-   {
-      cinemachine.LookAt = cinemachineTargetGroup.Transform;
-   }
 
    public List<Transform> aimTargets = new List<Transform>();
    public List<float> weights = new List<float>();
@@ -42,7 +48,7 @@ public class SceneCam : MonoBehaviour
       
    }
 
-   public void UpdateTargetGroup()
+   void UpdateTargetGroup()
    {
       
       cinemachineTargetGroup.m_Targets = new CinemachineTargetGroup.Target[aimTargets.Count];

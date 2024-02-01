@@ -165,7 +165,8 @@ PlayerSettings:
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Standalone: com.DefaultCompany.MMTMGameFramework
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -718,7 +719,12 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Android: ENABLE_LOG
+    Standalone: ENABLE_LOG
+    WebGL: ENABLE_LOG
+    Windows Store Apps: ENABLE_LOG
+    iPhone: ENABLE_LOG
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
@@ -807,7 +813,7 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  activeInputHandler: 0
+  activeInputHandler: 2
   windowsGamepadBackendHint: 0
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0

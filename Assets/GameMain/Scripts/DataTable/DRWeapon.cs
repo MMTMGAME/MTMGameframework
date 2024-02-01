@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-01-25 14:57:08.085
+// 生成时间：2024-02-01 17:23:59.055
 //------------------------------------------------------------
 
 using GameFramework;
@@ -81,6 +81,15 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取附加路径。
+        /// </summary>
+        public string Path
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -98,6 +107,7 @@ namespace GameMain
             BulletId = int.Parse(columnStrings[index++]);
             BulletSpeed = float.Parse(columnStrings[index++]);
             BulletSoundId = int.Parse(columnStrings[index++]);
+            Path = columnStrings[index++];
 
             GeneratePropertyArray();
             return true;
@@ -115,6 +125,7 @@ namespace GameMain
                     BulletId = binaryReader.Read7BitEncodedInt32();
                     BulletSpeed = binaryReader.ReadSingle();
                     BulletSoundId = binaryReader.Read7BitEncodedInt32();
+                    Path = binaryReader.ReadString();
                 }
             }
 

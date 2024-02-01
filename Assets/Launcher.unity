@@ -331,5 +331,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Framework
       objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396872197, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_EntityGroups.Array.data[3].m_InstanceExpireTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396872197, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_EntityGroups.Array.data[3].m_InstanceAutoReleaseInterval
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}

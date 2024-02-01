@@ -48,6 +48,7 @@ namespace GameMain
                 Log.Error("Bullet data is invalid.");
                 return;
             }
+            gameObject.SetActive(true);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -58,29 +59,18 @@ namespace GameMain
                 return;
             }
         
-            if (entity is TargetableObject)
+            if (entity is TargetableObject targetAbleObject)
             {
-                (entity as TargetableObject).ApplyDamage(this, m_BulletData.Attack);
-               
+                if(entity.Id==m_BulletData.OwnerId)
+                    return;
+                var owner = GameEntry.Entity.GetEntity(m_BulletData.OwnerId);
+                AIUtility.Attack((TargetableObject)owner.Logic, targetAbleObject);
             }
-        
+            GameEntry.Entity.HideEntity(this);
            
         }
 
-        // private void OnCollisionEnter(Collision collision)
-        // {
-        //     Entity entity = collision.gameObject.GetComponentInParent<Entity>();
-        //     if (entity == null)
-        //     {
-        //         return;
-        //     }
-        //
-        //     if (entity is TargetableObject)
-        //     {
-        //         (entity as TargetableObject).ApplyDamage(this, m_BulletData.Attack);
-        //         
-        //     }
-        // }
+        
 
         private float timer = 0;
 #if UNITY_2017_3_OR_NEWER
@@ -92,7 +82,7 @@ namespace GameMain
             base.OnUpdate(elapseSeconds, realElapseSeconds);
 
             timer += elapseSeconds;
-            CachedTransform.Translate(Vector3.forward * m_BulletData.Speed * elapseSeconds, Space.Self);
+            CachedTransform.Translate(Vector3.forward * (m_BulletData.Speed * elapseSeconds), Space.Self);
             
             if (timer >= m_BulletData.KeepTime)
             {

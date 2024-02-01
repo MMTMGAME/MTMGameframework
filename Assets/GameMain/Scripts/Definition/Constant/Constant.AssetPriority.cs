@@ -24,13 +24,12 @@ namespace GameMain
             public const int UIFormAsset = 50;
             public const int UISoundAsset = 30;
 
-            public const int MyAircraftAsset = 90;
-            public const int AircraftAsset = 80;
-            public const int ThrusterAsset = 30;
+            public const int PlayerAsset = 90;
+            public const int CameraAsset = 90;
+            public const int BattleUnitAsset = 90;
             public const int WeaponAsset = 30;
             public const int ArmorAsset = 30;
             public const int BulletAsset = 80;
-            public const int AsteroiAsset = 80;
             public const int EffectAsset = 80;
             
 

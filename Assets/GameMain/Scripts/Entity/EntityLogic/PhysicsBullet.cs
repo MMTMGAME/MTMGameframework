@@ -64,10 +64,10 @@ namespace GameMain
                 return;
             }
 
-            if (entity is TargetableObject)
+            if (entity is TargetableObject targetAbleObject)
             {
-                (entity as TargetableObject).ApplyDamage(this, m_BulletData.Attack);
-                
+                var owner = GameEntry.Entity.GetEntity(m_BulletData.OwnerId);
+                AIUtility.Attack((TargetableObject)owner.Logic, targetAbleObject);
             }
         }
 
@@ -102,6 +102,7 @@ namespace GameMain
                 Position = transform.position,
             });
 
+            
            
             if (m_BulletData.hideSoundIds is { Length: > 0 })
             {

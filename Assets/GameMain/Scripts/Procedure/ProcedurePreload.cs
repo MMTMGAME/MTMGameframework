@@ -31,7 +31,7 @@ namespace GameMain
             "UISound",
             "Weapon",
             
-            "SceneItem",
+            "BattleUnit",
             "Bullet"
         };
 

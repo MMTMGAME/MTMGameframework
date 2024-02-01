@@ -49,13 +49,9 @@ namespace GameMain
             base.OnInit(procedureOwner);
 
             
+            //这里只是Add,没有启用，启用是在OnEnter中启用
             m_Games.Add(GameMode.Level1, new GameLevel1());
-            m_Games.Add(GameMode.Level2, new GameLevel2());
-            m_Games.Add(GameMode.Level3, new GameLevel3());
-            m_Games.Add(GameMode.Level4, new GameLevel4());
-            m_Games.Add(GameMode.Level5, new GameLevel5());
-            m_Games.Add(GameMode.Level6, new GameLevel6());
-            m_Games.Add(GameMode.Level7, new GameLevel7());
+          
             
             
         }
@@ -75,8 +71,8 @@ namespace GameMain
             base.OnEnter(procedureOwner);
 
             m_GotoMenu = false;
-            //GameMode gameMode = (GameMode)procedureOwner.GetData<VarByte>("GameMode").Value;
-            m_CurrentGame = m_Games[GameLevel];
+            
+            m_CurrentGame = m_Games[GameLevel];//启用设置好的GameLevel
             m_CurrentGame.Initialize();
 
             m_GotoMenuDelaySeconds = 0;
@@ -122,6 +118,8 @@ namespace GameMain
 
                 //解锁下一关
                 var levelProgress = PlayerPrefs.GetInt("LevelProgress", 1);
+                
+                //存档
                 if((int)GameLevel+1>levelProgress)
                     PlayerPrefs.SetInt("LevelProgress",(int)GameLevel+1);
             }
@@ -179,7 +177,10 @@ namespace GameMain
 
         protected virtual void NextLevel()
         {
-           
+            // 示例
+            // procedureOwner.SetData<VarInt32>("NextSceneId", GameEntry.Config.GetInt("Scene.Level2"));
+            // procedureOwner.SetData<VarInt32>("TargetLevel", 2);
+            // ChangeState<ProcedureChangeScene>(procedureOwner);
         }
 
         public virtual void Retry()

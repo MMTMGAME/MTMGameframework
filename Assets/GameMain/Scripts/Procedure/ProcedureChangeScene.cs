@@ -112,21 +112,7 @@ namespace GameMain
                     case 2:
                         ChangeState(procedureOwner,typeof(ProcedureLevel2));
                         break;
-                    case 3:
-                        ChangeState(procedureOwner,typeof(ProcedureLevel3));
-                        break;
-                    case 4:
-                        ChangeState(procedureOwner,typeof(ProcedureLevel4));
-                        break;
-                    case 5:
-                        ChangeState(procedureOwner,typeof(ProcedureLevel5));
-                        break;
-                    case 6:
-                        ChangeState(procedureOwner,typeof(ProcedureLevel6));
-                        break;
-                    case 7:
-                        ChangeState(procedureOwner,typeof(ProcedureLevel7));
-                        break;
+                    
                 }
             }
         }

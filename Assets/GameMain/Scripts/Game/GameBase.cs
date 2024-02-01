@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using GameFramework.Event;
-
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityGameFramework.Runtime;
@@ -19,8 +19,10 @@ namespace GameMain
 {
     public abstract class GameBase
     {
-
-        public int testCount = 0;
+        /// <summary>
+        /// 记录这个GameBase加载了几次，没啥用，只是用来提醒Gamebase这个示例会被多次加载，所以需要注意在初始化的时候重置相关变量
+        /// </summary>
+        public int loadCount = 0;
         public Player Player
         {
             get;
@@ -49,7 +51,7 @@ namespace GameMain
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Subscribe(ShowEntityFailureEventArgs.EventId, OnShowEntityFailure);
             
-            GameEntry.Base.StartCoroutine(SpawnPlayer());
+            
 
             #region MyRegion
             //绑定输入
@@ -61,41 +63,31 @@ namespace GameMain
 
             
             
-            #region 动态生成道具
+            #region 动态生成场景中实体
 
-            var sceneItems = Object.FindObjectOfType<SceneItems>();
-
-            foreach (var config in sceneItems.toSpawn)
+            bool spawnedPlayer=false;
+            var placeholders = Object.FindObjectsOfType<EntityPlaceholder>();
+            foreach (var placeholder in placeholders)
             {
-                config.targetTransform.gameObject.SetActive(false);
+                
+                placeholder.SpawnEntity();
+                placeholder.gameObject.SetActive(false);
+                GameObject.Destroy(placeholder.gameObject,3);
+                
+                if (placeholder as PlayerPlaceholder!= null)
+                    spawnedPlayer = true;
+            }
+            
+            
 
-                // 根据表格获取对应物体所需Entity类
-                var sceneItemTable = GameEntry.DataTable.GetDataTable<DRSceneItem>();
-                var row = sceneItemTable.GetDataRow(config.typeId);
-                var entityLogicTypeName = row.EntityLogic;
-                Type entityLogicType = Type.GetType(entityLogicTypeName);
-
-                if (entityLogicType != null && typeof(SceneItem).IsAssignableFrom(entityLogicType))
-                {
-                    MethodInfo methodInfo = typeof(EntityExtension).GetMethod(nameof(EntityExtension.ShowSceneItem));
-                    MethodInfo genericMethod = methodInfo.MakeGenericMethod(entityLogicType);
-
-                    SceneItemData data = new SceneItemData(GameEntry.Entity.GenerateSerialId(), config.typeId)
-                    {
-                        Position = config.targetTransform.position,
-                        Rotation = config.targetTransform.rotation,
-                        PickAble=config.pickAble,
-                    };
-
-                    genericMethod.Invoke(GameEntry.Entity, new object[] { GameEntry.Entity, data });
-
-                }
-                else
-                {
-                    Debug.LogError("Invalid entity logic type: " + entityLogicTypeName);
-                }
+            //如果没有生成玩家
+            if (!spawnedPlayer)
+            {
+                Log.Error("没有生成玩家，系统自动生成玩家在0坐标，要让玩家生成在指定位置请拖拽玩家预制体到场景中并添加EntityInfo组件");
+                GameEntry.Entity.ShowPlayer(new PlayerData(GameEntry.Entity.GenerateSerialId(),10000));
             }
 
+            GameEntry.Entity.ShowSceneCam();
             #endregion
 
             GameOver = false;
@@ -103,8 +95,8 @@ namespace GameMain
 
             GameEntry.Base.StartCoroutine(InitDisplayUi());
 
-            Debug.Log("TestCount:"+testCount);
-            testCount++;
+            Debug.Log(this.GetType()+" loadCount:"+loadCount);
+            loadCount++;
         }
         
         
@@ -128,7 +120,7 @@ namespace GameMain
                 {
                     var curProcedure = (GameEntry.Procedure.CurrentProcedure as ProcedureLevel);
                     if(curProcedure==null)
-                        Debug.LogError("这里怎么成null了呢");
+                        Debug.LogError("当前流程为空");
                     LevelDisplayForm.SetLevelTarget("LevelTarget."+curProcedure.GameLevel.ToString());
                 }
               
@@ -137,37 +129,7 @@ namespace GameMain
             #endregion
         }
 
-        IEnumerator SpawnPlayer()
-        {
-            //yield return new WaitForSeconds(2f);
-            #region 玩家生成和相机配置,相机配置在生成实体回调中执行
-
-            var existingPlayer = GameObject.FindGameObjectWithTag("Player");
-            if (existingPlayer)
-            {
-                Object.Destroy(existingPlayer.gameObject); //销毁场景中的player
-            }
-
-            yield return new WaitForSeconds(0.1f);
-            //生成新player
-            
-          
-            
-            var playerTrans = GameObject.FindGameObjectWithTag("PlayerTrans");
-            var spineTrans = playerTrans.transform.GetChild(0);
-            GameEntry.Entity.ShowPlayer(new PlayerData(GameEntry.Entity.GenerateSerialId(), 10000)
-            {
-                Position = playerTrans.transform.position,
-                Rotation = playerTrans.transform.rotation,
-                SpinePosition = spineTrans.transform.position,
-                SpineRotation = spineTrans.transform.rotation,
-                
-            });
-
-            
-            
-            #endregion
-        }
+     
         
         
 
@@ -185,7 +147,7 @@ namespace GameMain
             playerInputActions.Player.Esc.performed -= OpenPauseForm;
             playerInputActions.Disable();
             
-            GameOver = false;
+            
         }
 
         /// <summary>
@@ -193,10 +155,10 @@ namespace GameMain
         /// </summary>
         protected virtual void CheckGameOverOrWin()
         {
-            if (Player != null && Player.IsDead)
+            if (Player != null && (!Player.Available || Player.IsDead))
             {
                 GameOver = true;
-                Debug.Log("GameOver!!");
+                Log.Debug("GameOver!!");
                 
             }
             
@@ -209,18 +171,31 @@ namespace GameMain
             CheckGameOverOrWin();
         }
 
+        
         protected virtual void OnShowEntitySuccess(object sender, GameEventArgs e)
         {
             ShowEntitySuccessEventArgs ne = (ShowEntitySuccessEventArgs)e;
             if (ne.EntityLogicType == typeof(Player))
             {
-
-                
                 Player = ne.Entity.Logic as Player;
-                SceneCam = Object.FindObjectOfType<SceneCam>();
+                
+            }
+
+            if (ne.EntityLogicType == typeof(SceneCam) )
+            {
+                SceneCam = ne.Entity.Logic as SceneCam;
                 var playerCamInfo = Player.GetComponent<PlayerCamFollowAndLookTransforms>();
-                SceneCam.SetFollow(playerCamInfo.follow);
-                SceneCam.AddToTargetGroup(playerCamInfo.lookAt);
+                if (playerCamInfo)
+                {
+                    SceneCam.SetFollow(playerCamInfo.follow);
+                    SceneCam.AddToTargetGroup(playerCamInfo.lookAt);
+                }
+                else
+                {
+                    SceneCam.SetFollow(Player.transform);
+                    SceneCam.AddToTargetGroup(Player.transform);
+                }
+                
             }
         }
 

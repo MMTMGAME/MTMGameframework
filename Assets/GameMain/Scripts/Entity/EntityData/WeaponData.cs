@@ -29,6 +29,8 @@ namespace GameMain
         [SerializeField]
         private int m_BulletSoundId = 0;
 
+        private string path;
+
         public WeaponData(int entityId, int typeId, int ownerId, CampType ownerCamp)
             : base(entityId, typeId, ownerId, ownerCamp)
         {
@@ -44,6 +46,7 @@ namespace GameMain
             m_BulletId = drWeapon.BulletId;
             m_BulletSpeed = drWeapon.BulletSpeed;
             m_BulletSoundId = drWeapon.BulletSoundId;
+            path = drWeapon.Path;
         }
 
         /// <summary>
@@ -98,6 +101,14 @@ namespace GameMain
             get
             {
                 return m_BulletSoundId;
+            }
+        }
+
+        public string Path
+        {
+            get
+            {
+                return path;
             }
         }
     }

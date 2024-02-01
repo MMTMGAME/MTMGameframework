@@ -33,10 +33,10 @@ namespace GameMain
             float fromHPRatio = m_TargetableObjectData.HPRatio;
             m_TargetableObjectData.HP -= damageHP;
             float toHPRatio = m_TargetableObjectData.HPRatio;
-            if (fromHPRatio > toHPRatio)
-            {
-                //GameEntry.HPBar.ShowHPBar(this, fromHPRatio, toHPRatio);
-            }
+            
+            //GameEntry.HPBar.ShowHPBar(this, fromHPRatio, toHPRatio);
+            GameEntry.EntityUi.ShowUI<HPBarItem>(this,toHPRatio);
+            
 
             if (m_TargetableObjectData.HP <= 0)
             {

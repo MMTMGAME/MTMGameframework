@@ -16,7 +16,7 @@ namespace GameMain
     /// </summary>
     public class Weapon : Entity
     {
-        private const string AttachPoint = "Weapon Point";
+        
 
         [SerializeField]
         private WeaponData m_WeaponData = null;
@@ -47,7 +47,7 @@ namespace GameMain
                 return;
             }
 
-            GameEntry.Entity.AttachEntity(Entity, m_WeaponData.OwnerId, AttachPoint);
+            GameEntry.Entity.AttachEntity(Entity, m_WeaponData.OwnerId, m_WeaponData.Path);
         }
 
 #if UNITY_2017_3_OR_NEWER
@@ -70,6 +70,12 @@ namespace GameMain
             }
 
             m_NextAttackTime = Time.time + m_WeaponData.AttackInterval;
+
+            Attack();
+        }
+
+        protected virtual void Attack()
+        {
             GameEntry.Entity.ShowBullet(new BulletData(GameEntry.Entity.GenerateSerialId(), m_WeaponData.BulletId, m_WeaponData.OwnerId, m_WeaponData.OwnerCamp, m_WeaponData.Attack, m_WeaponData.BulletSpeed,5)
             {
                 Position = CachedTransform.position,

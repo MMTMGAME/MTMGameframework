@@ -16,7 +16,7 @@ namespace GameMain
     /// </summary>
     public class Armor : Entity
     {
-        private const string AttachPoint = "Armor Point";
+       
 
         [SerializeField]
         private ArmorData m_ArmorData = null;
@@ -45,7 +45,7 @@ namespace GameMain
                 return;
             }
 
-            GameEntry.Entity.AttachEntity(Entity, m_ArmorData.OwnerId, AttachPoint);
+            GameEntry.Entity.AttachEntity(Entity, m_ArmorData.OwnerId, m_ArmorData.Path);
         }
 
 #if UNITY_2017_3_OR_NEWER

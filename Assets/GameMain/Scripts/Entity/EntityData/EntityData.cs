@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace GameMain
 {
-    [Serializable]
+    [System.Serializable]
     public abstract class EntityData
     {
         [SerializeField]
@@ -40,6 +40,7 @@ namespace GameMain
             {
                 return m_Id;
             }
+            set { }
         }
 
         /// <summary>

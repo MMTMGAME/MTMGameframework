@@ -20,6 +20,8 @@ namespace GameMain
         [SerializeField]
         private int m_Defense = 0;
 
+        private string path;
+
         public ArmorData(int entityId, int typeId, int ownerId, CampType ownerCamp)
             : base(entityId, typeId, ownerId, ownerCamp)
         {
@@ -32,6 +34,7 @@ namespace GameMain
 
             m_MaxHP = drArmor.MaxHP;
             m_Defense = drArmor.Defense;
+            path = drArmor.Path;
         }
 
         /// <summary>
@@ -53,6 +56,14 @@ namespace GameMain
             get
             {
                 return m_Defense;
+            }
+        }
+
+        public string Path
+        {
+            get
+            {
+                return path;
             }
         }
     }
