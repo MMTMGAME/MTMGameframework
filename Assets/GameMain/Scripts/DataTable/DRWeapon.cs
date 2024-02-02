@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-02-01 17:23:59.055
+// 生成时间：2024-02-02 17:28:05.944
 //------------------------------------------------------------
 
 using GameFramework;
@@ -64,7 +64,7 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取子弹速度。
+        /// 获取子弹速度或者初始力。
         /// </summary>
         public float BulletSpeed
         {
@@ -90,6 +90,24 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取攻击模板。
+        /// </summary>
+        public string AttackLogicComponent
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取发射子弹的Transform，仅远程武器使用。
+        /// </summary>
+        public string ShootPoint
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -108,6 +126,8 @@ namespace GameMain
             BulletSpeed = float.Parse(columnStrings[index++]);
             BulletSoundId = int.Parse(columnStrings[index++]);
             Path = columnStrings[index++];
+            AttackLogicComponent = columnStrings[index++];
+            ShootPoint = columnStrings[index++];
 
             GeneratePropertyArray();
             return true;
@@ -126,6 +146,8 @@ namespace GameMain
                     BulletSpeed = binaryReader.ReadSingle();
                     BulletSoundId = binaryReader.Read7BitEncodedInt32();
                     Path = binaryReader.ReadString();
+                    AttackLogicComponent = binaryReader.ReadString();
+                    ShootPoint = binaryReader.ReadString();
                 }
             }
 

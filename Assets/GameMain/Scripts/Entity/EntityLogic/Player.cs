@@ -31,5 +31,11 @@ public class Player : BattleUnit
         {
             m_Weapons[i].TryAttack();//因为是举例，武器直接大范围攻击
         }
+
+        var horizontal = Input.GetAxis("Horizontal");
+        var vertical= Input.GetAxis("Vertical");
+        
+        transform.Rotate(Vector3.up,30*Time.deltaTime*horizontal *(vertical>=0?1:-1) );
+        transform.Translate(Vector3.forward * (2 * (Time.deltaTime * vertical)),Space.Self);
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1354640051492323127}
   - component: {fileID: 8127026583188525580}
   m_Layer: 0
-  m_Name: Fr
+  m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126457081563120295}
-  m_LocalRotation: {x: -0.2671319, y: -0, z: -0, w: 0.96366}
-  m_LocalPosition: {x: 0, y: 1.345, z: 0}
-  m_LocalScale: {x: 0.17438889, y: 0.23954457, z: 2.1466}
+  m_LocalRotation: {x: -0.18889093, y: -0.68140954, z: -0.1888904, w: 0.68141156}
+  m_LocalPosition: {x: 0, y: 1.37, z: 0}
+  m_LocalScale: {x: 0.15743305, y: 0.21625365, z: 0.30758128}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3635416399595391322}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -30.987, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -30.987, y: -90, z: 0}
 --- !u!33 &1354640051492323127
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -92,6 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3635416399595391322}
+  - component: {fileID: 1252320104720796650}
   m_Layer: 0
   m_Name: PhysicsBulletWeapon
   m_TagString: Untagged
@@ -115,3 +116,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1252320104720796650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6891853317181021241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7faa64a828219b44cb0eb5bfbfa83524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateVector: {x: 0, y: 30, z: 0}
+  rotateSpace: 1

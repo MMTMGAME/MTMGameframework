@@ -4,6 +4,7 @@ using GameFramework.DataTable;
 using GameMain;
 using UnityEngine;
 
+[System.Serializable]
 public class BattleUnitData : TargetableObjectData
 {
     [SerializeField]

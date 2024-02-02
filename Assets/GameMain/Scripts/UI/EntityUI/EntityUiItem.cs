@@ -11,6 +11,7 @@ public abstract class EntityUiItem : MonoBehaviour
 {
     private Canvas parentCanvas;
     public CanvasGroup canvasGroup;
+    [SerializeField]
     private int ownerId;
     public Entity Owner { get; private set; }
     
@@ -32,7 +33,7 @@ public abstract class EntityUiItem : MonoBehaviour
             return;
         }
 
-        this.parentCanvas = parentCanvas;
+       
 
         gameObject.SetActive(true);
         StopAllCoroutines();
@@ -52,7 +53,7 @@ public abstract class EntityUiItem : MonoBehaviour
 
     public virtual bool Refresh()
     {
-        if (canvasGroup.alpha <= 0f)
+        if (canvasGroup.alpha <= 0f || Owner==null || Owner.Available==false)
         {
             return false;
         }
@@ -62,11 +63,13 @@ public abstract class EntityUiItem : MonoBehaviour
             Vector3 worldPosition = Owner.CachedTransform.position ;
             Vector3 screenPosition = GameEntry.Scene.MainCamera.WorldToScreenPoint(worldPosition);
 
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)parentCanvas.transform, screenPosition,
-                    parentCanvas.worldCamera, out var position))
-            {
-                rectTransform.localPosition = position;
-            }
+            // if (RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)parentCanvas.transform, screenPosition,
+            //         parentCanvas.worldCamera, out var position))
+            // {
+            //     rectTransform.localPosition = position;
+            // }
+
+            transform.position = screenPosition;
         }
 
         return true;

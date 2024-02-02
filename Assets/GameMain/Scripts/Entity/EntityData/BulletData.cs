@@ -8,6 +8,7 @@
 using System;
 using GameFramework.DataTable;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace GameMain
 {
@@ -36,6 +37,12 @@ namespace GameMain
         public int fireEffectId;
         public int deadEffectId;
         public int hideEffectId;
+
+        public bool useGravity;
+        [FormerlySerializedAs("trigger")] public bool isTrigger;
+
+        [FormerlySerializedAs("bulletStrategy")] public string bulletStrategyComp;
+        public string specialData;
         public BulletData(int entityId, int typeId, int ownerId, CampType ownerCamp, int attack, float speed,float keepTime)
             : base(entityId, typeId)
         {
@@ -63,6 +70,11 @@ namespace GameMain
             deadEffectId = element.DeadEffectId;
             hideEffectId = element.FireSoundId;
 
+            bulletStrategyComp = element.StrategyComponent;
+            useGravity = element.UseGravity;
+            isTrigger = element.IsTrigger;
+
+            specialData = element.SpecialData;
         }
 
         public int OwnerId

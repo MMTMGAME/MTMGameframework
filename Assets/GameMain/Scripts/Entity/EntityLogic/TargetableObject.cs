@@ -34,7 +34,8 @@ namespace GameMain
             m_TargetableObjectData.HP -= damageHP;
             float toHPRatio = m_TargetableObjectData.HPRatio;
             
-            //GameEntry.HPBar.ShowHPBar(this, fromHPRatio, toHPRatio);
+            
+            //Log.Debug(this.gameObject.name+"显示HPBarItem，血量:"+toHPRatio);
             GameEntry.EntityUi.ShowUI<HPBarItem>(this,toHPRatio);
             
 

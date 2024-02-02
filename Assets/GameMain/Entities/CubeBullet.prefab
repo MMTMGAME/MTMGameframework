@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1449349045629698087}
   - component: {fileID: 8313598834011705019}
   m_Layer: 0
-  m_Name: DefaultBullet
+  m_Name: CubeBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

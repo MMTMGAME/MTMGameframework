@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1122867091444137868}
   - component: {fileID: 1122867091444137867}
   m_Layer: 0
-  m_Name: DefaultPhysicsBullet
+  m_Name: SphereBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

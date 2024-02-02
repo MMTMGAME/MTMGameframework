@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-02-01 17:23:59.059
+// 生成时间：2024-02-02 17:28:05.949
 //------------------------------------------------------------
 
 using GameFramework;
@@ -37,7 +37,7 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取死亡音效数组。
+        /// 获取死亡音效数组(不可置空，可设置为0表示为无。
         /// </summary>
         public string DeadSoundIdArrStr
         {
@@ -90,6 +90,42 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取子弹逻辑类型。
+        /// </summary>
+        public string StrategyComponent
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取特殊数据(json)。
+        /// </summary>
+        public string SpecialData
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取使用重力。
+        /// </summary>
+        public bool UseGravity
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取碰撞体。
+        /// </summary>
+        public bool IsTrigger
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -108,6 +144,10 @@ namespace GameMain
             DeadEffectId = int.Parse(columnStrings[index++]);
             HideEffectId = int.Parse(columnStrings[index++]);
             FireEffectId = int.Parse(columnStrings[index++]);
+            StrategyComponent = columnStrings[index++];
+            SpecialData = columnStrings[index++];
+            UseGravity = bool.Parse(columnStrings[index++]);
+            IsTrigger = bool.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -126,6 +166,10 @@ namespace GameMain
                     DeadEffectId = binaryReader.Read7BitEncodedInt32();
                     HideEffectId = binaryReader.Read7BitEncodedInt32();
                     FireEffectId = binaryReader.Read7BitEncodedInt32();
+                    StrategyComponent = binaryReader.ReadString();
+                    SpecialData = binaryReader.ReadString();
+                    UseGravity = binaryReader.ReadBoolean();
+                    IsTrigger = binaryReader.ReadBoolean();
                 }
             }
 

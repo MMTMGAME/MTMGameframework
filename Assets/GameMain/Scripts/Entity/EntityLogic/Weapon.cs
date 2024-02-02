@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using GameFramework;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -19,9 +20,11 @@ namespace GameMain
         
 
         [SerializeField]
-        private WeaponData m_WeaponData = null;
+        public WeaponData m_WeaponData = null;
 
         private float m_NextAttackTime = 0f;
+        
+        private WeaponAttack WeaponAttack { get; set; }
 
 #if UNITY_2017_3_OR_NEWER
         protected override void OnInit(object userData)
@@ -48,6 +51,23 @@ namespace GameMain
             }
 
             GameEntry.Entity.AttachEntity(Entity, m_WeaponData.OwnerId, m_WeaponData.Path);
+            
+            AddAttackLogicComponent(m_WeaponData.AttackLogicComponent);
+        }
+        
+        private void AddAttackLogicComponent(string className)
+        {
+            Type attackLogicType = Type.GetType(className);
+            if (attackLogicType != null && attackLogicType.IsSubclassOf(typeof(WeaponAttack)))
+            {
+                WeaponAttack = (WeaponAttack)gameObject.AddComponent(attackLogicType);
+                // 如果需要，这里可以对 attackComponent 进行进一步的配置
+                WeaponAttack.Init(this);
+            }
+            else
+            {
+                Debug.LogError($"Attack logic class '{className}' not found or does not extend WeaponAttack.");
+            }
         }
 
 #if UNITY_2017_3_OR_NEWER
@@ -71,16 +91,9 @@ namespace GameMain
 
             m_NextAttackTime = Time.time + m_WeaponData.AttackInterval;
 
-            Attack();
+            WeaponAttack.Attack();
         }
 
-        protected virtual void Attack()
-        {
-            GameEntry.Entity.ShowBullet(new BulletData(GameEntry.Entity.GenerateSerialId(), m_WeaponData.BulletId, m_WeaponData.OwnerId, m_WeaponData.OwnerCamp, m_WeaponData.Attack, m_WeaponData.BulletSpeed,5)
-            {
-                Position = CachedTransform.position,
-            });
-            GameEntry.Sound.PlaySound(m_WeaponData.BulletSoundId);
-        }
+       
     }
 }

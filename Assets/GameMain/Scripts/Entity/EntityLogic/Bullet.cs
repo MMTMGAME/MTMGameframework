@@ -17,9 +17,9 @@ namespace GameMain
     public class Bullet : Entity
     {
         [SerializeField]
-        private BulletData m_BulletData = null;
+        public BulletData m_BulletData = null;
 
-       
+        public BulletStrategy bulletStrategy;
         public ImpactData GetImpactData()
         {
             return new ImpactData(m_BulletData.OwnerCamp, 0, m_BulletData.Attack, 0);
@@ -49,28 +49,44 @@ namespace GameMain
                 return;
             }
             gameObject.SetActive(true);
+            timer = 0;
+
+            AddBulletStrategyComponent(m_BulletData.bulletStrategyComp);
+            
+        }
+
+        private void AddBulletStrategyComponent(string className)
+        {
+            Type toAdd = Type.GetType(className);
+            if (toAdd != null && toAdd.IsSubclassOf(typeof(BulletStrategy)))
+            {
+                this.bulletStrategy = (BulletStrategy)gameObject.AddComponent(toAdd);
+                if (this.bulletStrategy == null)
+                {
+                    Log.Fatal("添加子弹策略出错，目标策略名："+className);
+                    return;
+                }
+                // 如果需要，这里可以对 attackComponent 进行进一步的配置
+                this.bulletStrategy.Init(this);
+            }
+            else
+            {
+                Debug.LogError($"BulletStrategy logic class '{className}' not found or does not extend BulletStrategy.");
+            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            Entity entity = other.gameObject.GetComponentInParent<Entity>();
-            if (entity == null)
-            {
-                return;
-            }
-        
-            if (entity is TargetableObject targetAbleObject)
-            {
-                if(entity.Id==m_BulletData.OwnerId)
-                    return;
-                var owner = GameEntry.Entity.GetEntity(m_BulletData.OwnerId);
-                AIUtility.Attack((TargetableObject)owner.Logic, targetAbleObject);
-            }
-            GameEntry.Entity.HideEntity(this);
+            bulletStrategy.PerformTrigger(other);
+            
            
         }
 
-        
+        private void OnCollisionEnter(Collision collision)
+        {
+            bulletStrategy.PerformCollision(collision);
+        }
+
 
         private float timer = 0;
 #if UNITY_2017_3_OR_NEWER
@@ -82,7 +98,8 @@ namespace GameMain
             base.OnUpdate(elapseSeconds, realElapseSeconds);
 
             timer += elapseSeconds;
-            CachedTransform.Translate(Vector3.forward * (m_BulletData.Speed * elapseSeconds), Space.Self);
+            
+            bulletStrategy.Update();
             
             if (timer >= m_BulletData.KeepTime)
             {

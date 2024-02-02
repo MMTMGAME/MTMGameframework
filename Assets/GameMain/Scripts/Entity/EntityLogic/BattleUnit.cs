@@ -9,6 +9,7 @@ using GameEntry = GameMain.GameEntry;
 
 public class BattleUnit : TargetableObject
 {
+    [SerializeField]
     private BattleUnitData BattleUnitData;
 
     [SerializeField] protected List<Weapon> m_Weapons = new List<Weapon>();

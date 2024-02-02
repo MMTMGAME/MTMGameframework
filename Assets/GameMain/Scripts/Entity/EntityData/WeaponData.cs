@@ -8,6 +8,7 @@
 using GameFramework.DataTable;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace GameMain
 {
@@ -31,6 +32,9 @@ namespace GameMain
 
         private string path;
 
+        private string attackLogicComponent;
+        [FormerlySerializedAs("shootPoint")] public string shootPointPath;
+
         public WeaponData(int entityId, int typeId, int ownerId, CampType ownerCamp)
             : base(entityId, typeId, ownerId, ownerCamp)
         {
@@ -47,6 +51,8 @@ namespace GameMain
             m_BulletSpeed = drWeapon.BulletSpeed;
             m_BulletSoundId = drWeapon.BulletSoundId;
             path = drWeapon.Path;
+            attackLogicComponent = drWeapon.AttackLogicComponent;
+            shootPointPath = drWeapon.ShootPoint;
         }
 
         /// <summary>
@@ -109,6 +115,14 @@ namespace GameMain
             get
             {
                 return path;
+            }
+        }
+
+        public string AttackLogicComponent
+        {
+            get
+            {
+                return attackLogicComponent;
             }
         }
     }

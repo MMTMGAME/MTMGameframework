@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameFramework.ObjectPool;
 using GameMain;
 using UnityEngine;
@@ -47,14 +48,31 @@ public class EntityUiComponent : GameFrameworkComponent
             return;
         }
 
-        T uiElement = GetOrCreateUIElement<T>(entity);
-        uiElement.Init(entity, args);
-
-        if (!activeUIElements.ContainsKey(entity))
+        // T uiElement = GetOrCreateUIElement<T>(entity);
+        // uiElement.Init(entity, args);
+        //
+        // if (!activeUIElements.ContainsKey(entity))
+        // {
+        //     activeUIElements[entity] = new List<EntityUiItem>();
+        // }
+        // activeUIElements[entity].Add(uiElement);
+        
+        T uiElement = GetUIElement<T>(entity);
+        if (uiElement != null)
         {
-            activeUIElements[entity] = new List<EntityUiItem>();
+            uiElement.Init(entity, args);
         }
-        activeUIElements[entity].Add(uiElement);
+        else
+        {
+            if (!activeUIElements.ContainsKey(entity))
+            {
+                activeUIElements[entity] = new List<EntityUiItem>();
+            }
+            
+            uiElement= CreateUIElement<T>(entity);
+            uiElement.Init(entity,args);
+            activeUIElements[entity].Add(uiElement);
+        }
     }
 
     public void HideUI<T>(Entity entity) where T : EntityUiItem
@@ -77,7 +95,64 @@ public class EntityUiComponent : GameFrameworkComponent
             }
         }
     }
-   
+
+    private T GetUIElement<T>(Entity entity) where T : EntityUiItem, new()
+    {
+        // 假设activeUIElements已经定义在类中
+        if (activeUIElements.TryGetValue(entity, out List<EntityUiItem> entityUis))
+        {
+            // 使用OfType<T>()来筛选出T类型的元素，然后使用FirstOrDefault()尝试获取第一个匹配项
+            return entityUis.OfType<T>().FirstOrDefault();
+        }
+
+        return null; // 如果没有找到，返回null
+        
+        // IObjectPool<EntityUiItemObject> pool;
+        // if (!uiPools.TryGetValue(typeof(T), out pool))
+        // {
+        //     return null;
+        // }
+        // var uiItemObject = pool.Spawn();
+        // T uiItem=null;
+        // if (uiItemObject != null)
+        // {
+        //     uiItem = (T)uiItemObject.Target;
+        // }
+        //
+        // return uiItem;
+    }
+
+    private T CreateUIElement<T>(Entity entity) where T : EntityUiItem, new()
+    {
+        IObjectPool<EntityUiItemObject> pool;
+        if (!uiPools.TryGetValue(typeof(T), out pool))
+        {
+            // 创建新的对象池
+            pool = CreateUiPool<T>();
+            uiPools[typeof(T)] = pool;
+        }
+
+        T uiItem = null;
+        // 使用预制体模板创建一个新的UI元素实例
+        if (uiPrefabTemplates.TryGetValue(typeof(T), out EntityUiItem prefab))
+        {
+            uiItem = Instantiate(prefab) as T;
+        }
+        else
+        {
+            throw new InvalidOperationException($"No prefab template registered for UI element type {typeof(T)}.");
+        }
+        
+        // 根据需要设置UI元素的属性
+        var transform = uiItem.GetComponent<Transform>();
+        transform.SetParent(canvases[typeof(T)]);
+        transform.localScale = Vector3.one;
+
+        // 注册新创建的UI元素到对象池中
+        pool.Register(EntityUiItemObject.Create(uiItem), true);
+        return uiItem;
+    }
+
 
     private T GetOrCreateUIElement<T>(Entity entity) where T : EntityUiItem, new()
     {
@@ -144,6 +219,23 @@ public class EntityUiComponent : GameFrameworkComponent
     {
         foreach (var pair in activeUIElements)
         {
+
+            if (pair.Key == null)//表示Entity被销毁了，应该把value中的Item全部Hide
+            {
+                var uiItems = pair.Value;
+                for (int i = uiItems.Count - 1; i >= 0; i--)
+                {
+                    var uiItem = uiItems[i];
+                    
+                       
+                    uiItem.Reset();
+                    uiPools[uiItem.GetType()].Unspawn(uiItem);//uiItem是HPBarItem,
+                    
+                    uiItems.RemoveAt(i);
+                    
+                }
+                continue;
+            }
             for (int i = pair.Value.Count - 1; i >= 0; i--)
             {
                 var uiItem = pair.Value[i];

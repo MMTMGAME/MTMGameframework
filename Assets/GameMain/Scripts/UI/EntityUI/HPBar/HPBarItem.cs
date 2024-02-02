@@ -26,7 +26,8 @@ namespace GameMain
         {
             base.Init(owner, args);
             var targetValue = (float)args[0];
-            StartCoroutine(HPBarCo(targetValue, AnimationSeconds, KeepSeconds, FadeOutSeconds));
+            m_HPBar.value = targetValue;
+            //StartCoroutine(HPBarCo(targetValue, AnimationSeconds, KeepSeconds, FadeOutSeconds));
         }
 
 

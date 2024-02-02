@@ -145,7 +145,21 @@ namespace GameMain
             victim.ApplyDamage(attacker, targetDamageHP);
             
         }
-        
+
+        public static void BulletAttack(Entity bulletOwner,Entity bullet, ImpactData bulletImpactData, TargetableObject victim)
+        {
+            ImpactData victimImpactData = victim.GetImpactData();
+            if (GetRelation(bulletImpactData.Camp, victimImpactData.Camp) == RelationType.Friendly)
+            {
+                
+                return;
+            }
+
+            int damageHp = CalcDamageHP(bulletImpactData.Attack, victimImpactData.Defense);
+            
+            victim.ApplyDamage(bulletOwner,damageHp);
+            GameEntry.Entity.HideEntity(bullet);
+        }
         
        
 
