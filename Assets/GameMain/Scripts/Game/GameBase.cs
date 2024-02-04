@@ -50,7 +50,8 @@ namespace GameMain
         {
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Subscribe(ShowEntityFailureEventArgs.EventId, OnShowEntityFailure);
-            
+            GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
+            GameEntry.Event.Subscribe(OpenUIFormFailureEventArgs.EventId, OnOpenUIFormFailure);
             
 
             #region MyRegion
@@ -109,24 +110,35 @@ namespace GameMain
         {
             #region 生成主Ui
 
-            int? serialId = GameEntry.UI.OpenUIForm(200);
-            if (serialId != null)
-            {
+            GameEntry.UI.OpenUIForm(200);
+            yield return null;
 
-                yield return new WaitForSeconds(0.1f);
-                LevelDisplayForm= (LevelDisplayForm)GameEntry.UI.GetUIForm(200,"Display");
+            #endregion
+        }
+        
+        
+        void OnOpenUIFormSuccess(object sender,GameEventArgs e)
+        {
+            OpenUIFormSuccessEventArgs args = (OpenUIFormSuccessEventArgs)e;
+            if (args.UIForm.Logic as LevelDisplayForm)
+            {
+                LevelDisplayForm= args.UIForm.Logic as LevelDisplayForm;
+                
 
                 if (LevelDisplayForm)
                 {
                     var curProcedure = (GameEntry.Procedure.CurrentProcedure as ProcedureLevel);
                     if(curProcedure==null)
-                        Debug.LogError("当前流程为空");
+                        Log.Fatal("这里怎么成null了呢");
                     LevelDisplayForm.SetLevelTarget("LevelTarget."+curProcedure.GameLevel.ToString());
                 }
-              
             }
+        }
 
-            #endregion
+        void OnOpenUIFormFailure(object sender, GameEventArgs e)
+        {
+            OpenUIFormSuccessEventArgs args = (OpenUIFormSuccessEventArgs)e;
+            Log.Fatal("生成Ui失败{0}",args.UIForm.UIFormAssetName);
         }
 
      
@@ -143,6 +155,8 @@ namespace GameMain
             
             GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Unsubscribe(ShowEntityFailureEventArgs.EventId, OnShowEntityFailure);
+            GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
+            GameEntry.Event.Unsubscribe(OpenUIFormFailureEventArgs.EventId, OnOpenUIFormFailure);
             
             playerInputActions.Player.Esc.performed -= OpenPauseForm;
             playerInputActions.Disable();

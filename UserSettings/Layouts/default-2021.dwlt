@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Inspector
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 40
+  controlID: 78
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 46
+  controlID: 21
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 47
+  controlID: 22
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -269,8 +269,8 @@ MonoBehaviour:
     y: 0
     width: 425
     height: 947
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -335,9 +335,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 0efbffff
+      m_SelectedIDs: 98c40000
+      m_LastClickedID: 50328
+      m_ExpandedIDs: 4016feff0421fefff825fefffc2ffeff1833feff7a3afeffc841fefff648feff284bfeff5c51feff2852feff3252feff4852feffbc52feffc252feffc452feff6a5ffeff4260feff4669feff286afeffe072feff1276feff8277feff1c78feff2c78feff6a7bfeff6e7bfeffae7dfeffd47dfeffda7dfeffdc7dfeffa483feff7685feff1086feff2086feff5e89feff6289feffa28bfeffc88bfeffce8bfeffd08bfeff4494feff789cfeffc29ffeff02a7feffaaabfeff14b3feff1eb5feffbab6feff44b7feff50b7feff8ebafeff92bafeffd2bcfefff8bcfefffebcfeff00bdfeff04befeffc0c4feffc4c5feff4eccfeff28dbfeffe4e5feffb8e6feffd8e9feffeae9fefffce9feff78eafeff7ceafeff88eafeffc6edfeffcaedfeff0af0feff30f0feff36f0feff38f0feff46f6feffbefdfeff0c02ffff8603ffff9803ffff1804ffff2404ffff6207ffff6607ffffa409ffffca09ffffd009ffffd209ffff240cffffcc13ffffa615ffff241dffff321fffffa827ffff822affffce34ffffe235ffffba3dffff183fffffac46ffff5c4cffff3053ffff0654ffff0c5bffffe05dffff4065ffff1666ffff306dffff266effffa875ffff8a76ffffe67dffffaa91ffffae98ffff0a9bffff24a2ffff54a4ffff70abffff5cb0ffffaeb1fffffeb4ffff20b5ffff60b7ffff86b7ffff8cb7ffff8eb7ffff4cbbffff68c2ffff50c7ffff38ceffffe0cffffffad6ffff70daffffe6e1ffffb8e2ffff54e4fffff4e9fffff2eafffffceaffff8cebffff8eebffffd0f1ffff08f3ffff04f8ffff02f9ffff0cf9ffff9cf9ffff9ef9ffff10fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -353,7 +353,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 10}
+        m_ClientGUIView: {fileID: 9}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -630,9 +630,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -6.0547447, y: -3.59144, z: 13.582231}
+    m_Target: {x: 5.0269866, y: 7.827196, z: -3.922497}
     speed: 2
-    m_Value: {x: -2.3267083, y: -9.0626955, z: -5.393911}
+    m_Value: {x: 5.0269866, y: 7.827196, z: -3.922497}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -679,13 +679,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.14725757, y: 0.6039494, z: -0.114778295, w: -0.77482396}
+    m_Target: {x: 0.3170381, y: -0.032708712, z: 0.010954967, w: 0.94776756}
     speed: 2
-    m_Value: {x: -0.13355885, y: 0.866263, z: -0.33082944, w: -0.34971747}
+    m_Value: {x: 0.31562138, y: -0.03272566, z: 0.010906078, w: 0.948258}
   m_Size:
-    m_Target: 10
+    m_Target: 1.105927
     speed: 2
-    m_Value: 12.124355
+    m_Value: 1.105927
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -831,7 +831,7 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_SearchFilter:
-    m_NameFilter: Level_1
+    m_NameFilter: 
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -845,7 +845,7 @@ MonoBehaviour:
     m_Folders:
     - Assets
     m_Globs: []
-    m_OriginalText: Level_1
+    m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
@@ -856,9 +856,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 191}
-    m_SelectedIDs: d66b0000
-    m_LastClickedID: 27606
-    m_ExpandedIDs: 00000000d66b0000d86b0000da6b0000dc6b0000de6b0000e06b0000e26b0000e46b0000e66b0000e86b0000ea6b0000ec6b0000ee6b0000f06b0000f26b000000ca9a3bffffff7f
+    m_SelectedIDs: d26b0000
+    m_LastClickedID: 27602
+    m_ExpandedIDs: 00000000d26b0000d46b0000d66b0000d86b0000da6b0000dc6b0000de6b0000e06b0000e26b0000e66b0000e86b0000ea6b0000ec6b0000ee6b00004e6c000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -886,7 +886,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000d66b0000d86b0000da6b0000dc6b0000de6b0000e06b0000e26b0000e46b0000e66b0000e86b0000ea6b0000ec6b0000ee6b0000f06b0000f26b0000
+    m_ExpandedIDs: 00000000d26b0000d46b0000d66b0000d86b0000da6b0000dc6b0000de6b0000e06b0000e26b0000e46b0000e66b0000e86b0000ea6b0000ec6b0000ee6b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -913,22 +913,22 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: DOTween
+      m_OriginalName: DOTween
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 50506
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 10}
     m_CreateAssetUtility:
