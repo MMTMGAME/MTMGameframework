@@ -32,7 +32,8 @@ namespace GameMain
             "Weapon",
             
             "BattleUnit",
-            "Bullet"
+            "Bullet",
+            "Road"
         };
 
         private Dictionary<string, bool> m_LoadedFlag = new Dictionary<string, bool>();

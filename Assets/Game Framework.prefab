@@ -244,6 +244,14 @@ PrefabInstance:
       propertyPath: m_EntityGroups.Array.data[6].m_Name
       value: BattleUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_EntityGroups.Array.data[3].m_InstanceExpireTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_EntityGroups.Array.data[3].m_InstanceAutoReleaseInterval
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 11499388, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
       propertyPath: m_EditorResourceMode
       value: 1

@@ -71,7 +71,10 @@ namespace GameMain
             entityCompoennt.ShowEntity(typeof(SceneCam), "Camera", Constant.AssetPriority.CameraAsset, new SceneCamData(GameEntry.Entity.GenerateSerialId(), 10001));
         }
 
-        
+        public static void ShowRoad(this EntityComponent entityCompoennt,RoadData data)
+        {
+            entityCompoennt.ShowEntity(typeof(Road), "Road", Constant.AssetPriority.MapAsset,data);
+        }
         
         public static void ShowEffect(this EntityComponent entityComponent, EffectData data)
         {

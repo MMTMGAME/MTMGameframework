@@ -26,11 +26,17 @@ namespace GameMain
             private set;
         }
 
+        public static RoadGenerator RoadGenerator
+        {
+            get;
+            private set;
+        }
+
         private static void InitCustomComponents()
         {
             BuiltinData = UnityGameFramework.Runtime.GameEntry.GetComponent<BuiltinDataComponent>();
             EntityUi = UnityGameFramework.Runtime.GameEntry.GetComponent<EntityUiComponent>();
-            
+            RoadGenerator=UnityGameFramework.Runtime.GameEntry.GetComponent<RoadGenerator>();
         }
     }
 }

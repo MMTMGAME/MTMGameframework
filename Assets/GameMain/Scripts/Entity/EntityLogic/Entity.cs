@@ -64,7 +64,7 @@ namespace GameMain
                 return;
             }
 
-            Name = Utility.Text.Format("[Entity {0}]", Id);
+            Name = Utility.Text.Format("{0} {1}]",gameObject.name , Id);
            
             CachedTransform.localPosition = m_EntityData.Position;
             CachedTransform.localRotation = m_EntityData.Rotation;

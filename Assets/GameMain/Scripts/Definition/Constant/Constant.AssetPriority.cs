@@ -25,6 +25,7 @@ namespace GameMain
             public const int UISoundAsset = 30;
 
             public const int PlayerAsset = 90;
+            public const int MapAsset = 90;
             public const int CameraAsset = 90;
             public const int BattleUnitAsset = 90;
             public const int WeaponAsset = 30;

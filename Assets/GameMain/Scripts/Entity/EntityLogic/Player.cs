@@ -36,6 +36,6 @@ public class Player : BattleUnit
         var vertical= Input.GetAxis("Vertical");
         
         transform.Rotate(Vector3.up,30*Time.deltaTime*horizontal *(vertical>=0?1:-1) );
-        transform.Translate(Vector3.forward * (2 * (Time.deltaTime * vertical)),Space.Self);
+        transform.Translate(Vector3.forward * (4 * (Time.deltaTime * vertical)),Space.Self);
     }
 }

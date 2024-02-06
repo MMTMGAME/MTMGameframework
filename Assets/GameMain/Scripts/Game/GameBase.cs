@@ -98,6 +98,8 @@ namespace GameMain
 
             Debug.Log(this.GetType()+" loadCount:"+loadCount);
             loadCount++;
+            
+            GameEntry.RoadGenerator.StartGenerate();
         }
         
         
