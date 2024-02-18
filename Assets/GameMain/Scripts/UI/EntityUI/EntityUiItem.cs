@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -14,7 +15,9 @@ public abstract class EntityUiItem : MonoBehaviour
     [SerializeField]
     private int ownerId;
     public Entity Owner { get; private set; }
-    
+
+    public int serialId;
+    public int typeId;
     
     private RectTransform rectTransform;
     private void Awake()
@@ -25,15 +28,18 @@ public abstract class EntityUiItem : MonoBehaviour
     }
 
 
-    public virtual void Init(Entity owner, params object[] args)
+    public virtual void Init(object userData)
     {
+        ShowEntityUiItemInfo showEntityUiItemInfo=userData as ShowEntityUiItemInfo;
+        var owner = showEntityUiItemInfo.entity;
         if (owner == null)
         {
             Log.Error("Owner is invalid.");
             return;
         }
 
-       
+        serialId = showEntityUiItemInfo.serialId;
+        typeId = showEntityUiItemInfo.typeId;
 
         gameObject.SetActive(true);
         StopAllCoroutines();
@@ -75,10 +81,13 @@ public abstract class EntityUiItem : MonoBehaviour
         return true;
     }
 
-    public virtual void Reset()
+    
+
+    public bool died;
+    public virtual void Die()
     {
-        StopAllCoroutines();
-        canvasGroup.alpha = 1f;
-        gameObject.SetActive(false);
+        canvasGroup.DOFade(0, 0.1f);
+        Destroy(gameObject,0.3f);
+        died = true;
     }
 }

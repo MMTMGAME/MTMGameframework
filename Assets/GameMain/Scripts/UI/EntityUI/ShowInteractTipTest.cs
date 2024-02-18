@@ -23,7 +23,7 @@ public class ShowInteractTipTest : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //交互提示的内容应该本地化
-            GameEntry.EntityUi.ShowUI<InteractTipItem>(other.GetComponent<Entity>(),"交互测试");
+            GameEntry.EntityUi.ShowEntityUi(new ShowInteractTipItemInfoData( GameEntry.EntityUi.GenerateSerialId(), other.GetComponent<Entity>(),2,"交互测试"));
         }
     }
     
@@ -32,7 +32,7 @@ public class ShowInteractTipTest : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //交互提示的内容应该本地化
-            GameEntry.EntityUi.HideUI<InteractTipItem>(other.GetComponent<Entity>());
+            GameEntry.EntityUi.HideUis(other.GetComponent<Entity>(),2);
         }
     }
 }

@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-02-18 17:42:42.913
+// 生成时间：2024-02-18 17:42:42.942
 //------------------------------------------------------------
 
 using GameFramework;
@@ -19,14 +19,14 @@ using UnityGameFramework.Runtime;
 namespace GameMain
 {
     /// <summary>
-    /// 装甲表。
+    /// EntityUi配置表。
     /// </summary>
-    public class DRArmor : DataRowBase
+    public class DREntityUi : DataRowBase
     {
         private int m_Id = 0;
 
         /// <summary>
-        /// 获取装甲编号。
+        /// 获取EntityUi编号。
         /// </summary>
         public override int Id
         {
@@ -37,27 +37,18 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取最大生命。
+        /// 获取资产名。
         /// </summary>
-        public int MaxHP
+        public string AssetName
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// 获取防御力。
+        /// 获取单个示例？。
         /// </summary>
-        public int Defense
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取附加路径。
-        /// </summary>
-        public string Path
+        public bool IsSingleton
         {
             get;
             private set;
@@ -75,9 +66,8 @@ namespace GameMain
             index++;
             m_Id = int.Parse(columnStrings[index++]);
             index++;
-            MaxHP = int.Parse(columnStrings[index++]);
-            Defense = int.Parse(columnStrings[index++]);
-            Path = columnStrings[index++];
+            AssetName = columnStrings[index++];
+            IsSingleton = bool.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -90,9 +80,8 @@ namespace GameMain
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
-                    MaxHP = binaryReader.Read7BitEncodedInt32();
-                    Defense = binaryReader.Read7BitEncodedInt32();
-                    Path = binaryReader.ReadString();
+                    AssetName = binaryReader.ReadString();
+                    IsSingleton = binaryReader.ReadBoolean();
                 }
             }
 

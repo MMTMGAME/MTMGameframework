@@ -1,254 +1,241 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Resources;
+using GameFramework;
+using GameFramework.DataTable;
 using GameFramework.ObjectPool;
+using GameFramework.Resource;
 using GameMain;
 using UnityEngine;
 using UnityGameFramework.Runtime;
-using Entity=GameMain.Entity;
+using Entity = GameMain.Entity;
+using GameEntry = GameMain.GameEntry;
 
+public class ShowEntityUiItemInfo 
+{
+    public int serialId;
+    public Entity entity;
+    public int typeId;
+
+   
+
+    public ShowEntityUiItemInfo(int serialId, Entity entity, int typeId)
+    {
+        this.serialId = serialId;
+        this.entity = entity;
+        this.typeId = typeId;
+    }
+
+    public void Clear()
+    {
+        serialId = 0;
+        entity = null;
+    }
+}
+
+/// <summary>
+/// 管理所有Enitty的跟踪型UI，没有使用对象池，因为ugf的对象池要求每中类型单独使用一个对象池，那样的话没办法用一个类管理所有EntityUI,需要硬编码代码，
+/// 用反射的话性能消耗反而会更高，而且有些地方即使用反射也需要硬编码才能支持脱战性的EntityUi
+/// </summary>
 public class EntityUiComponent : GameFrameworkComponent
 {
-    private Dictionary<Type, IObjectPool<EntityUiItemObject>> uiPools;
-    private Dictionary<Entity, List<EntityUiItem>> activeUIElements;
-    private Dictionary<Type, EntityUiItem> uiPrefabTemplates;
-
-    private Dictionary<Type, Transform> canvases;
-
-    public GameObject canvasTemplate;
-    public EntityUiItem hpBarItemTemplate;
-    public EntityUiItem interactItemTemplate;
-    protected void Start()
-    {
-        uiPools = new Dictionary<Type, IObjectPool<EntityUiItemObject>>();
-        activeUIElements = new Dictionary<Entity, List<EntityUiItem>>();
-        uiPrefabTemplates = new Dictionary<Type, EntityUiItem>();
-        
-        canvases = new Dictionary<Type, Transform>();
-
-        // 初始化各种类型的UI元素池
-        InitializeUiPools();
-
-        SetTemplate();
-
-    }
-
-    void SetTemplate()
-    {
-        //为每种UI元素类型设置预制体模板
-        //例如：
-        uiPrefabTemplates[typeof(HPBarItem)] = hpBarItemTemplate;
-        uiPrefabTemplates[typeof(InteractTipItem)] = interactItemTemplate;
-    }
-
+    public Dictionary<Entity, List<EntityUiItem>> activeUiElements = new Dictionary<Entity, List<EntityUiItem>>();
+    //public List<EntityUiItem> allUis = new List<EntityUiItem>();
     
-    public void ShowUI<T>(Entity entity, params object[] args) where T : EntityUiItem, new()
+    private IResourceManager resourceManager;
+    
+    private  LoadAssetCallbacks loadAssetCallbacks;
+
+    private int serialId;
+
+    public Transform canvas;
+    // Start is called before the first frame update
+    void Start()
     {
-        if (entity == null)
+        loadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);
+       
+        BaseComponent baseComponent = GameEntry.Base;
+        if (baseComponent == null)
         {
-            Log.Warning("Entity is invalid.");
+            Log.Fatal("Base component is invalid.");
             return;
         }
 
-        T uiElement = GetUIElement<T>(entity);
-        if (uiElement != null)
+       
+
+        if (baseComponent.EditorResourceMode)
         {
-            uiElement.Init(entity, args);
+            resourceManager = baseComponent.EditorResourceHelper;
         }
         else
         {
-            if (!activeUIElements.ContainsKey(entity))
-            {
-                activeUIElements[entity] = new List<EntityUiItem>();
-            }
-            
-            uiElement= CreateUIElement<T>(entity);
-            uiElement.Init(entity,args);
-            activeUIElements[entity].Add(uiElement);
+            resourceManager=GameFrameworkEntry.GetModule<IResourceManager>();
         }
     }
 
-    public void HideUI<T>(Entity entity) where T : EntityUiItem
+    // Update is called once per frame
+    void Update()
     {
-        if (entity == null || !activeUIElements.ContainsKey(entity))
+        foreach (var value in activeUiElements.Values)
         {
-            return;
-        }
-
-        var uiItems = activeUIElements[entity];
-        for (int i = uiItems.Count - 1; i >= 0; i--)
-        {
-            if (uiItems[i] is T)
+            for (int i = 0; i < value.Count; i++)
             {
-                T uiItem = (T)uiItems[i];
-                uiItem.Reset();
-                uiPools[typeof(T)].Unspawn(uiItem);
+                if (!value[i].died &&  !value[i].Refresh())
+                {
+                    value[i].Die();
+                    value.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+       
+    }
+
+    public void HideUi(int uiSerialId)
+    {
+        foreach (var value in activeUiElements.Values)
+        {
+            for (int i = 0; i < value.Count; i++)
+            {
+                if (!value[i].died)
+                {
+                    value[i].Die();
+                    value.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+        
+    }
+    
+
+    public void HideUis(Entity entity, int typeId)
+    {
+        if (activeUiElements.TryGetValue(entity, out var uis))
+        {
+            for (int i = uis.Count - 1; i >= 0; i--)
+            {
+                if (uis[i].typeId == typeId)
+                {
+                    Destroy(uis[i].gameObject);
+                    uis.RemoveAt(i);
+                }
+            }
+        }
+    }
+
+    public void ShowEntityUi(object userData)
+    {
+        ShowEntityUiItemInfo showEntityUiItemInfo=userData as ShowEntityUiItemInfo;
+        int typeId = showEntityUiItemInfo.typeId;
+        IDataTable<DREntityUi> table = GameEntry.DataTable.GetDataTable<DREntityUi>();
+        var element = table.GetDataRow(typeId);
+
+        bool needNewInstance=false;
+        bool isSingleton = element.IsSingleton;
+        if (isSingleton)
+        {
+           
+            if (showEntityUiItemInfo == null || showEntityUiItemInfo.entity == null)
+            {
+                Log.Fatal("userData 错误");
+                return;
+            }
+
+            if (activeUiElements.TryGetValue(showEntityUiItemInfo.entity, out var uis))
+            {
+
+                foreach (var ui in uis)
+                {
+                    if (ui.typeId == typeId)
+                    {
+                        InternalShowEntityUi(ui.gameObject,userData);
+                        
+                        
+                        
+                        return;
+                    }
+                }
                 
-                uiItems.RemoveAt(i);
+               
             }
+            needNewInstance = true;
         }
-    }
-
-    private T GetUIElement<T>(Entity entity) where T : EntityUiItem, new()
-    {
-        // 假设activeUIElements已经定义在类中
-        if (activeUIElements.TryGetValue(entity, out List<EntityUiItem> entityUis))
-        {
-            // 使用OfType<T>()来筛选出T类型的元素，然后使用FirstOrDefault()尝试获取第一个匹配项
-            return entityUis.OfType<T>().FirstOrDefault();
-        }
-
-        return null; // 如果没有找到，返回null
         
-        // IObjectPool<EntityUiItemObject> pool;
-        // if (!uiPools.TryGetValue(typeof(T), out pool))
-        // {
-        //     return null;
-        // }
-        // var uiItemObject = pool.Spawn();
-        // T uiItem=null;
-        // if (uiItemObject != null)
-        // {
-        //     uiItem = (T)uiItemObject.Target;
-        // }
-        //
-        // return uiItem;
+        if(!needNewInstance)
+            return;
+        
+        var assetName = AssetUtility.GetEntityUiAsset(element.AssetName);
+        
+        resourceManager.LoadAsset(assetName, 100, loadAssetCallbacks, userData);
+
     }
 
-    private T CreateUIElement<T>(Entity entity) where T : EntityUiItem, new()
+    void InternalShowEntityUi(object instance,object userData)
     {
-        IObjectPool<EntityUiItemObject> pool;
-        if (!uiPools.TryGetValue(typeof(T), out pool))
+        GameObject go = instance as GameObject;
+        if (go == null)
         {
-            // 创建新的对象池
-            pool = CreateUiPool<T>();
-            uiPools[typeof(T)] = pool;
+            Log.Fatal("Entity UI instance 无效.");
+            return;
         }
 
-        T uiItem = null;
-        // 使用预制体模板创建一个新的UI元素实例
-        if (uiPrefabTemplates.TryGetValue(typeof(T), out EntityUiItem prefab))
+        Transform uiTransform = go.transform;
+        uiTransform.SetParent(canvas);
+        
+
+        EntityUiItem entityUiItem = go.GetComponent<EntityUiItem>();
+        
+        entityUiItem.Init(userData);
+        
+       
+        
+        var data = userData as ShowEntityUiItemInfo;
+        if (activeUiElements.ContainsKey(data.entity))
         {
-            uiItem = Instantiate(prefab) as T;
+            activeUiElements[data.entity].Add(entityUiItem);
         }
         else
         {
-            throw new InvalidOperationException($"No prefab template registered for UI element type {typeof(T)}.");
+            activeUiElements[data.entity] = new List<EntityUiItem>();
+            activeUiElements[data.entity].Add(entityUiItem);
+        }
+    }
+
+    private void LoadAssetSuccessCallback(string assetName, object asset, float duration, object userData)
+    {
+        ShowEntityUiItemInfo showEntityUiItemInfo=userData as ShowEntityUiItemInfo;
+        if (showEntityUiItemInfo == null)
+        {
+            Log.Fatal($"生成EntityUI{assetName}失败");
+            return;
         }
         
-        // 根据需要设置UI元素的属性
-        var transform = uiItem.GetComponent<Transform>();
-        transform.SetParent(canvases[typeof(T)]);
-        transform.localScale = Vector3.one;
-
-        // 注册新创建的UI元素到对象池中
-        pool.Register(EntityUiItemObject.Create(uiItem), true);
-        return uiItem;
-    }
-
-
-    private T GetOrCreateUIElement<T>(Entity entity) where T : EntityUiItem, new()
-    {
-        IObjectPool<EntityUiItemObject> pool;
-        if (!uiPools.TryGetValue(typeof(T), out pool))
-        {
-            // 创建新的对象池
-            pool = CreateUiPool<T>();
-            uiPools[typeof(T)] = pool;
-        }
-
-        var uiItemObject = pool.Spawn();
-        T uiItem;
-        if (uiItemObject != null)
-        {
-            uiItem = (T)uiItemObject.Target;
-        }
-        else
-        {
-            // 使用预制体模板创建一个新的UI元素实例
-            if (uiPrefabTemplates.TryGetValue(typeof(T), out EntityUiItem prefab))
-            {
-                uiItem = Instantiate(prefab) as T;
-            }
-            else
-            {
-                throw new InvalidOperationException($"No prefab template registered for UI element type {typeof(T)}.");
-            }
+        var instance=GameObject.Instantiate((Object)asset);
         
-            // 根据需要设置UI元素的属性
-            var transform = uiItem.GetComponent<Transform>();
-            transform.SetParent(canvases[typeof(T)]);
-            transform.localScale = Vector3.one;
+        InternalShowEntityUi(instance,userData);
 
-            // 注册新创建的UI元素到对象池中
-            pool.Register(EntityUiItemObject.Create(uiItem), true);
-        }
-
-        return uiItem;
     }
 
-    private void InitializeUiPools()
+    private void LoadAssetFailureCallback(string assetName, LoadResourceStatus status, string errorMessage,
+        object userData)
     {
-        // 初始化UI对象池，例如：
-         uiPools[typeof(HPBarItem)] = CreateUiPool<HPBarItem>();
-         uiPools[typeof(InteractTipItem)] = CreateUiPool<InteractTipItem>();
-
-
-         canvases.Add(typeof(HPBarItem),GameObject.Instantiate(canvasTemplate, Vector3.zero, Quaternion.identity, transform).transform);
-         canvases.Add(typeof(InteractTipItem),GameObject.Instantiate(canvasTemplate, Vector3.zero, Quaternion.identity, transform).transform);
-         
-         
-         
+        Log.Fatal($"加载{assetName}[{(userData as ShowEntityUiItemInfo).serialId}]失败，状态:{status},Message:{errorMessage}");
     }
-
-    private IObjectPool<EntityUiItemObject> CreateUiPool<T>() where T : EntityUiItem
-    {
-        return  GameMain.GameEntry.ObjectPool.CreateSingleSpawnObjectPool<EntityUiItemObject>(uiPools.Count.ToString(), 8);
-    }
-
-    protected void Update()
-    {
-        foreach (var pair in activeUIElements)
-        {
-
-            if (pair.Key == null)//表示Entity被销毁了，应该把value中的Item全部Hide
-            {
-                var uiItems = pair.Value;
-                for (int i = uiItems.Count - 1; i >= 0; i--)
-                {
-                    var uiItem = uiItems[i];
-                    
-                       
-                    uiItem.Reset();
-                    uiPools[uiItem.GetType()].Unspawn(uiItem);//uiItem是HPBarItem,
-                    
-                    uiItems.RemoveAt(i);
-                    
-                }
-                continue;
-            }
-            for (int i = pair.Value.Count - 1; i >= 0; i--)
-            {
-                var uiItem = pair.Value[i];
-                if (!uiItem.Refresh())
-                {
-                    if (uiItem is HPBarItem)
-                    {
-                        HideUI<HPBarItem>(pair.Key);
-                        continue;
-                    }
-
-                    if (uiItem is InteractTipItem)
-                    {
-                        HideUI<InteractTipItem>(pair.Key);
-                        continue;
-                    }
-                }
-            }
-        }
-
-    }
-
     
+    
+    private void LoadAssetUpdateCallback(string assetName, float progress, object userData)
+    {
+        
+    }
+
+    private void LoadAssetDependencyAssetCallback(string assetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
+    {
+       
+    }
+
+    public int GenerateSerialId()
+    {
+        return ++serialId;
+    }
 }
