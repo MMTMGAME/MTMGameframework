@@ -29,14 +29,17 @@ public class EntityUiComponent : GameFrameworkComponent
 
         // 初始化各种类型的UI元素池
         InitializeUiPools();
-        
-        
 
+        SetTemplate();
+
+    }
+
+    void SetTemplate()
+    {
         //为每种UI元素类型设置预制体模板
         //例如：
         uiPrefabTemplates[typeof(HPBarItem)] = hpBarItemTemplate;
         uiPrefabTemplates[typeof(InteractTipItem)] = interactItemTemplate;
-        
     }
 
     
@@ -48,15 +51,6 @@ public class EntityUiComponent : GameFrameworkComponent
             return;
         }
 
-        // T uiElement = GetOrCreateUIElement<T>(entity);
-        // uiElement.Init(entity, args);
-        //
-        // if (!activeUIElements.ContainsKey(entity))
-        // {
-        //     activeUIElements[entity] = new List<EntityUiItem>();
-        // }
-        // activeUIElements[entity].Add(uiElement);
-        
         T uiElement = GetUIElement<T>(entity);
         if (uiElement != null)
         {
@@ -90,7 +84,7 @@ public class EntityUiComponent : GameFrameworkComponent
                 T uiItem = (T)uiItems[i];
                 uiItem.Reset();
                 uiPools[typeof(T)].Unspawn(uiItem);
-                //pool.Unspawn(uiItem);
+                
                 uiItems.RemoveAt(i);
             }
         }
@@ -204,9 +198,7 @@ public class EntityUiComponent : GameFrameworkComponent
          canvases.Add(typeof(HPBarItem),GameObject.Instantiate(canvasTemplate, Vector3.zero, Quaternion.identity, transform).transform);
          canvases.Add(typeof(InteractTipItem),GameObject.Instantiate(canvasTemplate, Vector3.zero, Quaternion.identity, transform).transform);
          
-         // var hpBarCanvas = ;
-         // hpBarCanvas.name = "HpBarItemCanvas";
-         // canvases [typeof(HPBarItem)] = hpBarCanvas.transform;
+         
          
     }
 
@@ -258,5 +250,5 @@ public class EntityUiComponent : GameFrameworkComponent
 
     }
 
-    // 其他通用方法...
+    
 }
