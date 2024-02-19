@@ -36,7 +36,7 @@ namespace GameMain
             
             
             //Log.Debug(this.gameObject.name+"显示HPBarItem，血量:"+toHPRatio);
-            GameEntry.EntityUi.ShowUI<HPBarItem>(this,toHPRatio);
+            GameEntry.EntityUi.ShowEntityUi (new ShowHpBarItemInfo(GameEntry.EntityUi.GenerateSerialId(), this, 1, toHPRatio));
             
 
             if (m_TargetableObjectData.HP <= 0)

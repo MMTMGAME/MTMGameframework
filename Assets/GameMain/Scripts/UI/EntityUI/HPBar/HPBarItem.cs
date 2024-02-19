@@ -12,6 +12,16 @@ using UnityGameFramework.Runtime;
 
 namespace GameMain
 {
+
+    public class ShowHpBarItemInfo : ShowEntityUiItemInfo
+    {
+        public float targetHpRatio;
+
+        public ShowHpBarItemInfo(int serialId, Entity entity, int typeId, float targetHpRatio) : base(serialId, entity, typeId)
+        {
+            this.targetHpRatio = targetHpRatio;
+        }
+    }
     public class HPBarItem : EntityUiItem
     {
         private const float AnimationSeconds = 0.3f;
@@ -22,10 +32,11 @@ namespace GameMain
         private Slider m_HPBar = null;
 
 
-        public override void Init(Entity owner, params object[] args)
+        public override void Init(object userData)
         {
-            base.Init(owner, args);
-            var targetValue = (float)args[0];
+            base.Init(userData);
+            ShowHpBarItemInfo data = userData as ShowHpBarItemInfo;
+            var targetValue = (float)data.targetHpRatio;
             m_HPBar.value = targetValue;
             //StartCoroutine(HPBarCo(targetValue, AnimationSeconds, KeepSeconds, FadeOutSeconds));
         }
