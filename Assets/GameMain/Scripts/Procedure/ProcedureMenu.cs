@@ -43,6 +43,7 @@ namespace GameMain
             GameEntry.UI.OpenUIForm(UIFormId.MenuForm, this);
 
             this.procedureOwner = procedureOwner;
+            GameEntry.pillarGenerator.StartFirstGenerate();
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

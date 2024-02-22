@@ -107,6 +107,8 @@ namespace GameMain
 
             roadGenerator = GameEntry.RoadGenerator;
             roadGenerator.StartGenerate();
+            
+            
         }
         
         

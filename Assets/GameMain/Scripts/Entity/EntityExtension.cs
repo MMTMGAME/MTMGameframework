@@ -81,6 +81,11 @@ namespace GameMain
             entityComponent.ShowEntity(typeof(Effect), "Effect", Constant.AssetPriority.EffectAsset, data);
         }
 
+        public static void ShowPillar(this EntityComponent entityComponent, PillarData data)
+        {
+            entityComponent.ShowEntity(typeof(Pillar),"Pillar",Constant.AssetPriority.MapAsset,data);
+        }
+
         public static void ShowBattleUnit(this EntityComponent entityComponent, BattleUnitData data)
         {
             entityComponent.ShowEntity(typeof(BattleUnit), "BattleUnit", Constant.AssetPriority.BattleUnitAsset, data);
