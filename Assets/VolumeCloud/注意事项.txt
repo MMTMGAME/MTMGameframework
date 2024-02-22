@@ -1,0 +1,11 @@
+这个体积云是我从油管的项目摘下来的。
+原项目:https://github.com/SebLague/Clouds
+其中包含视频，这个主要是教程项目，因此使用不太方便，不可以随意移动项目文件。如果移动了需要修改CloudSky.shader的第23行引入匹配的cginc。
+
+要在新场景中创建体积云需要以下步骤：
+1.在创建新场景时可以拖入Camera预制体和Clouds预制体，将clouds预制体拖拽给Cmaera的master中的container.
+2.在Assets/VolumeCloud/Resources文件夹中可以看到Menu_DetaiNoise和Menu_Noise两个文件，复制这两个文件并粘贴，然后要分别改名为新的场景名_DetailNoise和新的场景名_Noise。否则无法出现云。
+
+
+此体积云只是临时使用，需要提及云插件可以查看以下连接：
+替代插件:https://github.com/yangrc1234/VolumeCloud
