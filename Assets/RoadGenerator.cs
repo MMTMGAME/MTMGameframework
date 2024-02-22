@@ -20,6 +20,13 @@ public class RoadGenerator : GameFrameworkComponent
     
     //所有Node
     private List<Node> allNodes = new List<Node>();
+
+    [Header("玩家走过后自动陨落时间")]
+    public float dieTime = 0.3f;
+
+    [Header("检测间隔")] public float baseCheckTime = 0.1f;
+    private float checkTime = 0.1f;
+    
     private class BranchGroup
     {
         public bool determined;
@@ -63,6 +70,9 @@ public class RoadGenerator : GameFrameworkComponent
 
         private int serialId;//生成中的路段实体Id，之后通过生成实体成功事件来赋值，注意是异步加载
         public Road roadEntity;
+        
+       
+        
         public Node(int id,RoadGenerator roadGenerator,Vector3 pos,Quaternion rotation)
         {
             this.entityId = id;
@@ -95,16 +105,20 @@ public class RoadGenerator : GameFrameworkComponent
         {
             if(roadEntity==null)
                 return;
-            var roadConfig = roadEntity.GetComponent<RoadConfig>();
-            var tails = roadConfig.tails;
+            var tailPoses = roadEntity.spawnTailPos;
+            var tailRotations = roadEntity.spawnTailRotations;
 
-            
-            foreach (var tail in tails)
+
+            for (var i = 0; i < tailPoses.Length; i++)
             {
+               
                 //子节点的位置在模型的尾部，可能有多个尾部，比如T型路段
-                childrenNodes.Add(new Node(roadGenerator.GetRandomEntityId(), roadGenerator, tail.position, tail.rotation));
+                childrenNodes.Add(new Node(roadGenerator.GetRandomEntityId(), roadGenerator, tailPoses[i],
+                    tailRotations[i]
+                    
+                    ));
             }
-            
+
             var isBranch = childrenNodes.Count > 1;//是否是分叉点
             if (isBranch)
             {
@@ -130,9 +144,17 @@ public class RoadGenerator : GameFrameworkComponent
                 roadEntity.Fall();
                 
             }
-            else//如果没有加载成果，说明正在加载，销毁正在加载的实体
+            else//如果没有加载成功，说明正在加载，销毁正在加载的实体
             {
-                GameEntry.Entity.HideEntity(serialId);
+                try
+                {
+                    GameEntry.Entity.HideEntity(serialId);
+                }
+                catch (Exception e)
+                {
+                    //DoNothing 异步加载导致销毁问题，无视掉就好了，主要是不要阻止接下来的代码运行
+                }
+                
             }
             
             if (roadGenerator.leafNodes.Contains(this))//如果自己是叶子节点，从叶子节点列表中移除
@@ -148,6 +170,11 @@ public class RoadGenerator : GameFrameworkComponent
         
     }
 
+
+    public void SetCheckTime(float multiplier)
+    {
+        checkTime = baseCheckTime * (1 / (1+multiplier));
+    }
     /// <summary>
     /// 随机获取Id，尚未实现黑名单支持
     /// </summary>
@@ -194,8 +221,31 @@ public class RoadGenerator : GameFrameworkComponent
     {
         while (true)
         {
-            yield return new WaitForSeconds(5f);
-            if (leafNodes.Count > 0)//叶子节点Grow
+            yield return new WaitForSeconds(checkTime);
+
+            bool growAble = true;
+            //triggerd的5秒后自动死亡
+            foreach (var node in allNodes)//遍历所有节点，玩家trigger后的会触发Die方法，而交叉点被舍弃的路径在之前就Die过了，不会再次Die。交叉节点也会处理掉叶子节点，所以这里处理的是常规节点
+            {
+                if(!node.died && node.roadEntity!=null &&  node.roadEntity.triggered && node.roadEntity.exited && Time.time>node.roadEntity.exitedTime+dieTime)//触发5秒后死亡
+                    node.Die();
+            }
+            
+            int turnCount = 0;
+            foreach (var node in allNodes)
+            {
+                if (!node.roadEntity.triggered && node.roadEntity.roadConfig.isTurn && !node.died)
+                {
+                    turnCount++;
+                }
+            }
+            //Log.Info($"转向节点数量：{turnCount}");//统计转向节点，大于等于3个时暂停生成，避免转圈生成
+            if (turnCount >= 3) //分叉节点大于3时暂停生成
+            {
+                growAble = false;
+            }
+            
+            if (growAble && leafNodes.Count > 0)//叶子节点Grow
             {
                 var tmpList = new List<Node>();
                 tmpList.AddRange(leafNodes);
@@ -221,13 +271,7 @@ public class RoadGenerator : GameFrameworkComponent
                     i--;
                 }
             }
-            //triggerd的10秒后自动死亡
-            foreach (var node in allNodes)//遍历所有节点，玩家trigger后的会触发Die方法，而交叉点被舍弃的路径在之前就Die过了，不会再次Die。交叉节点也会处理掉叶子节点，所以这里处理的是常规节点
-            {
-                if(!node.died && node.roadEntity!=null &&  node.roadEntity.triggered && Time.time>node.roadEntity.triggerTime+10f)//触发10秒后死亡
-                    node.Die();
-            }
-
+            
             for (int i = 0; i < allNodes.Count; i++)//清理数组，之前只是Die但没有从数组移除，所以在这里从数组移除。
             {
                 var node = allNodes[i];

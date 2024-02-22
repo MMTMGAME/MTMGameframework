@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameMain;
@@ -6,25 +7,25 @@ using UnityEngine.UI;
 
 public class LevelDisplayForm : UGuiForm
 {
-   public Text levelTargetComp;
-   public Text dropTextComp;
-   public Text useTextComp;
-   public GameObject tipRoot;
+   public Text scoreText;
 
-   public void SetLevelTarget(string key)
+
+
+   private GameBase gameBase;
+   public void Init(GameBase gameBase)
    {
-      levelTargetComp.text = GameEntry.Localization.GetString(key);
+      this.gameBase = gameBase;
    }
 
-   public void SwitchUseAndDropTip(bool targetStatus)
+   
+
+   private void Update()
    {
-      tipRoot.gameObject.SetActive(targetStatus);
+      UpdateUi();
    }
 
-   protected override void OnOpen(object userData)
+   private void UpdateUi()
    {
-      base.OnOpen(userData);
-      dropTextComp.text = GameEntry.Localization.GetString("GameControl.DropItemTip");
-      useTextComp.text = GameEntry.Localization.GetString("GameControl.UseItemTip");
+      scoreText.text = GameEntry.Localization.GetString("GameUi.Score")+":" + gameBase.score;
    }
 }

@@ -9,4 +9,6 @@ public class RoadData : EntityData
     public RoadData(int entityId, int typeId) : base(entityId, typeId)
     {
     }
+    
+    
 }

@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 1105775222957089721}
   - component: {fileID: 6133784157030710710}
   - component: {fileID: -1744591715497056528}
-  - component: {fileID: 904324910304933984}
   m_Layer: 0
   m_Name: "\u65AD\u53E3"
-  m_TagString: Untagged
+  m_TagString: Road
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f2c676d620fed458aff4bd775978a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBranch: 0
   tails:
   - {fileID: 8312519682175603979}
 --- !u!54 &-1744591715497056528
@@ -66,20 +66,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &904324910304933984
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293666466857318659}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!1 &593025440820282468
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,6 +205,7 @@ GameObject:
   - component: {fileID: 5101138515036632282}
   - component: {fileID: 8171000761436437375}
   - component: {fileID: 6233490612399476661}
+  - component: {fileID: 5266680954752801196}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -292,3 +279,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5266680954752801196
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5584800947489615456}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4651279916961270353, guid: 8e5448c54545dab4580c0b85d45dc339, type: 3}

@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 216882179805720563}
   m_Layer: 0
   m_Name: "T\u5B57\u8DEF\u6BB5"
-  m_TagString: Untagged
+  m_TagString: Road
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,6 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f2c676d620fed458aff4bd775978a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTurn: 1
   tails:
   - {fileID: 4751006636163619130}
   - {fileID: 4751006637795148202}
@@ -300,7 +301,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4751006636163619125}
   m_LocalRotation: {x: -0, y: 0.70710707, z: -0, w: 0.70710653}
-  m_LocalPosition: {x: 5.52, y: 0, z: -6.73}
+  m_LocalPosition: {x: 5.6260576, y: -0.00000018165001, z: -6.6879277}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -331,7 +332,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4751006637795148197}
   m_LocalRotation: {x: -0, y: 0.70710695, z: -0, w: -0.7071067}
-  m_LocalPosition: {x: -5.734, y: 0, z: -6.73}
+  m_LocalPosition: {x: -5.8079443, y: -0.0000001920157, z: -6.637032}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -349,6 +350,7 @@ GameObject:
   - component: {fileID: 4729619699128980876}
   - component: {fileID: 8506498820250196521}
   - component: {fileID: 5902478388707864291}
+  - component: {fileID: 3285397193747881237}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -364,7 +366,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5397894704085176118}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.000000104308114}
-  m_LocalPosition: {x: 0, y: 0, z: 2.0699997}
+  m_LocalPosition: {x: -0.030892372, y: 0.00000011175871, z: 2.0353107}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -423,3 +425,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3285397193747881237
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5397894704085176118}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5963856635531448307, guid: 6c3e3dfff9a524d47b6652c046a67c07, type: 3}

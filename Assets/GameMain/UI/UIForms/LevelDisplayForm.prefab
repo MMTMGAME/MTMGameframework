@@ -81,10 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab47f4c63bc2bd41820cf7078dfce38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelTargetComp: {fileID: 5755459268383119748}
-  dropTextComp: {fileID: 7896774103074529652}
-  useTextComp: {fileID: 8724856087663746400}
-  tipRoot: {fileID: 4394564698983782640}
+  scoreText: {fileID: 5755459268383119748}
 --- !u!1 &160294
 GameObject:
   m_ObjectHideFlags: 0

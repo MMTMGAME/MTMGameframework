@@ -41,6 +41,9 @@ namespace GameMain
             protected set;
         }
 
+        //数据
+        public float score;//分数
+        public RoadGenerator roadGenerator;
       
         public LevelDisplayForm LevelDisplayForm { get; private set; }
         
@@ -94,12 +97,16 @@ namespace GameMain
             GameOver = false;
             GameWin = false;
 
+            score = 0;
+
+            
             GameEntry.Base.StartCoroutine(InitDisplayUi());
 
             Debug.Log(this.GetType()+" loadCount:"+loadCount);
             loadCount++;
-            
-            GameEntry.RoadGenerator.StartGenerate();
+
+            roadGenerator = GameEntry.RoadGenerator;
+            roadGenerator.StartGenerate();
         }
         
         
@@ -132,7 +139,8 @@ namespace GameMain
                     var curProcedure = (GameEntry.Procedure.CurrentProcedure as ProcedureLevel);
                     if(curProcedure==null)
                         Log.Fatal("这里怎么成null了呢");
-                    LevelDisplayForm.SetLevelTarget("LevelTarget."+curProcedure.GameLevel.ToString());
+                    LevelDisplayForm.Init(this);
+                    
                 }
             }
         }
@@ -185,6 +193,24 @@ namespace GameMain
                 return;
            
             CheckGameOverOrWin();
+
+            score += Time.deltaTime;
+            AdjustSpeed();
+        }
+
+
+        private PlayerMove playerMove;
+        void AdjustSpeed()
+        {
+            if(playerMove==null)
+                return;
+
+            var multiplier = score / 1600f;
+            multiplier = Mathf.Clamp(multiplier, 0, 1);
+            
+            playerMove.SetSpeed(multiplier);
+            roadGenerator.SetCheckTime(multiplier);
+
         }
 
         
@@ -194,7 +220,8 @@ namespace GameMain
             if (ne.EntityLogicType == typeof(Player))
             {
                 Player = ne.Entity.Logic as Player;
-                
+                playerMove = Player.GetComponent<PlayerMove>();
+
             }
 
             if (ne.EntityLogicType == typeof(SceneCam) )
