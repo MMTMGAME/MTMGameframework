@@ -210,9 +210,9 @@ namespace GameMain
             var multiplier = score / 1600f;
             multiplier = Mathf.Clamp(multiplier, 0, 1);
             
-            playerMove.SetSpeed(multiplier);
-            roadGenerator.SetCheckTime(multiplier);
-
+            //playerMove.SetSpeed(multiplier);
+            //roadGenerator.SetCheckTime(multiplier);
+            GameEntry.Base.GameSpeed = (1 + multiplier);
         }
 
         

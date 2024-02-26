@@ -100,7 +100,7 @@ public class PlayerMove : MonoBehaviour
                 curRoadConfig = go.GetComponentInParent<RoadConfig>();
                 if (curRoadConfig != null)
                 {
-                    // 可以在这里添加额外的逻辑
+                    // 可以在这里添加额外的逻辑0
                     // Log.Info($"curRoadConfig:{go.gameObject.name},isBranch:{curRoadConfig.isBranch}");
                 }
                 curRoad = road;

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3421305775236299432}
   - component: {fileID: 7359254001603017906}
   - component: {fileID: -8916298521645318200}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u57FA\u7840\u8DEF\u6BB5"
   m_TagString: Road
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76f2c676d620fed458aff4bd775978a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBranch: 0
+  isTurn: 0
   tails:
   - {fileID: 2556508050771623207}
 --- !u!54 &-8916298521645318200
@@ -75,7 +75,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2556508050771623207}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 6617413854726421818}
   - component: {fileID: 2653730628220543909}
   - component: {fileID: 3872662579604460345}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 5872577807447929019}
   - component: {fileID: 8546531573344126065}
   - component: {fileID: 8703248131644641330}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

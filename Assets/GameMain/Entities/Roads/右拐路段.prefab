@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2002416838656573989}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 2156484122128301284}
   - component: {fileID: 7068854069813722748}
   - component: {fileID: 1098726415162713541}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 4460044222317940941}
   - component: {fileID: 8186553784069339588}
   - component: {fileID: 5136393404658338897}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u53F3\u62D0\u8DEF\u6BB5"
   m_TagString: Road
   m_Icon: {fileID: 0}
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 8968612705258776196}
   - component: {fileID: 6598370442523824718}
   - component: {fileID: 1787097593422839557}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 6771281031327512355}
   - component: {fileID: 7242313899955038205}
   - component: {fileID: 4663065918922771045}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
