@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameFramework.DataTable;
 using GameFramework.Event;
 using GameMain;
@@ -78,8 +79,10 @@ public class RoadGenerator : GameFrameworkComponent
             this.entityId = id;
             this.pos = pos;
             this.rotation = rotation;
-            serialId=roadGenerator.ShowRoadForNode(this);
             this.roadGenerator = roadGenerator;
+            
+            serialId=roadGenerator.ShowRoadForNode(this);
+           
             
             roadGenerator.leafNodes.Add(this);
             roadGenerator.allNodes.Add(this);
@@ -100,6 +103,14 @@ public class RoadGenerator : GameFrameworkComponent
             }
         }
 
+        public List<int> GetBlackList()
+        {
+            var row = roadGenerator.roadTable.GetDataRow(this.entityId);
+            var blackListStr = row.BlackList.Split(",");
+            var blackListInt = blackListStr.Select(int.Parse).ToList();
+            return blackListInt;
+        }
+
         List<Node> childrenNodes = new List<Node>();//子节点
         public void Grow()//像树一样生长
         {
@@ -113,7 +124,7 @@ public class RoadGenerator : GameFrameworkComponent
             {
                
                 //子节点的位置在模型的尾部，可能有多个尾部，比如T型路段
-                childrenNodes.Add(new Node(roadGenerator.GetRandomEntityId(), roadGenerator, tailPoses[i],
+                childrenNodes.Add(new Node(roadGenerator.GetRandomEntityId(GetBlackList()), roadGenerator, tailPoses[i],
                     tailRotations[i]
                     
                     ));
@@ -180,17 +191,20 @@ public class RoadGenerator : GameFrameworkComponent
     /// 随机获取Id，尚未实现黑名单支持
     /// </summary>
     /// <returns></returns>
-    private int GetRandomEntityId()
+    private int GetRandomEntityId(List<int> blackList)
     {
-        var element = tableRows.RandomNonEmptyElement();
+        var ids = roadTable.GetDataRows(x => blackList.Contains(x.Id)==false);
+        var element = ids.RandomNonEmptyElement();
         return element.Id;
     }
 
     private int ShowRoadForNode(Node node)//生成实体
     {
-        //var row = roadTable.GetDataRow(nowNode.id);
+        //var row = roadTable.GetDataRow(node.entityId);
+        
+        
         int serialId = GameEntry.Entity.GenerateSerialId();
-        GameEntry.Entity.ShowRoad(new RoadData(serialId,GetRandomEntityId())
+        GameEntry.Entity.ShowRoad(new RoadData(serialId,node.entityId)
         {
             Position = node.pos,
                 Rotation = node.rotation
@@ -212,7 +226,7 @@ public class RoadGenerator : GameFrameworkComponent
         roadTable.GetAllDataRows(tableRows);
         
         
-        rootNode = new Node(GetRandomEntityId(),this,Vector3.zero,Quaternion.identity);//从根节点开始生成
+        rootNode = new Node(GetRandomEntityId(new List<int>()),this,Vector3.zero,Quaternion.identity);//从根节点开始生成
         
         StartCoroutine(GenerateCo());
 

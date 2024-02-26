@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1718218219215541275}
+  - component: {fileID: 2819020866607933138}
   m_Layer: 0
   m_Name: "\u67F1\u5B504"
-  m_TagString: Untagged
+  m_TagString: Pillar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +33,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2819020866607933138
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718218219215541274}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 12.2247715
+  m_Height: 163.86992
+  m_Direction: 1
+  m_Center: {x: 0, y: 52.28437, z: -0.09674263}
 --- !u!1001 &1718218218290345494
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45,11 +60,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 21d8f57add3fdb145888e1a8447a1212, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 111.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 21d8f57add3fdb145888e1a8447a1212, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 103.3
+      value: 37.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 21d8f57add3fdb145888e1a8447a1212, type: 3}
       propertyPath: m_LocalPosition.z

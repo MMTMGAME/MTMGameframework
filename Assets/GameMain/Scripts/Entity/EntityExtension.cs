@@ -76,6 +76,11 @@ namespace GameMain
             entityCompoennt.ShowEntity(typeof(Road), "Road", Constant.AssetPriority.MapAsset,data);
         }
         
+        public static void ShowStartRoad(this EntityComponent entityCompoennt,StartRoadData data)
+        {
+            entityCompoennt.ShowEntity(typeof(StartRoad), "Road", Constant.AssetPriority.MapAsset,data);
+        }
+        
         public static void ShowEffect(this EntityComponent entityComponent, EffectData data)
         {
             entityComponent.ShowEntity(typeof(Effect), "Effect", Constant.AssetPriority.EffectAsset, data);

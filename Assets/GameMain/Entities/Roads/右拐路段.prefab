@@ -23,14 +23,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2499125653754773443}
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.70710677}
-  m_LocalPosition: {x: -5.0830727, y: 0.4598106, z: -0.7741581}
+  m_LocalRotation: {x: -0, y: -0.0000004768371, z: -0, w: 1}
+  m_LocalPosition: {x: -0.675, y: 0.46, z: 4.986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5465454777134360865}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3546363030692723775
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,15 +221,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4653030425982038939}
-  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.6739542, y: -0.4598107, z: 4.9357414}
+  m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 0.7631396, y: -0.45981035, z: 5.055757}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2002416838656573989}
   m_Father: {fileID: 4460044222317940941}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -270, z: 0}
 --- !u!33 &8968612705258776196
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -237,7 +237,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4653030425982038939}
-  m_Mesh: {fileID: 8420402009099847711, guid: cb1aeaab64f7d0540876e2778f6c0142, type: 3}
+  m_Mesh: {fileID: -6652869989784282055, guid: cb1aeaab64f7d0540876e2778f6c0142, type: 3}
 --- !u!23 &6598370442523824718
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -293,7 +293,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 8420402009099847711, guid: cb1aeaab64f7d0540876e2778f6c0142, type: 3}
+  m_Mesh: {fileID: -6652869989784282055, guid: cb1aeaab64f7d0540876e2778f6c0142, type: 3}
 --- !u!1 &8063562460563323630
 GameObject:
   m_ObjectHideFlags: 0
