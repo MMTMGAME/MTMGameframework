@@ -66,6 +66,10 @@ namespace GameMain
            
         }
 
+        /// <summary>
+        /// 以前的模板代码，用不到，因为我隐藏了按钮
+        /// </summary>
+        /// <param name="level"></param>
         public void SelectLevel(int level)
         {
             //GameEntry.Base.StartCoroutine(ChangeSceneCo(level));
@@ -77,6 +81,15 @@ namespace GameMain
             procedureOwner.SetData<VarInt32>("NextSceneId", GameEntry.Config.GetInt("Scene.Level"+level));
             procedureOwner.SetData<VarInt32>("TargetLevel",level);
             ChangeState<ProcedureChangeScene>(procedureOwner);
+        }
+
+        public void StartGame()
+        {
+            m_MenuForm.Close(true);
+           
+           
+            m_StartGame = true;
+            ChangeState(procedureOwner,typeof(ProcedureLevel1));
         }
 
        

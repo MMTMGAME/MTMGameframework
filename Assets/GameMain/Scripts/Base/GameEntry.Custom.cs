@@ -14,36 +14,23 @@ namespace GameMain
     /// </summary>
     public partial class GameEntry : MonoBehaviour
     {
-        public static BuiltinDataComponent BuiltinData
-        {
-            get;
-            private set;
-        }
-        
-        public static EntityUiComponent EntityUi
-        {
-            get;
-            private set;
-        }
+        public static BuiltinDataComponent BuiltinData { get; private set; }
 
-        public static RoadGenerator RoadGenerator
-        {
-            get;
-            private set;
-        }
+        public static EntityUiComponent EntityUi { get; private set; }
 
-        public static PillarGenerator pillarGenerator
-        {
-            get;
-            private set;
-        }
+        public static RoadGenerator RoadGenerator { get; private set; }
+
+        public static PillarGenerator pillarGenerator { get; private set; }
 
         private static void InitCustomComponents()
         {
             BuiltinData = UnityGameFramework.Runtime.GameEntry.GetComponent<BuiltinDataComponent>();
             EntityUi = UnityGameFramework.Runtime.GameEntry.GetComponent<EntityUiComponent>();
-            RoadGenerator=UnityGameFramework.Runtime.GameEntry.GetComponent<RoadGenerator>();
+            RoadGenerator = UnityGameFramework.Runtime.GameEntry.GetComponent<RoadGenerator>();
             pillarGenerator = UnityGameFramework.Runtime.GameEntry.GetComponent<PillarGenerator>();
         }
     }
+
+    
+
 }

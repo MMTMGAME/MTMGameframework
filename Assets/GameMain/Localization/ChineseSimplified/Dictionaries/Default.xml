@@ -60,5 +60,6 @@
     <String Key="GameClear.Title" Value="恭喜通关" />
     <String Key="GameClear.Message" Value="牛哇牛哇，通关啦" />
     <String Key="GameClear.MainMenu" Value="主菜单" />
+    <String Key="MenuForm.StartGame" Value="进入游戏" />
   </Dictionary>
 </Dictionaries>

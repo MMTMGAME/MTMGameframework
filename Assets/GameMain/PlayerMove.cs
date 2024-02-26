@@ -24,7 +24,11 @@ public class PlayerMove : MonoBehaviour
     public float lineGap = 0.5f;
     public float switchLineDuration = 0.3f;
 
-    [Header("地面检测长度")] public float rayDistance = 0.13f;
+    [Header("地面检测长度")] 
+    public float rayDistance = 0.13f;
+
+    [Header("SphereCast半径")]
+    public float sphereRadius = 0.15f;  // SphereCast的半径
 
     [SerializeField]
     private float speed = 5.457f;
@@ -35,6 +39,7 @@ public class PlayerMove : MonoBehaviour
     private RoadConfig curRoadConfig;
     private RoadConfig lastTurnedRoad;
 
+    public LayerMask groundCheckLayer;
 
     public void SetSpeed(float multiplier)
     {
@@ -82,7 +87,11 @@ public class PlayerMove : MonoBehaviour
 
     void GroundCheck()
     {
-        if (Physics.Raycast(transform.position + Vector3.up * 0.1f, -Vector3.up, out var hit,rayDistance))
+        // SphereCast的起始位置稍微提升，以避免从地面内部开始
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+
+        // 使用SphereCast进行地面检测
+        if (Physics.SphereCast(origin, sphereRadius, -Vector3.up, out var hit, rayDistance, groundCheckLayer))
         {
             var go = hit.transform.gameObject;
             if (go.CompareTag("Road"))
@@ -91,7 +100,8 @@ public class PlayerMove : MonoBehaviour
                 curRoadConfig = go.GetComponentInParent<RoadConfig>();
                 if (curRoadConfig != null)
                 {
-                    //Log.Info($"curRoadConfig:{go.gameObject.name},isBranch:{curRoadConfig.isBranch}");
+                    // 可以在这里添加额外的逻辑
+                    // Log.Info($"curRoadConfig:{go.gameObject.name},isBranch:{curRoadConfig.isBranch}");
                 }
                 curRoad = road;
             }

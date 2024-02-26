@@ -30,6 +30,10 @@ public class ProcedureRetry : ProcedureBase
         // 隐藏所有实体
         GameEntry.Entity.HideAllLoadingEntities();
         GameEntry.Entity.HideAllLoadedEntities();
+        
+        //关闭所有UI
+        GameEntry.UI.CloseAllLoadedUIForms();
+        GameEntry.UI.CloseAllLoadedUIForms();
 
         // 卸载所有场景
         string[] loadedSceneAssetNames = GameEntry.Scene.GetLoadedSceneAssetNames();

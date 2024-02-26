@@ -110,4 +110,10 @@ public class PillarGenerator : GameFrameworkComponent
     {
         GameEntry.Event.Unsubscribe( ShowEntitySuccessEventArgs.EventId,OnShowEntitySuccess);
     }
+
+    public void CancelAll()
+    {
+        decoratedAreas.Clear();
+        //生成的柱子会在Retry procedure中自动销毁
+    }
 }

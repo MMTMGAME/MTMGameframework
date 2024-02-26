@@ -185,6 +185,9 @@ namespace GameMain
 
         public virtual void Retry()
         {
+
+            GameEntry.RoadGenerator.CancelAll();
+            GameEntry.pillarGenerator.CancelAll();
             ChangeState<ProcedureRetry>(procedureOwner);
         }
     }

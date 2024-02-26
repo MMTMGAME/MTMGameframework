@@ -52,6 +52,8 @@ namespace GameMain
             var procedure = GameEntry.Procedure.CurrentProcedure as ProcedureLevel;
             if (procedure != null)
             {
+                
+                
                 procedure.Retry();
                 Close();
             }

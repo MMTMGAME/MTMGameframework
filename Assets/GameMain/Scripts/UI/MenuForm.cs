@@ -19,7 +19,7 @@ namespace GameMain
 
         public void OnStartButtonClick()
         {
-            m_ProcedureMenu.ShowLevelSelectForm();
+            m_ProcedureMenu.StartGame();
         }
 
         public void OnSettingButtonClick()

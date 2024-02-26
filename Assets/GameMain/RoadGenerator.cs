@@ -133,7 +133,8 @@ public class RoadGenerator : GameFrameworkComponent
         public void Die()
         {
             died = true;
-            roadEntity.Fall();//路段下落后销毁
+            if(roadEntity.Available)
+                roadEntity.Fall();//路段下落后销毁
         }
 
         public void DieRecursively()//递归销毁所有子节点
@@ -282,5 +283,29 @@ public class RoadGenerator : GameFrameworkComponent
                 }
             }
         }
+    }
+
+    public void CancelAll()
+    {
+        StopAllCoroutines();
+        // foreach (var node in allNodes)
+        // {
+        //     node.Die();
+        // }
+        //
+        // for (int i = 0; i < allNodes.Count; i++)
+        // {
+        //     // if(allNodes[i]!=null && allNodes[i].roadEntity!=null)
+        //     // {
+        //     //     GameEntry.Entity.HideEntity(allNodes[i].roadEntity);
+        //     // }
+        //    
+        //     allNodes.RemoveAt(i);
+        //     i--;
+        // }
+        
+        allNodes.Clear();
+        leafNodes.Clear();
+        branchGroups.Clear();
     }
 }

@@ -1147,7 +1147,7 @@ GameObject:
   - component: {fileID: -7801225095361863864}
   - component: {fileID: -7269170704025348252}
   - component: {fileID: -4366643315385464946}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: YBot
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1209,8 +1209,12 @@ MonoBehaviour:
   curLine: 0
   lineGap: 1
   switchLineDuration: 0.05
-  rayDistance: 0.13
+  rayDistance: 0.19
+  sphereRadius: 0.07
   speed: 5.457
+  groundCheckLayer:
+    serializedVersion: 2
+    m_Bits: 55
 --- !u!54 &-2953320636199451505
 Rigidbody:
   m_ObjectHideFlags: 0
