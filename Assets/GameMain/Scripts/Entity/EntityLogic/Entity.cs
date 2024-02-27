@@ -24,6 +24,11 @@ namespace GameMain
             }
         }
 
+        public Animator CachedAnimator
+        {
+                get;
+                private set;
+        }
         public Animation CachedAnimation
         {
             get;
@@ -38,6 +43,7 @@ namespace GameMain
         {
             base.OnInit(userData);
             CachedAnimation = GetComponent<Animation>();
+            CachedAnimator = GetComponentInChildren<Animator>();
         }
 
 #if UNITY_2017_3_OR_NEWER
@@ -64,7 +70,7 @@ namespace GameMain
                 return;
             }
 
-            Name = Utility.Text.Format("[Entity {0}]", Id);
+            Name = Utility.Text.Format("{0} {1}]",gameObject.name , Id);
            
             CachedTransform.localPosition = m_EntityData.Position;
             CachedTransform.localRotation = m_EntityData.Rotation;

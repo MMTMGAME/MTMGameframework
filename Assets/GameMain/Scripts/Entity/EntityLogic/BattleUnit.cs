@@ -116,4 +116,21 @@ public class BattleUnit : TargetableObject
     {
         return new ImpactData(BattleUnitData.Camp, BattleUnitData.HP, 0, BattleUnitData.Defense);
     }
+
+    protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+    {
+        base.OnUpdate(elapseSeconds, realElapseSeconds);
+        
+        
+        TryAttack();
+    }
+
+    protected virtual void TryAttack()
+    {
+        //举例攻击，因此用简单的写法
+        for (int i = 0; i < m_Weapons.Count; i++)
+        {
+            m_Weapons[i].TryAttack();//因为是举例，武器直接大范围攻击
+        }
+    }
 }

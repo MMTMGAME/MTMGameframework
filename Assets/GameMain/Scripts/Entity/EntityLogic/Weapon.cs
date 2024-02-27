@@ -80,6 +80,8 @@ namespace GameMain
 
             Name = Utility.Text.Format("Weapon of {0}", parentEntity.Name);
             CachedTransform.localPosition = Vector3.zero;
+            CachedTransform.localScale = Vector3.one;
+            CachedTransform.localRotation=Quaternion.identity;
         }
 
         public void TryAttack()
