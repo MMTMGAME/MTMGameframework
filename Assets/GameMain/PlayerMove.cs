@@ -242,6 +242,7 @@ public class PlayerMove : MonoBehaviour
         
         // 计算投影点
         Vector3 targetPoint = linePoint + lineDir.normalized * projectionLength;
+        targetPoint.y = transform.position.y;//不要重置y坐标
         return targetPoint;
     }
     

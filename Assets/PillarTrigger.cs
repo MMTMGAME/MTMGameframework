@@ -15,4 +15,16 @@ public class PillarTrigger : MonoBehaviour
             }
         }
     }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Pillar"))
+        {
+            Pillar pillar = other.GetComponent<Pillar>();
+            if (pillar != null)
+            {
+                pillar.OnExitPlayer();
+            }
+        }
+    }
 }

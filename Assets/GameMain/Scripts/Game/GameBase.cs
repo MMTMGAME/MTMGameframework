@@ -90,6 +90,7 @@ namespace GameMain
                 Log.Error("没有生成玩家，系统自动生成玩家在0坐标，要让玩家生成在指定位置请拖拽玩家预制体到场景中并添加EntityInfo组件");
                 GameEntry.Entity.ShowPlayer(new PlayerData(GameEntry.Entity.GenerateSerialId(),10000));
             }
+            GameEntry.Entity.ShowEnemy(new EnemyData(GameEntry.Entity.GenerateSerialId(),20000));
 
             GameEntry.Entity.ShowSceneCam();
             #endregion
