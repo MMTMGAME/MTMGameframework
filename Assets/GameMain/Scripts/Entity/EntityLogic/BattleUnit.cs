@@ -112,9 +112,23 @@ public class BattleUnit : TargetableObject
         GameEntry.Sound.PlaySound(BattleUnitData.DeadSoundId);
     }
 
+
+    public int GetWeaponAttack()
+    {
+        int attack = 0;
+        foreach (var mWeapon in m_Weapons)
+        {
+            attack += mWeapon.m_WeaponData.Attack;
+        }
+
+        return attack;
+    }
+    
+    
     public override ImpactData GetImpactData()
     {
-        return new ImpactData(BattleUnitData.Camp, BattleUnitData.HP, 0, BattleUnitData.Defense);
+        
+        return new ImpactData(BattleUnitData.Camp, BattleUnitData.HP,GetWeaponAttack(), BattleUnitData.Defense);
     }
 
     protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
