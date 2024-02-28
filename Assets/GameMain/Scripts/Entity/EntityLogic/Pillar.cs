@@ -30,17 +30,19 @@ public class Pillar : Entity // 假设这里应该是 MonoBehaviour，除非你�
 
     IEnumerator WaitAndMoveUp()
     {
+        isMovingDown = false;
         yield return new WaitForSeconds(4f); // 等待3秒
 
-        isMovingDown = false;
+        
         while (true)
         {
             yield return null;
 
             if (inPlayerRange == false)
             {
-                // 上升动画
-                transform.DOMove(transform.position + Vector3.up * 200, 4f);
+                transform.DOKill(); // 停止当前的所有动画
+                transform.DOMove(transform.position + Vector3.up * 200, 4f); // 开始上升动画
+                break; // 跳出循环
             }
             
             

@@ -4,11 +4,14 @@ using GameFramework;
 using GameMain;
 using UnityEngine;
 using UnityGameFramework.Runtime;
+using Entity = GameMain.Entity;
+using GameEntry = GameMain.GameEntry;
 
 public class Player : BattleUnit
 {
     private PlayerData playerData;
 
+    public Rigidbody rigid;
 
     protected override void OnShow(object userData)
     {
@@ -21,17 +24,32 @@ public class Player : BattleUnit
             return;
         }
         Name = Utility.Text.Format("Player ({0})", Id);
+
+        rigid = GetComponent<Rigidbody>();
     }
 
     protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
     {
         base.OnUpdate(elapseSeconds, realElapseSeconds);
-        //举例攻击，因此用简单的写法
-        for (int i = 0; i < m_Weapons.Count; i++)
-        {
-            m_Weapons[i].TryAttack();//因为是举例，武器直接大范围攻击
-        }
 
-       
+    }
+
+    public override void ApplyDamage(Entity attacker, int damageHP)
+    {
+        base.ApplyDamage(attacker, damageHP);
+        CachedAnimator.SetTrigger("Damaged");
+    }
+
+    protected override void OnDead(Entity attacker)
+    {
+        GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(), BattleUnitData.DeadEffectId)
+        {
+            Position = CachedTransform.localPosition,
+        });
+        GameEntry.Sound.PlaySound(BattleUnitData.DeadSoundId);
+        
+        GameEntry.Entity.transform.gameObject.SetActive(true);
+        GetComponent<PlayerMove>().enabled = false;
+        CachedAnimator.SetTrigger("Die");
     }
 }

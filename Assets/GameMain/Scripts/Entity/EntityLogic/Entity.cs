@@ -24,6 +24,11 @@ namespace GameMain
             }
         }
 
+        public Animator CachedAnimator
+        {
+                get;
+                private set;
+        }
         public Animation CachedAnimation
         {
             get;
@@ -38,6 +43,7 @@ namespace GameMain
         {
             base.OnInit(userData);
             CachedAnimation = GetComponent<Animation>();
+            CachedAnimator = GetComponentInChildren<Animator>();
         }
 
 #if UNITY_2017_3_OR_NEWER

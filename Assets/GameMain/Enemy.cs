@@ -5,12 +5,15 @@ using GameMain;
 using UnityEngine;
 
 
-public class Enemy : Entity
+public class Enemy : BattleUnit
 {
     private EnemyData enemyData;
 
     private Player player;
 
+    private float attackDistance=1.5f;
+    private Animator animator;
+    private static readonly int Attack = Animator.StringToHash("Attack");
 
     protected override void OnShow(object userData)
     {
@@ -18,6 +21,7 @@ public class Enemy : Entity
         enemyData = (EnemyData)userData;
 
         GetPlayer();
+        animator = GetComponent<Animator>();
     }
 
     void GetPlayer()
@@ -29,7 +33,7 @@ public class Enemy : Entity
         }
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (player == null || player.Available == false)
         {
@@ -38,6 +42,23 @@ public class Enemy : Entity
         }
            
         
-        transform.position = player.transform.TransformPoint(0, 0, -2);
+        transform.position = Vector3.Lerp(transform.position,player.rigid.position,3.5f*Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, player.rigid.rotation, 10 * Time.deltaTime);
+
+        var distance = Vector3.Distance(transform.position, player.transform.position);
+        if (distance < attackDistance && player.IsDead==false)
+        {
+            //举例攻击，因此用简单的写法
+            for (int i = 0; i < m_Weapons.Count; i++)
+            {
+                m_Weapons[i].TryAttack();//因为是举例，武器直接大范围攻击
+            }
+        }
+    }
+
+    protected override void TryAttack()
+    {
+        //base.TryAttack();
+        //这个游戏中不使用onUpdate的代码进行控制
     }
 }

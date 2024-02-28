@@ -10,7 +10,7 @@ using GameEntry = GameMain.GameEntry;
 public class BattleUnit : TargetableObject
 {
     [SerializeField]
-    private BattleUnitData BattleUnitData;
+    protected BattleUnitData BattleUnitData;
 
     [SerializeField] protected List<Weapon> m_Weapons = new List<Weapon>();
 
@@ -112,8 +112,39 @@ public class BattleUnit : TargetableObject
         GameEntry.Sound.PlaySound(BattleUnitData.DeadSoundId);
     }
 
+
+    public int GetWeaponAttack()
+    {
+        int attack = 0;
+        foreach (var mWeapon in m_Weapons)
+        {
+            attack += mWeapon.m_WeaponData.Attack;
+        }
+
+        return attack;
+    }
+    
+    
     public override ImpactData GetImpactData()
     {
-        return new ImpactData(BattleUnitData.Camp, BattleUnitData.HP, 0, BattleUnitData.Defense);
+        
+        return new ImpactData(BattleUnitData.Camp, BattleUnitData.HP,GetWeaponAttack(), BattleUnitData.Defense);
+    }
+
+    protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+    {
+        base.OnUpdate(elapseSeconds, realElapseSeconds);
+        
+        
+        TryAttack();
+    }
+
+    protected virtual void TryAttack()
+    {
+        //举例攻击，因此用简单的写法
+        for (int i = 0; i < m_Weapons.Count; i++)
+        {
+            m_Weapons[i].TryAttack();//因为是举例，武器直接大范围攻击
+        }
     }
 }
