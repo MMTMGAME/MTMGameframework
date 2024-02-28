@@ -201,7 +201,7 @@ namespace GameMain
            
             CheckGameOverOrWin();
 
-            score += Time.deltaTime;
+           
             AdjustSpeed();
         }
 
@@ -212,7 +212,7 @@ namespace GameMain
             if(playerMove==null)
                 return;
 
-            var multiplier = score / 1600f;
+            var multiplier = score / 160;
             multiplier = Mathf.Clamp(multiplier, 0, 1);
             
             //playerMove.SetSpeed(multiplier);

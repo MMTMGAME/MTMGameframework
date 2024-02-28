@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using GameMain;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityGameFramework.Runtime;
 using Entity = GameMain.Entity;
+using GameEntry = GameMain.GameEntry;
 
 public class Road : Entity
 {
@@ -63,7 +65,22 @@ public class Road : Entity
 
         //缓动 
         CachedTransform.position -= Vector3.up * 5f;
-        CachedTransform.DOLocalMove(spawnPos, 0.3f).SetEase(Ease.InQuad);
+        CachedTransform.DOLocalMove(spawnPos, 0.3f).SetEase(Ease.InQuad).OnComplete(SpawnPrimogem);
+        
+        
+    }
+
+    void SpawnPrimogem()
+    {
+        //生成原石
+        foreach (var primogem in roadConfig.primogems)
+        {
+            GameEntry.Entity.ShowPrimogem(new PrimogemData(GameEntry.Entity.GenerateSerialId(),10002)
+            {
+                Position = primogem.position,
+                Rotation = primogem.rotation,
+            });
+        }
     }
     
     

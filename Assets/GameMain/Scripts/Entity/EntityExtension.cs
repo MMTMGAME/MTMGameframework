@@ -81,6 +81,11 @@ namespace GameMain
             entityCompoennt.ShowEntity(typeof(StartRoad), "Road", Constant.AssetPriority.MapAsset,data);
         }
         
+        public static void ShowPrimogem(this EntityComponent entityCompoennt, PrimogemData data)
+        {
+            entityCompoennt.ShowEntity(typeof(Primogem), "Road", Constant.AssetPriority.MapAsset,data);
+        }
+        
         public static void ShowEnemy(this EntityComponent entityCompoennt,EnemyData data)
         {
             entityCompoennt.ShowEntity(typeof(Enemy), "Enemy", Constant.AssetPriority.PlayerAsset,data);

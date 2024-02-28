@@ -8,7 +8,9 @@ public class RoadConfig : MonoBehaviour
     
     [FormerlySerializedAs("isBranch")] public bool isTurn;
     public Transform[] tails;
-    
-    
-   
+
+    [Header("原石生成")]
+    public Transform[] primogems;
+
+
 }

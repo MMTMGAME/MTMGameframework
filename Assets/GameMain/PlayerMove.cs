@@ -41,6 +41,8 @@ public class PlayerMove : MonoBehaviour
 
     public LayerMask groundCheckLayer;
 
+    private SwipeDetection swipeDetection;
+
     public void SetSpeed(float multiplier)
     {
         speed = baseSpeed * (1 + multiplier);
@@ -56,8 +58,8 @@ public class PlayerMove : MonoBehaviour
         
         
         playerInputActions = new PlayerInputActions();
-      
-       
+        swipeDetection = GetComponent<SwipeDetection>();
+
     }
 
     private void OnEnable()
@@ -65,6 +67,11 @@ public class PlayerMove : MonoBehaviour
         playerInputActions.Player.Space.performed += Jump;
         playerInputActions.Player.Left.performed += Left;
         playerInputActions.Player.Right.performed += Right;
+
+        swipeDetection.swipeUp += Jump;
+        swipeDetection.swipeLeft += Left;
+        swipeDetection.swipeRight += Right;
+        
         playerInputActions.Enable();
         
     }
@@ -74,6 +81,11 @@ public class PlayerMove : MonoBehaviour
         playerInputActions.Player.Space.performed -= Jump;
         playerInputActions.Player.Left.performed -= Left;
         playerInputActions.Player.Right.performed -= Right;
+        
+        swipeDetection.swipeUp -= Jump;
+        swipeDetection.swipeLeft -= Left;
+        swipeDetection.swipeRight -= Right;
+        
         playerInputActions.Disable();
     }
 

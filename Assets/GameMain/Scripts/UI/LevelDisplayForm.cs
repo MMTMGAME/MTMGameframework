@@ -9,7 +9,7 @@ public class LevelDisplayForm : UGuiForm
 {
    public Text scoreText;
 
-
+   public Image primogemIcon;
 
    private GameBase gameBase;
    public void Init(GameBase gameBase)
@@ -26,6 +26,6 @@ public class LevelDisplayForm : UGuiForm
 
    private void UpdateUi()
    {
-      scoreText.text = GameEntry.Localization.GetString("GameUi.Score")+":" + gameBase.score;
+      scoreText.text = Mathf.RoundToInt( gameBase.score)+"";
    }
 }

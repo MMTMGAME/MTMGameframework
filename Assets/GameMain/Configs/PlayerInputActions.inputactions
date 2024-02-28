@@ -64,6 +64,17 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "",
+                    "id": "d70aacbe-f01a-4c3c-814f-c87028d67ad0",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Esc",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "2D Vector",
                     "id": "fcc41655-d707-49ab-b7c3-c355a6c89d08",
                     "path": "2DVector",

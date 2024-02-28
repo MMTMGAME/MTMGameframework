@@ -126,16 +126,21 @@ namespace GameMain
 
             if (currentGame.GameOver)
             {
+                bool highScore = currentGame.score > GameEntry.Setting.GetInt("HighScore");
+                if(highScore)
+                    GameEntry.Setting.SetInt("HighScore",Mathf.RoundToInt(currentGame.score));
                 GameEntry.UI.OpenDialog(new DialogParams()
                 {
-                    Mode = 2,
+                    Mode = 1,
                     Title = GameEntry.Localization.GetString("GameOver.Title"),
-                    Message = GameEntry.Localization.GetString("GameOver.Message"),
+                    Message = (highScore? "<size=50><color=green>"+GameEntry.Localization.GetString("GameOver.NewRecord")+"</color></size>\n":"")+ GameEntry.Localization.GetString("GameOver.PrimogemCollected")+currentGame.score,
                     OnClickConfirm = delegate(object userData) { Retry(); },
                     ConfirmText = GameEntry.Localization.GetString("GameOver.Retry"),
                     OnClickCancel = delegate(object userData) { GotoMenu(0.5f); },
                     CancelText = GameEntry.Localization.GetString("GameOver.MainMenu"),
                 });
+                
+                
             }
         }
         

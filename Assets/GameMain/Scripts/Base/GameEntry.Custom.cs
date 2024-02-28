@@ -21,6 +21,8 @@ namespace GameMain
         public static RoadGenerator RoadGenerator { get; private set; }
 
         public static PillarGenerator pillarGenerator { get; private set; }
+        
+        public static PrimogemPicker PrimogemPicker { get; private set; }
 
         private static void InitCustomComponents()
         {
@@ -28,6 +30,7 @@ namespace GameMain
             EntityUi = UnityGameFramework.Runtime.GameEntry.GetComponent<EntityUiComponent>();
             RoadGenerator = UnityGameFramework.Runtime.GameEntry.GetComponent<RoadGenerator>();
             pillarGenerator = UnityGameFramework.Runtime.GameEntry.GetComponent<PillarGenerator>();
+            PrimogemPicker=UnityGameFramework.Runtime.GameEntry.GetComponent<PrimogemPicker>();
         }
     }
 
