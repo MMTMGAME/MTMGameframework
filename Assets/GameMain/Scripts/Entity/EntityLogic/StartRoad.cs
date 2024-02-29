@@ -14,7 +14,7 @@ public class StartRoad : Entity
         base.OnShow(userData);
         startRoadData = (StartRoadData)userData;
         
-        Invoke(nameof(HideSelf),3);
+        Invoke(nameof(HideSelf),5);
     }
 
     void HideSelf()

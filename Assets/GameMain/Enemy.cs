@@ -42,7 +42,7 @@ public class Enemy : BattleUnit
         }
            
         
-        transform.position = Vector3.Lerp(transform.position,player.rigid.position,3.5f*Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position,player.rigid.position,4.5f*Time.deltaTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, player.rigid.rotation, 10 * Time.deltaTime);
 
         var distance = Vector3.Distance(transform.position, player.transform.position);

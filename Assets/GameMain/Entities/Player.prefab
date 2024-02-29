@@ -7307,7 +7307,7 @@ GameObject:
   - component: {fileID: 5559169740547639381}
   - component: {fileID: 1164348364867861778}
   - component: {fileID: 942302519926678478}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: PillarTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13084,7 +13084,13 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform '\u4E0A\u534A\u8EAB'\n\tTransform '\u3072\u3058.R'\n\tTransform
+    '\u624B\u9996.L'\n\tTransform '\u4E0A\u534A\u8EAB3'\n\tTransform '\u8DB3D.L'\n\tTransform
+    '\u624B\u9996.R'\n\tTransform '\u3072\u3058.L'\n\tTransform '\u8155.R'\n\tTransform
+    '\u8DB3\u9996D.R'\n\tTransform '\u8DB3D.R'\n\tand more ...\n\tFrom animation
+    clip '\u8367_arm_\u4E0B\u5760 1'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -13101,12 +13107,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseSpeed: 10.914
-  jumpForce: 480
-  curLine: 0
+  jumpForce: 240
+  curLine: 1
   lineGap: 1
   switchLineDuration: 0.05
-  rayDistance: 0.19
-  sphereRadius: 0.07
+  rayDistance: 0.2
+  sphereRadius: 0.1
   speed: 5.457
   groundCheckLayer:
     serializedVersion: 2

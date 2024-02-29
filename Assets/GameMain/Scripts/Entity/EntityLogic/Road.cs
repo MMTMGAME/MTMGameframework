@@ -99,6 +99,9 @@ public class Road : Entity
             triggered = true;
             triggerTime = Time.time;
             //Log.Error("triggerd");
+
+            exited = false;
+            
         }
             
     }

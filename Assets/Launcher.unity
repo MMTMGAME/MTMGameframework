@@ -482,6 +482,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1838556157, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: dieTime
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 642739818402679842, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
       propertyPath: m_RootOrder
       value: 2

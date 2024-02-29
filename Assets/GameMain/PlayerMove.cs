@@ -100,7 +100,9 @@ public class PlayerMove : MonoBehaviour
     void GroundCheck()
     {
         // SphereCast的起始位置稍微提升，以避免从地面内部开始
-        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        Vector3 origin = transform.position + Vector3.up * 0.2f;
+
+        Debug.DrawLine(origin, origin - Vector3.up * rayDistance, Color.red);
 
         // 使用SphereCast进行地面检测
         if (Physics.SphereCast(origin, sphereRadius, -Vector3.up, out var hit, rayDistance, groundCheckLayer))
@@ -128,6 +130,7 @@ public class PlayerMove : MonoBehaviour
     void SyncAnimatorParams()
     {
      animator.SetBool(IsGrounded,isGrounded);   
+     //animator.SetBool(IsGrounded,true);   
     }
     
     void Move()

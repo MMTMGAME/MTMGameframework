@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4088675764188508150}
   - component: {fileID: 2226110148098602044}
   - component: {fileID: 1824049719051555014}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u5E73\u9762.029"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6546533165410019129}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 8954673130978924718}
   - component: {fileID: 4703393692118904981}
   - component: {fileID: 8415501746986151882}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u5E73\u9762.028"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,8 +208,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5952577791782140517}
-  - component: {fileID: 8894356942064337595}
-  m_Layer: 0
+  - component: {fileID: 987644288}
+  m_Layer: 6
   m_Name: "\u5F00\u5934\u8DEF\u6BB5\u52A0\u95E8"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,26 +232,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!95 &8894356942064337595
-Animator:
-  serializedVersion: 5
+--- !u!114 &987644288
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6471704937783746783}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9f3dd5b8e68920c438d6631fa2e253b4, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2bf91721e3ad1541b25f669e61551a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeId: 81000
 --- !u!1 &6471704937844065729
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,7 +254,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5952577791863431035}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u539F\u795E\u95E8\u62C6\u5206"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +290,7 @@ GameObject:
   - component: {fileID: 5138183283534866686}
   - component: {fileID: 6333867664733081132}
   - component: {fileID: 1192083025900190168}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "\u5E73\u9762"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,8 +373,8 @@ GameObject:
   - component: {fileID: 1999586380440152960}
   - component: {fileID: 5379690321565961820}
   - component: {fileID: 7086998733396121768}
-  - component: {fileID: 987644288}
-  m_Layer: 0
+  - component: {fileID: 2705193323190598299}
+  m_Layer: 6
   m_Name: "\u5E73\u9762.002"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,7 +446,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &987644288
+--- !u!64 &2705193323190598299
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
