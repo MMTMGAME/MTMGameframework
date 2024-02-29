@@ -81,6 +81,7 @@ public class PlayerMove : MonoBehaviour
         playerInputActions.Player.Space.performed -= Jump;
         playerInputActions.Player.Left.performed -= Left;
         playerInputActions.Player.Right.performed -= Right;
+        playerInputActions.Player.Down.performed -= Right;
         
         swipeDetection.swipeUp -= Jump;
         swipeDetection.swipeLeft -= Left;
@@ -143,7 +144,13 @@ public class PlayerMove : MonoBehaviour
 
     private bool isSwitchingLine;
     private static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
+    private static readonly int Slide = Animator.StringToHash("Slide");
 
+
+    void Down(InputAction.CallbackContext callbackContext)
+    {
+        animator.SetTrigger(Slide);
+    }
     void Left(InputAction.CallbackContext callbackContext)
     {
         // TurnLeft();
@@ -166,6 +173,7 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    
     void Right(InputAction.CallbackContext callbackContext)
     {
         // TurnRight();
