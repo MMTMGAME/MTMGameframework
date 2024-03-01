@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GameFramework;
 using GameMain;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityGameFramework.Runtime;
 using Entity = GameMain.Entity;
 using GameEntry = GameMain.GameEntry;
@@ -26,6 +27,7 @@ public class Player : BattleUnit
         Name = Utility.Text.Format("Player ({0})", Id);
 
         rigid = GetComponent<Rigidbody>();
+        GetComponent<RigBuilder>().Build();
     }
 
     protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)

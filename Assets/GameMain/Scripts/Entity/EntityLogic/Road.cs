@@ -70,17 +70,31 @@ public class Road : Entity
         
     }
 
+    
     void SpawnPrimogem()
     {
         //生成原石
         foreach (var primogem in roadConfig.primogems)
         {
-            GameEntry.Entity.ShowPrimogem(new PrimogemData(GameEntry.Entity.GenerateSerialId(),10002)
+            var id = GameEntry.Entity.GenerateSerialId();
+            
+            GameEntry.Entity.ShowPrimogem(new PrimogemData(id,10002,Id)
             {
                 Position = primogem.position,
                 Rotation = primogem.rotation,
             });
         }
+
+
+        foreach (var t in roadConfig.obstacles)
+        {
+            GameEntry.Entity.ShowObstacle(new ObstacleData(GameEntry.Entity.GenerateSerialId(),UnityEngine.Random.Range(85000,85002),Id)
+            {
+                Position = t.position,
+                Rotation = t.rotation,
+            });
+        }
+        
     }
     
     

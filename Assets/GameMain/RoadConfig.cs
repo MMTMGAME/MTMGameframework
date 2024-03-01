@@ -12,5 +12,5 @@ public class RoadConfig : MonoBehaviour
     [Header("原石生成")]
     public Transform[] primogems;
 
-
+    [Header("障碍物位置")] public Transform[] obstacles;
 }

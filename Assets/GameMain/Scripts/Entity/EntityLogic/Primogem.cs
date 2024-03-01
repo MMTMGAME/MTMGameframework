@@ -7,9 +7,12 @@ using UnityEngine;
 
 public class Primogem : Entity
 {
+    private PrimogemData primogemData;
     protected override void OnShow(object userData)
     {
         base.OnShow(userData);
+        primogemData = (PrimogemData)userData;
+        GameEntry.Entity.AttachEntity(this,primogemData.ownerId);
         transform.DOJump(transform.position + Vector3.up * 0.1f, 1f, 1, 2).SetLoops(-1);
     }
 
@@ -19,7 +22,11 @@ public class Primogem : Entity
         transform.Rotate(Vector3.up,30*elapseSeconds);
         
     }
+    
+    
 
+    
+    
     private void OnTriggerEnter(Collider other)
     {
         var player = other.gameObject.GetComponent<Player>();
@@ -28,7 +35,7 @@ public class Primogem : Entity
             GameEntry.PrimogemPicker.ShowUi(this);
             if (GameEntry.Procedure.CurrentProcedure is ProcedureLevel procedure)
             {
-                procedure.GetGameBase().score++;
+                procedure.GetGameBase().AddScore(1);
                 
                 GameEntry.Entity.HideEntity(this);
             }

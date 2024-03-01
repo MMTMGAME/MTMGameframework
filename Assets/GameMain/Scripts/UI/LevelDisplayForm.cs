@@ -12,9 +12,14 @@ public class LevelDisplayForm : UGuiForm
    public Image primogemIcon;
 
    private GameBase gameBase;
+
+   public Image skillFillImage;
+
+   private Animator animator;
    public void Init(GameBase gameBase)
    {
       this.gameBase = gameBase;
+      animator = GetComponent<Animator>();
    }
 
    
@@ -27,5 +32,11 @@ public class LevelDisplayForm : UGuiForm
    private void UpdateUi()
    {
       scoreText.text = Mathf.RoundToInt( gameBase.score)+"";
+
+      skillFillImage.fillAmount = gameBase.skillPoint/50;
+
+     
+      animator.SetBool("Ready",gameBase.skillPoint >= 50);
+      
    }
 }

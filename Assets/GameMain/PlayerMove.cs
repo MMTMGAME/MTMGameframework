@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using UnityGameFramework.Runtime;
 
@@ -43,11 +44,14 @@ public class PlayerMove : MonoBehaviour
 
     private SwipeDetection swipeDetection;
 
-    public void SetSpeed(float multiplier)
-    {
-        speed = baseSpeed * (1 + multiplier);
-        animator.speed = 1 + multiplier;
-    }
+    private CapsuleCollider capsuleCollider;
+    private Rig constraintRig;
+    private Vector3 originalColliderCenter;
+    private float originalColliderHeight;
+
+    private AutoRunDirection curAutoRunDirection;
+    private bool autoRun=true;
+   
     // Start is called before the first frame update
     void Awake()
     {
@@ -59,7 +63,11 @@ public class PlayerMove : MonoBehaviour
         
         playerInputActions = new PlayerInputActions();
         swipeDetection = GetComponent<SwipeDetection>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        constraintRig = GetComponentInChildren<Rig>();
 
+        originalColliderCenter = capsuleCollider.center;
+        originalColliderHeight = capsuleCollider.height;
     }
 
     private void OnEnable()
@@ -67,10 +75,12 @@ public class PlayerMove : MonoBehaviour
         playerInputActions.Player.Space.performed += Jump;
         playerInputActions.Player.Left.performed += Left;
         playerInputActions.Player.Right.performed += Right;
+        playerInputActions.Player.Down.performed += Down;
 
         swipeDetection.swipeUp += Jump;
         swipeDetection.swipeLeft += Left;
         swipeDetection.swipeRight += Right;
+        swipeDetection.swipeDown += Down;
         
         playerInputActions.Enable();
         
@@ -81,11 +91,12 @@ public class PlayerMove : MonoBehaviour
         playerInputActions.Player.Space.performed -= Jump;
         playerInputActions.Player.Left.performed -= Left;
         playerInputActions.Player.Right.performed -= Right;
-        playerInputActions.Player.Down.performed -= Right;
+        playerInputActions.Player.Down.performed -= Down;
         
         swipeDetection.swipeUp -= Jump;
         swipeDetection.swipeLeft -= Left;
         swipeDetection.swipeRight -= Right;
+        swipeDetection.swipeDown -= Down;
         
         playerInputActions.Disable();
     }
@@ -145,6 +156,7 @@ public class PlayerMove : MonoBehaviour
     private bool isSwitchingLine;
     private static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
     private static readonly int Slide = Animator.StringToHash("Slide");
+    private static readonly int Stumbled = Animator.StringToHash("Stumbled");
 
 
     void Down(InputAction.CallbackContext callbackContext)
@@ -161,7 +173,7 @@ public class PlayerMove : MonoBehaviour
         
         curLine--;
 
-        if ( curRoadConfig!=null && curRoadConfig.isTurn)
+        if ( curRoadConfig!=null && curRoadConfig.isTurn /*&& (curAutoRunDirection.direction==AutoRunDirection.Direction.Left || curAutoRunDirection.direction == AutoRunDirection.Direction.Right)*/)
         {
             TurnLeft();
         }
@@ -171,6 +183,14 @@ public class PlayerMove : MonoBehaviour
             var targetPos = CalTargetPosInLine(--curLine);
             StartCoroutine(SwitchLineCoroutine(targetPos));
         }
+    }
+
+    void SwitchToLine(int lineIndex)
+    {
+        if(isSwitchingLine)
+            return;
+        var targetPos = CalTargetPosInLine(lineIndex);
+        StartCoroutine(SwitchLineCoroutine(targetPos));
     }
 
     
@@ -184,7 +204,7 @@ public class PlayerMove : MonoBehaviour
         
         curLine++;
         
-        if (curRoadConfig!=null && curRoadConfig.isTurn)
+        if (curRoadConfig!=null && curRoadConfig.isTurn /*&& (curAutoRunDirection.direction==AutoRunDirection.Direction.Left || curAutoRunDirection.direction == AutoRunDirection.Direction.Right)*/)
         {
             TurnRight();
         }
@@ -275,13 +295,9 @@ public class PlayerMove : MonoBehaviour
 
         float startTime = Time.time;
         Vector3 startPosition = transform.position;
-        
-        
-        
 
         while (Time.time < startTime + switchLineDuration)
         {
-            // 确保每帧移动的是正确的距离，使得总移动距离等于 moveDistance
             float t = (Time.time - startTime) / switchLineDuration;
             Vector3 newPosition = Vector3.Lerp(startPosition, targetPosition, t);
             Vector3 moveVector = newPosition - transform.position;
@@ -298,6 +314,7 @@ public class PlayerMove : MonoBehaviour
 
         isSwitchingLine = false;
     }
+
     
     void Jump(InputAction.CallbackContext callbackContext)
     {
@@ -308,6 +325,8 @@ public class PlayerMove : MonoBehaviour
       
     }
 
+    #region 动画事件
+    
     public void OnJumpStart()
     {
         rb.AddForce(jumpForce*Vector3.up);
@@ -318,19 +337,92 @@ public class PlayerMove : MonoBehaviour
         
     }
 
+    //由动画状态机SendMessage触发
+    public void OnSlideStart()
+    {
+        capsuleCollider.center =
+            new Vector3(originalColliderCenter.x, originalColliderCenter.y / 2, originalColliderCenter.z);
+        capsuleCollider.height = originalColliderHeight / 2;
+    }
 
-    // private void OnCollisionEnter(Collision collision)
-    // {
-    //     
-    // }
-    //
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     Debug.Log("TriggerEnter:"+other.gameObject.name);
-    //     if (other.gameObject.CompareTag("Road"))
-    //     {
-    //         var road = other.gameObject.GetComponentInParent<Road>();
-    //         curRoad = road;
-    //     }
-    // }
+    public void OnSlideEnd()
+    {
+        capsuleCollider.center = originalColliderCenter;
+        capsuleCollider.height = originalColliderHeight;
+    }
+    #endregion
+
+    #region 自动模式触发器
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("AutoRunTrigger"))
+        {
+            curAutoRunDirection = other.gameObject.GetComponent<AutoRunDirection>();
+
+            if (autoRun)
+            {
+                if (curAutoRunDirection.direction == AutoRunDirection.Direction.Up)
+                {
+                    Jump(default);
+                }
+
+                if (curAutoRunDirection.direction == AutoRunDirection.Direction.Down)
+                {
+                    Down(default);
+                }
+
+                if (curAutoRunDirection.direction == AutoRunDirection.Direction.Left)
+                {
+                    Left(default);
+                }
+                
+                if (curAutoRunDirection.direction == AutoRunDirection.Direction.Right)
+                {
+                    Right(default);
+                }
+
+                if (curAutoRunDirection.direction == AutoRunDirection.Direction.SwitchLine)
+                {
+                   SwitchToLine(curAutoRunDirection.lineIndex);
+                }
+              
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("AutoRunTrigger"))
+        {
+            var autoRunDirection = other.gameObject.GetComponent<AutoRunDirection>();
+            if (autoRunDirection == curAutoRunDirection)
+            {
+                curAutoRunDirection = null;
+            }
+        }
+    }
+
+    #endregion
+
+    #region 被绊倒
+
+    public void OnStumble()
+    {
+        animator.SetTrigger(Stumbled);
+        StartCoroutine(SlowDownC());
+    }
+
+    
+    IEnumerator SlowDownC()
+    {
+        var originalSpeed = speed;
+        speed *= 0.5f;
+        yield return new WaitForSeconds(0.5f);
+        speed = originalSpeed;
+    }
+
+    #endregion
+
+    
 }

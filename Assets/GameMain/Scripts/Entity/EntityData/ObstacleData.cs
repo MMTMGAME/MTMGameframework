@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using GameMain;
 using UnityEngine;
 
-public class PrimogemData : EntityData
+public class ObstacleData : EntityData
 {
     public int ownerId;
-    public PrimogemData(int entityId, int typeId,int ownerId) : base(entityId, typeId)
+    public ObstacleData(int entityId, int typeId,int ownerId) : base(entityId, typeId)
     {
         this.ownerId = ownerId;
     }

@@ -42,7 +42,13 @@ namespace GameMain
         }
 
         //数据
-        public float score;//分数
+        public float score
+        {
+            get;
+            private set;
+        }//分数
+        //技能条
+        public float skillPoint;
         public RoadGenerator roadGenerator;
       
         public LevelDisplayForm LevelDisplayForm { get; private set; }
@@ -103,6 +109,7 @@ namespace GameMain
             GameWin = false;
 
             score = 0;
+            skillPoint = 0;
 
             
             GameEntry.Base.StartCoroutine(InitDisplayUi());
@@ -158,8 +165,16 @@ namespace GameMain
             Log.Fatal("生成Ui失败{0}",args.UIForm.UIFormAssetName);
         }
 
-     
-        
+
+        public void AddScore(float delta)
+        {
+            score += delta;
+            skillPoint += delta;
+        }
+        public void UseSkill()
+        {
+            skillPoint = 0;
+        }
         
 
         /// <summary>

@@ -360,19 +360,19 @@ ModelImporter:
     - boneName: "\u4E0A\u534A\u8EAB"
       humanName: Spine
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: -40, y: -20, z: -40}
+        max: {x: 40, y: 20, z: 40}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: "\u4E0A\u534A\u8EAB3"
       humanName: Chest
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: -40, y: -10, z: -40}
+        max: {x: 40, y: 10, z: 40}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: "\u9996"
       humanName: Neck
       limit:
@@ -736,11 +736,11 @@ ModelImporter:
     - boneName: "\u4E0A\u534A\u8EAB2"
       humanName: UpperChest
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: -20, y: -10, z: -20}
+        max: {x: 20, y: 10, z: 20}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     skeleton:
     - name: "\u4EBA\u7269\u89D2\u8272(Clone)"
       parentName: 
