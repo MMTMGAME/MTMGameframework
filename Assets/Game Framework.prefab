@@ -336,12 +336,40 @@ PrefabInstance:
       value: ProcedureRetry
       objectReference: {fileID: 0}
     - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_EntityGroups.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
       propertyPath: m_EntityGroups.Array.data[5].m_Name
       value: Camera
       objectReference: {fileID: 0}
     - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
       propertyPath: m_EntityGroups.Array.data[6].m_Name
       value: BattleUnit
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_EntityGroups.Array.data[7].m_Name
+      value: Debug
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_EntityGroups.Array.data[7].m_InstanceCapacity
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_EntityGroups.Array.data[3].m_InstanceExpireTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_EntityGroups.Array.data[7].m_InstanceExpireTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_EntityGroups.Array.data[3].m_InstanceAutoReleaseInterval
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_EntityGroups.Array.data[7].m_InstanceAutoReleaseInterval
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 11499388, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
       propertyPath: m_EditorResourceMode
