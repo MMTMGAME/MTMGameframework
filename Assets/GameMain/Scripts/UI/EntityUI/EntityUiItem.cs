@@ -68,14 +68,8 @@ public abstract class EntityUiItem : MonoBehaviour
         {
             Vector3 worldPosition = Owner.CachedTransform.position ;
             Vector3 screenPosition = GameEntry.Scene.MainCamera.WorldToScreenPoint(worldPosition);
-
-            // if (RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)parentCanvas.transform, screenPosition,
-            //         parentCanvas.worldCamera, out var position))
-            // {
-            //     rectTransform.localPosition = position;
-            // }
-
-            transform.position = screenPosition;
+            
+            transform.position = Vector3.Lerp(transform.position,screenPosition,5*Time.deltaTime);
         }
 
         return true;

@@ -23,6 +23,7 @@ namespace GameMain
         public static PillarGenerator pillarGenerator { get; private set; }
         
         public static PrimogemPicker PrimogemPicker { get; private set; }
+        public static CameraShake CameraShake { get; private set; }
 
         private static void InitCustomComponents()
         {
@@ -31,6 +32,7 @@ namespace GameMain
             RoadGenerator = UnityGameFramework.Runtime.GameEntry.GetComponent<RoadGenerator>();
             pillarGenerator = UnityGameFramework.Runtime.GameEntry.GetComponent<PillarGenerator>();
             PrimogemPicker=UnityGameFramework.Runtime.GameEntry.GetComponent<PrimogemPicker>();
+            CameraShake=UnityGameFramework.Runtime.GameEntry.GetComponent<CameraShake>();
         }
     }
 

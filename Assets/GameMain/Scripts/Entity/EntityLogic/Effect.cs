@@ -45,6 +45,7 @@ namespace GameMain
 #endif
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
+            
 
             m_ElapseSeconds += elapseSeconds;
             if (m_ElapseSeconds >= m_EffectData.KeepTime)

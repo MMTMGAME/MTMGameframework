@@ -11,7 +11,7 @@ public class Enemy : BattleUnit
 
     private Player player;
 
-    private float attackDistance=1.5f;
+    private float attackDistance=2.2f;
     private Animator animator;
     private static readonly int Attack = Animator.StringToHash("Attack");
 
@@ -42,7 +42,7 @@ public class Enemy : BattleUnit
         }
            
         
-        transform.position = Vector3.Lerp(transform.position,player.rigid.position,4.5f*Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position,player.rigid.position,3f*Time.deltaTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, player.rigid.rotation, 10 * Time.deltaTime);
 
         var distance = Vector3.Distance(transform.position, player.transform.position);

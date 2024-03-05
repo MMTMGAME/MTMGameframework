@@ -91,6 +91,24 @@ namespace GameMain
             entityCompoennt.ShowEntity(typeof(Enemy), "Enemy", Constant.AssetPriority.PlayerAsset,data);
         }
         
+        public static void ShowDebugSphere(this EntityComponent entityCompoennt,Vector3 pos,Quaternion rotation,float duration)
+        {
+            entityCompoennt.ShowEntity(typeof(DebugSphere), "Debug", Constant.AssetPriority.EffectAsset,new DebugSphereData(GameEntry.Entity.GenerateSerialId(),1,duration)
+            {
+                Position = pos,
+                Rotation = rotation
+            });
+        }
+        public static void ShowDebug3DText(this EntityComponent entityCompoennt,Vector3 pos,Quaternion rotation,string msg,float duration)
+        {
+            entityCompoennt.ShowEntity(typeof(Debug3DText), "Debug", Constant.AssetPriority.EffectAsset,new Debug3DTextData(GameEntry.Entity.GenerateSerialId(),
+                2,msg,duration)
+            {
+                Position = pos,
+                Rotation = rotation
+            });
+        }
+        
         public static void ShowEffect(this EntityComponent entityComponent, EffectData data)
         {
             entityComponent.ShowEntity(typeof(Effect), "Effect", Constant.AssetPriority.EffectAsset, data);

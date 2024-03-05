@@ -16,10 +16,10 @@ namespace GameMain
         [SerializeField]
         private float m_KeepTime = 0f;
 
-        public EffectData(int entityId, int typeId)
+        public EffectData(int entityId, int typeId,float keepTime=3)
             : base(entityId, typeId)
         {
-            m_KeepTime = 3f;
+            m_KeepTime = keepTime;
         }
 
         public float KeepTime

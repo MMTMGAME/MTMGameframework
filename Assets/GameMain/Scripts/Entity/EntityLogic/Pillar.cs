@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -10,6 +11,12 @@ public class Pillar : Entity // 假设这里应该是 MonoBehaviour，除非你�
     private bool inPlayerRange;
     private bool isMovingDown = false;
 
+    private Vector3 startPosition;
+    private void Start()
+    {
+        startPosition = transform.position;
+    }
+
     public void StartMoving()
     {
         if (!isMovingDown)
@@ -18,7 +25,7 @@ public class Pillar : Entity // 假设这里应该是 MonoBehaviour，除非你�
             inPlayerRange = true;
             transform.DOKill();
             // 下降动画
-            transform.DOMove(transform.position + Vector3.down * 200, 4f)
+            transform.DOMove(startPosition + Vector3.down * 200, 4f)
                 .OnComplete(() => StartCoroutine(WaitAndMoveUp()));
         }
     }
@@ -41,7 +48,7 @@ public class Pillar : Entity // 假设这里应该是 MonoBehaviour，除非你�
             if (inPlayerRange == false)
             {
                 transform.DOKill(); // 停止当前的所有动画
-                transform.DOMove(transform.position + Vector3.up * 200, 4f); // 开始上升动画
+                transform.DOMove(startPosition, 4f); // 开始上升动画
                 break; // 跳出循环
             }
             

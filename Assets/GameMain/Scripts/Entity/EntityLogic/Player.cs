@@ -28,6 +28,10 @@ public class Player : BattleUnit
 
         rigid = GetComponent<Rigidbody>();
         GetComponent<RigBuilder>().Build();
+        
+        //测试跟随抖动
+        GameEntry.EntityUi.ShowEntityUi (new ShowHpBarItemInfo(GameEntry.EntityUi.GenerateSerialId(), this, 1, 1));
+
     }
 
     protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)

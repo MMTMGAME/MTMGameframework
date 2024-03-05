@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using GameMain;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using UnityGameFramework.Runtime;
+using Entity = UnityGameFramework.Runtime.Entity;
+using GameEntry = GameMain.GameEntry;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -49,9 +52,11 @@ public class PlayerMove : MonoBehaviour
     private Vector3 originalColliderCenter;
     private float originalColliderHeight;
 
-    private AutoRunDirection curAutoRunDirection;
-    private bool autoRun=true;
-   
+    //private AutoRunDirection curAutoRunDirection;
+    private bool autoRun;
+
+
+    private float showTime;
     // Start is called before the first frame update
     void Awake()
     {
@@ -68,7 +73,13 @@ public class PlayerMove : MonoBehaviour
 
         originalColliderCenter = capsuleCollider.center;
         originalColliderHeight = capsuleCollider.height;
+
+        showTime = Time.time;
+
+        autoRun = false;
     }
+    
+    
 
     private void OnEnable()
     {
@@ -104,10 +115,18 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GroundCheck();
+        
         SyncAnimatorParams();
         Move();
+        GroundCheck();
+        //AutoRunTriggerCheck();
+        AutoRunCheck();
     }
+
+    // private void FixedUpdate()
+    // {
+    //     AutoRunCheck();
+    // }
 
     void GroundCheck()
     {
@@ -193,6 +212,12 @@ public class PlayerMove : MonoBehaviour
         StartCoroutine(SwitchLineCoroutine(targetPos));
     }
 
+    void SwitchToLineForcibly(int lineIndex)
+    {
+        var targetPos = CalTargetPosInLine(lineIndex);
+        StartCoroutine(SwitchLineCoroutine(targetPos));
+    }
+
     
     void Right(InputAction.CallbackContext callbackContext)
     {
@@ -274,7 +299,7 @@ public class PlayerMove : MonoBehaviour
     }
     Vector3 CalTargetPosInLine(int lineIndex)
     {
-        var linePoint = curRoadConfig.transform.position +  curRoadConfig.transform.right * lineIndex * lineGap;
+        var linePoint = curRoadConfig.transform.position +  curRoadConfig.transform.right * (lineIndex * lineGap);
         var lineDir = curRoadConfig.transform.forward;
         var playerPos = transform.position;
         
@@ -329,13 +354,10 @@ public class PlayerMove : MonoBehaviour
     
     public void OnJumpStart()
     {
-        rb.AddForce(jumpForce*Vector3.up);
+        rb.AddForce(jumpForce*Vector3.up,ForceMode.Impulse);
     }
 
-    public void OnJumpEnd()
-    {
-        
-    }
+    
 
     //由动画状态机SendMessage触发
     public void OnSlideStart()
@@ -354,55 +376,107 @@ public class PlayerMove : MonoBehaviour
 
     #region 自动模式触发器
 
-    private void OnTriggerEnter(Collider other)
+    
+
+    public void StartAutoRun()
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("AutoRunTrigger"))
-        {
-            curAutoRunDirection = other.gameObject.GetComponent<AutoRunDirection>();
+        StartCoroutine(StartAutoRunCoroutine());
+    }
 
-            if (autoRun)
+    IEnumerator StartAutoRunCoroutine()
+    {
+        autoRun = true;
+
+        var id = GameEntry.Entity.GenerateSerialId();
+        GameEntry.Entity.ShowEffect(new EffectData(id,70003,7){Position = transform.position});
+        yield return null;
+        yield return null;
+
+        var effectEntity = GameEntry.Entity.GetEntity(id);
+        GameEntry.Entity.AttachEntity(id,GetComponent<Entity>(),transform.FindDeep("ShieldPos"));
+        effectEntity.transform.localPosition = Vector3.zero;
+        
+        
+        yield return new WaitForSeconds(7);
+        autoRun = false;
+    }
+    
+  
+    private AutoRunDirection lastAutoRunDirection; 
+    void AutoRunCheck()
+    {
+        //因为实体实体生成时扎堆在0，0，0坐标生成，所以刚开始生成时不要执行以下方法
+            if(Time.time<showTime+1)
+                return;
+            
+            float radius = 0.5f; // 球体的半径
+            Vector3 center = transform.position+Vector3.up; // 球体中心设为物体当前位置
+            
+            // 获取球形区域内的所有碰撞体
+            Collider[] hitColliders = Physics.OverlapSphere(center, radius);
+            
+            int i = 0;
+            
+            while (i < hitColliders.Length)
             {
-                if (curAutoRunDirection.direction == AutoRunDirection.Direction.Up)
+                // 碰撞体处理，例如检查标签来识别特定对象
+                if (hitColliders[i].gameObject.layer == LayerMask.NameToLayer("AutoRunTrigger"))
                 {
-                    Jump(default);
-                }
+                    
+                    // 执行某些操作，比如触发事件
+                    var curAutoRunDirection = hitColliders[i].gameObject.GetComponent<AutoRunDirection>();
+                    //Log.Debug("检测到RunTrigger"+hitColliders[i].gameObject.name+"其父物体为:"+hitColliders[i].gameObject.transform.parent.name);
 
-                if (curAutoRunDirection.direction == AutoRunDirection.Direction.Down)
-                {
-                    Down(default);
+                    if (curAutoRunDirection != null)
+                    {
+                        //GameEntry.Entity.ShowDebug3DText(transform.position,transform.rotation,"Direction"+curAutoRunDirection.direction.ToString());
+                        if (curAutoRunDirection.GetComponentInParent<RoadConfig>()==curRoadConfig &&   autoRun && curAutoRunDirection!=lastAutoRunDirection)
+                        {
+                            lastAutoRunDirection = curAutoRunDirection;
+                        
+                            Turn(curAutoRunDirection);
+                            //GameEntry.Entity.ShowDebug3DText(transform.position+Vector3.up,transform.rotation,"Turn"+curAutoRunDirection.direction.ToString(),50);
+                        }
+                    }
+                    
+                    
                 }
+                i++;
+            }
+    }
 
-                if (curAutoRunDirection.direction == AutoRunDirection.Direction.Left)
-                {
-                    Left(default);
-                }
+
+    private int lastTurnFrameCount;
+    void Turn(AutoRunDirection  curAutoRunDirection)
+    {
+        if(Time.frameCount==lastTurnFrameCount)
+            return;
+        lastTurnFrameCount = Time.frameCount;
+        if (curAutoRunDirection.direction == AutoRunDirection.Direction.Up)
+        {
+            Jump(default);
+        }
+
+        if (curAutoRunDirection.direction == AutoRunDirection.Direction.Down)
+        {
+            Down(default);
+        }
+
+        if (curAutoRunDirection.direction == AutoRunDirection.Direction.Left)
+        {
+            Left(default);
+        }
                 
-                if (curAutoRunDirection.direction == AutoRunDirection.Direction.Right)
-                {
-                    Right(default);
-                }
-
-                if (curAutoRunDirection.direction == AutoRunDirection.Direction.SwitchLine)
-                {
-                   SwitchToLine(curAutoRunDirection.lineIndex);
-                }
-              
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("AutoRunTrigger"))
+        if (curAutoRunDirection.direction == AutoRunDirection.Direction.Right)
         {
-            var autoRunDirection = other.gameObject.GetComponent<AutoRunDirection>();
-            if (autoRunDirection == curAutoRunDirection)
-            {
-                curAutoRunDirection = null;
-            }
+            Right(default);
+        }
+
+        if (curAutoRunDirection.direction == AutoRunDirection.Direction.SwitchLine)
+        {
+            SwitchToLine(curAutoRunDirection.lineIndex);
         }
     }
-
     #endregion
 
     #region 被绊倒
@@ -411,14 +485,15 @@ public class PlayerMove : MonoBehaviour
     {
         animator.SetTrigger(Stumbled);
         StartCoroutine(SlowDownC());
+        GameEntry.CameraShake.ShakeCamera(1f,1,0.35f);
     }
 
     
     IEnumerator SlowDownC()
     {
         var originalSpeed = speed;
-        speed *= 0.5f;
-        yield return new WaitForSeconds(0.5f);
+        speed *= 0.4f;
+        yield return new WaitForSeconds(0.7f);
         speed = originalSpeed;
     }
 

@@ -174,6 +174,7 @@ namespace GameMain
         public void UseSkill()
         {
             skillPoint = 0;
+            playerMove.StartAutoRun();
         }
         
 

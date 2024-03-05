@@ -22,8 +22,13 @@ public class LevelDisplayForm : UGuiForm
       animator = GetComponent<Animator>();
    }
 
-   
 
+
+   public void UseSkill()
+   {
+      gameBase?.UseSkill();
+      
+   }
    private void Update()
    {
       UpdateUi();
