@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using DG.Tweening;
 using GameFramework.Event;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -49,6 +50,7 @@ namespace GameMain
         }//分数
         //技能条
         public float skillPoint;
+        private float requiredSkillPoint;
         public RoadGenerator roadGenerator;
       
         public LevelDisplayForm LevelDisplayForm { get; private set; }
@@ -119,8 +121,9 @@ namespace GameMain
 
             roadGenerator = GameEntry.RoadGenerator;
             roadGenerator.StartGenerate();
-            
-            
+
+            requiredSkillPoint = GameEntry.Config.GetFloat("Game.RequiredSkillPoint", 50);
+
         }
         
         
@@ -171,10 +174,72 @@ namespace GameMain
             score += delta;
             skillPoint += delta;
         }
+
+        private bool usingSKill = false;
         public void UseSkill()
         {
+            if(usingSKill || skillPoint<requiredSkillPoint)
+                return;
+           
             skillPoint = 0;
-            playerMove.StartAutoRun();
+            GameEntry.Base.StartCoroutine(StartSkillCoroutine());
+        }
+
+        IEnumerator StartSkillCoroutine()
+        {
+            usingSKill = true;
+            var skillDuration = GameEntry.Config.GetFloat("Game.SkillDuration", 7);
+    
+            // 启用技能时的设置
+            playerMove.SwitchAutoRun(true);
+            GameEntry.Base.StartCoroutine(ShowShieldFxRunCoroutine(skillDuration));
+    
+            // 视野缓动变化到 110
+            DOTween.To(() => SceneCam.cinemachine.m_Lens.FieldOfView, x => SceneCam.cinemachine.m_Lens.FieldOfView = x, 110f, skillDuration / 2);
+            // 游戏速度缓动变化到 2
+            DOTween.To(() => GameEntry.Base.GameSpeed, x => GameEntry.Base.GameSpeed = x, 2, skillDuration / 2);
+
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("RoadObstacle"));
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("EnemyWeapon"));
+
+            yield return new WaitForSecondsRealtime(skillDuration);
+
+           
+            // 视野缓动变化回 75
+            DOTween.To(() => SceneCam.cinemachine.m_Lens.FieldOfView, x => SceneCam.cinemachine.m_Lens.FieldOfView = x, 75f, skillDuration / 2);
+            // 游戏速度缓动恢复正常
+            DOTween.To(() => GameEntry.Base.GameSpeed, x => GameEntry.Base.GameSpeed = x, 1, skillDuration / 2).OnComplete(()=>
+            {
+                // 技能结束后的设置
+                playerMove.SwitchAutoRun(false);
+                
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("RoadObstacle"), false);
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("EnemyWeapon"), false);
+                GameEntry.Base.ResetNormalGameSpeed();
+                usingSKill = false;
+            });
+
+            
+
+           
+        }
+        
+        IEnumerator ShowShieldFxRunCoroutine(float duration)
+        {
+           
+
+            var id = GameEntry.Entity.GenerateSerialId();
+            GameEntry.Entity.ShowEffect(new EffectData(id,70003,7));
+            yield return null;
+            yield return null;
+
+            var effectEntity = GameEntry.Entity.GetEntity(id);
+            GameEntry.Entity.AttachEntity(effectEntity,Player.Entity);
+            effectEntity.transform.localPosition = Vector3.zero;
+        
+        
+            yield return new WaitForSeconds(duration);
+           
         }
         
 
@@ -225,6 +290,8 @@ namespace GameMain
         private PlayerMove playerMove;
         void AdjustSpeed()
         {
+            if(usingSKill)
+                return;
             if(playerMove==null)
                 return;
 

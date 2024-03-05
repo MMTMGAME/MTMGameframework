@@ -376,29 +376,21 @@ public class PlayerMove : MonoBehaviour
 
     #region 自动模式触发器
 
-    
 
-    public void StartAutoRun()
+
+    public void SwitchAutoRun(bool status)
     {
-        StartCoroutine(StartAutoRunCoroutine());
-    }
-
-    IEnumerator StartAutoRunCoroutine()
-    {
-        autoRun = true;
-
-        var id = GameEntry.Entity.GenerateSerialId();
-        GameEntry.Entity.ShowEffect(new EffectData(id,70003,7){Position = transform.position});
-        yield return null;
-        yield return null;
-
-        var effectEntity = GameEntry.Entity.GetEntity(id);
-        GameEntry.Entity.AttachEntity(id,GetComponent<Entity>(),transform.FindDeep("ShieldPos"));
-        effectEntity.transform.localPosition = Vector3.zero;
-        
-        
-        yield return new WaitForSeconds(7);
-        autoRun = false;
+        autoRun = status;
+        if (autoRun)
+        {
+            playerInputActions.Disable();
+            swipeDetection.Disable();
+        }
+        else
+        {
+            playerInputActions.Enable();
+            swipeDetection.Enable();
+        }
     }
     
   

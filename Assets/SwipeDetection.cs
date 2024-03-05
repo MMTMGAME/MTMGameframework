@@ -9,14 +9,29 @@ public class SwipeDetection : MonoBehaviour
     private Vector2 touchEndPosition;
     private bool touchInProgress = false;
 
+    private bool enabled=true;
+        
     public Action<InputAction.CallbackContext> swipeUp;
     public Action<InputAction.CallbackContext> swipeDown;
     public Action<InputAction.CallbackContext> swipeLeft;
     public Action<InputAction.CallbackContext> swipeRight;
+
+    public void Enable()
+    {
+        enabled = true;
+    }
+
+    public void Disable()
+    {
+        enabled = false;
+    }
     private void Update()
     {
+        
         // Check if the touchscreen is available
-        if (Touchscreen.current == null) return;
+        if (Touchscreen.current == null || !enabled) return;
+        
+        
         
         if (Touchscreen.current.primaryTouch.press.isPressed)
         {

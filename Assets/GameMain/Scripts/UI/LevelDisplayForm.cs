@@ -16,10 +16,14 @@ public class LevelDisplayForm : UGuiForm
    public Image skillFillImage;
 
    private Animator animator;
+   private float requiredSkillPoint;
    public void Init(GameBase gameBase)
    {
       this.gameBase = gameBase;
       animator = GetComponent<Animator>();
+      
+         
+      requiredSkillPoint = GameEntry.Config.GetFloat("Game.RequiredSkillPoint", 50);
    }
 
 
@@ -38,10 +42,10 @@ public class LevelDisplayForm : UGuiForm
    {
       scoreText.text = Mathf.RoundToInt( gameBase.score)+"";
 
-      skillFillImage.fillAmount = gameBase.skillPoint/50;
+      skillFillImage.fillAmount = gameBase.skillPoint/requiredSkillPoint;
 
      
-      animator.SetBool("Ready",gameBase.skillPoint >= 50);
+      animator.SetBool("Ready",gameBase.skillPoint >= requiredSkillPoint);
       
    }
 }

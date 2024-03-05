@@ -38,7 +38,7 @@ namespace GameMain
             //Log.Debug(this.gameObject.name+"显示HPBarItem，血量:"+toHPRatio);
             GameEntry.EntityUi.ShowEntityUi (new ShowHpBarItemInfo(GameEntry.EntityUi.GenerateSerialId(), this, 1, toHPRatio));
             
-
+            GameEntry.CameraShake.ShakeCamera(1,1,0.5f);
             if (m_TargetableObjectData.HP <= 0)
             {
                 OnDead(attacker);
