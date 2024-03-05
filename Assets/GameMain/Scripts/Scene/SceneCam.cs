@@ -11,12 +11,18 @@ public class SceneCam : Entity
 
    public CinemachineTargetGroup cinemachineTargetGroup;
 
+   public ParticleSystem speedLineFx;
+
    protected override void OnInit(object userData)
    {
       base.OnInit(userData);
       cinemachine = GetComponentInChildren<CinemachineVirtualCamera>();
       cinemachineTargetGroup = GetComponentInChildren<CinemachineTargetGroup>();
       cinemachine.LookAt = cinemachineTargetGroup.Transform;
+
+      speedLineFx = GetComponentInChildren<ParticleSystem>();
+      
+      speedLineFx.gameObject.SetActive(false);
    }
 
    public void SetFollow(Transform target)
@@ -46,6 +52,11 @@ public class SceneCam : Entity
       }
       
       
+   }
+
+   public void SwitchSpeedline(bool status)
+   {
+      speedLineFx.gameObject.SetActive(status);
    }
 
    void UpdateTargetGroup()

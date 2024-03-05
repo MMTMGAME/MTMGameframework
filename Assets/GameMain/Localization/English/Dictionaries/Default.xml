@@ -38,6 +38,7 @@
     <String Key="GameOver.Message" Value="Try Again!" />
     <String Key="GameOver.Retry" Value="Retry" />
     <String Key="GameOver.MainMenu" Value="MainMenu" />
+    <String Key="GameOver.HighestRecord" Value="Highest Record" />
     <String Key="GameOver.NewRecord" Value="NewRecord" />
     <String Key="GameOver.PrimogemCollected" Value="Number of Primogems Collected:" />
     <String Key="GameControl.DropItemTip" Value="[F] Drop Item" />

@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: cfxr proc glow soft hdr ab
-  m_Shader: {fileID: -6465566751694194690, guid: 67dfcda17071f4a41be79c4049965e67,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 67dfcda17071f4a41be79c4049965e67, type: 3}
   m_ValidKeywords:
   - _CFXR_HDR_BOOST
   - _FADING_ON
@@ -22,7 +21,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -54,7 +53,7 @@ Material:
     - _ShadowStrength: 1
     - _SoftParticlesFadeDistanceFar: 1
     - _SoftParticlesFadeDistanceNear: 0
-    - _SrcBlend: 5
+    - _SrcBlend: 9
     - _SubGlowMax: 6.7
     - _SubGlowMin: -2.47
     - _UseDissolve: 0

@@ -40,6 +40,7 @@
     <String Key="GameOver.Retry" Value="重试" />
     <String Key="GameOver.MainMenu" Value="主菜单" />
     <String Key="GameOver.NewRecord" Value="新纪录" />
+    <String Key="GameOver.HighestRecord" Value="最高纪录" />
     <String Key="GameOver.PrimogemCollected" Value="收集到的原石数量：" />
     <String Key="GameControl.DropItemTip" Value="[F] 丢弃道具" />
     <String Key="GameControl.UseItemTip" Value="[鼠标右键] 使用道具" />

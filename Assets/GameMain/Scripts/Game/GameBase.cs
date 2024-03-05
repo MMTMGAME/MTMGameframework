@@ -189,10 +189,11 @@ namespace GameMain
         {
             usingSKill = true;
             var skillDuration = GameEntry.Config.GetFloat("Game.SkillDuration", 7);
-    
+            SceneCam.SwitchSpeedline(true);
             // 启用技能时的设置
             playerMove.SwitchAutoRun(true);
-            GameEntry.Base.StartCoroutine(ShowShieldFxRunCoroutine(skillDuration));
+            GameEntry.Base.StartCoroutine(ShowShieldFxRunCoroutine(skillDuration*2
+            ));
     
             // 视野缓动变化到 110
             DOTween.To(() => SceneCam.cinemachine.m_Lens.FieldOfView, x => SceneCam.cinemachine.m_Lens.FieldOfView = x, 110f, skillDuration / 2);
@@ -204,6 +205,7 @@ namespace GameMain
 
             yield return new WaitForSecondsRealtime(skillDuration);
 
+            
            
             // 视野缓动变化回 75
             DOTween.To(() => SceneCam.cinemachine.m_Lens.FieldOfView, x => SceneCam.cinemachine.m_Lens.FieldOfView = x, 75f, skillDuration / 2);
@@ -217,6 +219,8 @@ namespace GameMain
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("EnemyWeapon"), false);
                 GameEntry.Base.ResetNormalGameSpeed();
                 usingSKill = false;
+                
+                SceneCam.SwitchSpeedline(false);
             });
 
             
