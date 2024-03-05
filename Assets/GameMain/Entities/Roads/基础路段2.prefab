@@ -92,7 +92,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301914362967732194}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: d9c40a27d3cc2984f9e429a778bbd317, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -149,6 +149,8 @@ MonoBehaviour:
   isTurn: 0
   tails:
   - {fileID: 4559014768741586469}
+  primogems: []
+  obstacles: []
 --- !u!54 &371215638655935085
 Rigidbody:
   m_ObjectHideFlags: 0
