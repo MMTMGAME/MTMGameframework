@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 6368652468147958408}
   - component: {fileID: 8701966906245343721}
   m_Layer: 6
-  m_Name: Cube
+  m_Name: ExitTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,8 +164,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 1.1416771}
+  m_Center: {x: 0, y: 0, z: 0.070841774}
 --- !u!1 &1503714147581016575
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1503714147581016575}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 13.34}
+  m_LocalPosition: {x: 0, y: 0, z: 18.749}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 7666946634673246271}
   - component: {fileID: 232484028534788574}
   m_Layer: 7
-  m_Name: Cube (1)
+  m_Name: AutoRunTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,8 +226,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3181875357478492948}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.8, z: 8.9}
-  m_LocalScale: {x: 2.8884, y: 5, z: 1.9291809}
+  m_LocalPosition: {x: 0, y: 1.8, z: 9.4429}
+  m_LocalScale: {x: 2.8884, y: 5, z: 1.5520713}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1105775222957089721}
