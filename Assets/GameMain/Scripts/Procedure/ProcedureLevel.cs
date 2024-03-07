@@ -80,6 +80,8 @@ namespace GameMain
             GameEnded = false;
 
             this.procedureOwner = procedureOwner;
+            
+            //GameEntry.Sound.StopMusic();
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
@@ -92,6 +94,8 @@ namespace GameMain
             
 
             base.OnLeave(procedureOwner, isShutdown);
+            
+            
         }
 
         public bool GameEnded
@@ -126,6 +130,9 @@ namespace GameMain
 
             if (currentGame.GameOver)
             {
+                GameEntry.Sound.StopMusic();
+                GameEntry.Sound.PlayUISound(20010);//游戏失败音效
+                
                 var highestScore = GameEntry.Setting.GetInt("HighScore");
                 bool highScore = currentGame.score >highestScore;
                 if(highScore)

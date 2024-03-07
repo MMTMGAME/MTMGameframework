@@ -2,14 +2,15 @@
 <UnityGameFramework>
   <ResourceBuilder>
     <Settings>
-      <InternalResourceVersion>3</InternalResourceVersion>
+      <InternalResourceVersion>6</InternalResourceVersion>
       <Platforms>1</Platforms>
-      <AssetBundleCompression>1</AssetBundleCompression>
+      <AssetBundleCompression>2</AssetBundleCompression>
       <CompressionHelperTypeName>UnityGameFramework.Runtime.DefaultCompressionHelper</CompressionHelperTypeName>
       <AdditionalCompressionSelected>True</AdditionalCompressionSelected>
       <ForceRebuildAssetBundleSelected>False</ForceRebuildAssetBundleSelected>
-      <BuildEventHandlerTypeName>GameMain.Editor.StarForceBuildEventHandler</BuildEventHandlerTypeName>
-      <OutputDirectory>D:/UnityProjects/YMZX/AssetBundles</OutputDirectory>
+      <BuildEventHandlerTypeName>
+      </BuildEventHandlerTypeName>
+      <OutputDirectory>D:/UnityProjects/GenshinRun/AssetBundles</OutputDirectory>
       <OutputPackageSelected>True</OutputPackageSelected>
       <OutputFullSelected>True</OutputFullSelected>
       <OutputPackedSelected>True</OutputPackedSelected>

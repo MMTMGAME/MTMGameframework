@@ -26,7 +26,10 @@ public class LevelDisplayForm : UGuiForm
       requiredSkillPoint = GameEntry.Config.GetFloat("Game.RequiredSkillPoint", 50);
    }
 
-
+   public void OpenPauseForm()
+   {
+      GameEntry.UI.OpenUIForm(UIFormId.PauseForm);
+   }
 
    public void UseSkill()
    {

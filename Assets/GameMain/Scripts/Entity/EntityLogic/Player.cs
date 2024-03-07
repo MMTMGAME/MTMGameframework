@@ -44,6 +44,7 @@ public class Player : BattleUnit
     {
         base.ApplyDamage(attacker, damageHP);
         CachedAnimator.SetTrigger("Damaged");
+        GameEntry.Sound.PlaySound(UnityEngine.Random.Range(10040, 10042));
     }
 
     protected override void OnDead(Entity attacker)

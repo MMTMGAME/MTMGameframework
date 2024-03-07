@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using DG.Tweening;
+using GameFramework;
 using GameFramework.Event;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -18,6 +19,37 @@ using Object = UnityEngine.Object;
 
 namespace GameMain
 {
+    
+    public sealed class GameStartEventArgs : GameEventArgs
+    {
+        /// <summary>
+        /// 显示实体成功事件编号。
+        /// </summary>
+        public static readonly int EventId = typeof(GameStartEventArgs).GetHashCode();
+
+        public override void Clear()
+        {
+            //DONothing
+        }
+
+        public override int Id
+        {
+            get
+            {
+                return EventId;
+            }
+        }
+        
+        public static GameStartEventArgs Create()
+        {
+            GameStartEventArgs gameStartEventArgs = ReferencePool.Acquire<GameStartEventArgs>();
+            
+            return gameStartEventArgs;
+        }
+    }
+
+  
+    
     public abstract class GameBase
     {
         /// <summary>
@@ -57,6 +89,8 @@ namespace GameMain
         
         public SceneCam SceneCam { get; private set; }
         private PlayerInputActions playerInputActions;
+
+        private float startTime;//记录游戏开始的时间
         public virtual void Initialize()
         {
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
@@ -64,7 +98,9 @@ namespace GameMain
             GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
             GameEntry.Event.Subscribe(OpenUIFormFailureEventArgs.EventId, OnOpenUIFormFailure);
             
-
+            
+            startTime = Time.realtimeSinceStartup;
+            
             #region MyRegion
             //绑定输入
             playerInputActions = new PlayerInputActions();
@@ -123,13 +159,16 @@ namespace GameMain
             roadGenerator.StartGenerate();
 
             requiredSkillPoint = GameEntry.Config.GetFloat("Game.RequiredSkillPoint", 50);
-
+            
+            //触发游戏开始事件
+            GameEntry.Event.Fire(this,GameStartEventArgs.Create());
         }
         
         
         protected virtual void OpenPauseForm(InputAction.CallbackContext callbackContext)
         {
             GameEntry.UI.OpenUIForm(103);
+            GameEntry.Sound.PlayUISound(20007);
         }
 
         IEnumerator InitDisplayUi()
@@ -171,7 +210,12 @@ namespace GameMain
 
         public void AddScore(float delta)
         {
+            var prev = score;
             score += delta;
+            if (score >= requiredSkillPoint && prev < requiredSkillPoint)
+            {
+                GameEntry.Sound.PlayUISound(20008);
+            }//播放充能完毕音效
             skillPoint += delta;
         }
 
@@ -188,6 +232,9 @@ namespace GameMain
         IEnumerator StartSkillCoroutine()
         {
             usingSKill = true;
+            SwitchSpeedAdjust(false);
+            GameEntry.Sound.PlayUISound(20009);
+            
             var skillDuration = GameEntry.Config.GetFloat("Game.SkillDuration", 7);
             SceneCam.SwitchSpeedline(true);
             // 启用技能时的设置
@@ -218,6 +265,7 @@ namespace GameMain
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("RoadObstacle"), false);
                 Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("EnemyWeapon"), false);
                 GameEntry.Base.ResetNormalGameSpeed();
+                SwitchSpeedAdjust(true);
                 usingSKill = false;
                 
                 SceneCam.SwitchSpeedline(false);
@@ -233,7 +281,7 @@ namespace GameMain
            
 
             var id = GameEntry.Entity.GenerateSerialId();
-            GameEntry.Entity.ShowEffect(new EffectData(id,70003,7));
+            GameEntry.Entity.ShowEffect(new EffectData(id,70003,duration));
             yield return null;
             yield return null;
 
@@ -279,6 +327,13 @@ namespace GameMain
             }
             
         }
+
+        private bool speedAdjustEnabled;
+
+        public void SwitchSpeedAdjust(bool status)
+        {
+            speedAdjustEnabled = status;
+        }
         public void Update(float elapseSeconds, float realElapseSeconds)
         {
             if(GameOver || GameWin)
@@ -286,25 +341,29 @@ namespace GameMain
            
             CheckGameOverOrWin();
 
-           
-            AdjustSpeed();
+
+            if (speedAdjustEnabled)
+            {
+                AdjustSpeed();
+            }
+            
         }
 
 
         private PlayerMove playerMove;
         void AdjustSpeed()
         {
-            if(usingSKill)
-                return;
+            
             if(playerMove==null)
                 return;
 
-            var multiplier = score / 160;
-            multiplier = Mathf.Clamp(multiplier, 0, 1);
+            float elapsedTime = Time.realtimeSinceStartup - startTime;
+            float duration = 300; // 5分钟
+            if (elapsedTime <= duration) {
+                float progress = elapsedTime / duration;
+                GameEntry.Base.GameSpeed = 1 + (1.25f * Mathf.Log10(1 + 9 * progress));
+            }
             
-            //playerMove.SetSpeed(multiplier);
-            //roadGenerator.SetCheckTime(multiplier);
-            GameEntry.Base.GameSpeed = (1 + multiplier);
         }
 
         

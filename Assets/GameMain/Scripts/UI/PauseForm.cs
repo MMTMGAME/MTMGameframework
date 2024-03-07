@@ -8,10 +8,32 @@ namespace GameMain
     {
         public void Continue()
         {
+            GameEntry.Base.ResetNormalGameSpeed();
+
+            procedureOwner?.GetGameBase().SwitchSpeedAdjust(true);
+            GameEntry.Sound.PlayUISound(20006);
             Close();
         }
 
-        private ProcedureBase procedureOwner;
+        private ProcedureLevel procedureOwner;
+
+        protected override void OnOpen(object userData)
+        {
+            base.OnOpen(userData);
+            procedureOwner = GameEntry.Procedure.CurrentProcedure as ProcedureLevel;
+            
+            GameEntry.Sound.PlayUISound(20005);
+            procedureOwner?.GetGameBase().SwitchSpeedAdjust(false);
+            Invoke(nameof(SetGameSpeedTo0),0.22f);
+        }
+
+        void SetGameSpeedTo0()
+        {
+            GameEntry.Base.GameSpeed = 0;
+        }
+
+
+        
 
         public void GoToMainMenu()
         {
@@ -62,8 +84,7 @@ namespace GameMain
         protected override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
-            GameEntry.Base.ResetNormalGameSpeed();
-            
+           
         }
     }
 }

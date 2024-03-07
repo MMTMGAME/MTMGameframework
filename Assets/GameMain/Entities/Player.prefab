@@ -13540,6 +13540,7 @@ GameObject:
   - component: {fileID: 74106895785249071}
   - component: {fileID: 5841587623802206078}
   - component: {fileID: 6627186057086148438}
+  - component: {fileID: 919811246422749458}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -13667,41 +13668,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useParentAnimators: 0
   useChildrenAnimators: 0
-  events:
-  - name: OnJumpStart
-    id: -1869600501
-    action:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6596104801003961933}
-          m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
-          m_MethodName: OnJumpStart
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - name: OnJumpEnd
-    id: -501923455
-    action:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6596104801003961933}
-          m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
-          m_MethodName: OnJumpEnd
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  events: []
 --- !u!114 &5841587623802206078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13730,6 +13697,18 @@ MonoBehaviour:
   - m_Rig: {fileID: 8781127280046875315}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &919811246422749458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578454011474156098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f89cb21c338a2842bd2d13fe5ea79fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8582458098500236032
 GameObject:
   m_ObjectHideFlags: 0

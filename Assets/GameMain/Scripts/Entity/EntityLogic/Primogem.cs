@@ -36,7 +36,7 @@ public class Primogem : Entity
             if (GameEntry.Procedure.CurrentProcedure is ProcedureLevel procedure)
             {
                 procedure.GetGameBase().AddScore(1);
-                
+                GameEntry.Sound.PlaySound(10001);
                 GameEntry.Entity.HideEntity(this);
             }
             

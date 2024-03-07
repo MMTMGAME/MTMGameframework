@@ -42,6 +42,7 @@ public class MeleeWeaponAttack : WeaponAttack
                 return;
             if (Time.time>lastAttackedTime+2 &&  ownerBattleUnit.CachedAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))//播放攻击动画时才会碰撞
             {
+                GameEntry.Sound.PlaySound(20000);
                 AIUtility.Attack(ownerBattleUnit,victim);
             }
            

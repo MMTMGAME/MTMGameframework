@@ -33,7 +33,7 @@ namespace GameMain
             PlaySoundParams playSoundParams = PlaySoundParams.Create();
             playSoundParams.Priority = 64;
             playSoundParams.Loop = true;
-            playSoundParams.VolumeInSoundGroup = 1f;
+            playSoundParams.VolumeInSoundGroup = 0.8f;
             playSoundParams.FadeInSeconds = FadeVolumeDuration;
             playSoundParams.SpatialBlend = 0f;
             s_MusicSerialId = soundComponent.PlaySound(AssetUtility.GetMusicAsset(drMusic.AssetName), "Music", Constant.AssetPriority.MusicAsset, playSoundParams, null, userData);

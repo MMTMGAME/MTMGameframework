@@ -119,8 +119,10 @@ public class PlayerMove : MonoBehaviour
         SyncAnimatorParams();
         Move();
         GroundCheck();
-        //AutoRunTriggerCheck();
+        
         AutoRunCheck();
+        
+        DelayTurnCheck();
     }
 
     // private void FixedUpdate()
@@ -178,6 +180,9 @@ public class PlayerMove : MonoBehaviour
     private static readonly int Stumbled = Animator.StringToHash("Stumbled");
 
 
+    private float lastTurnLeftKeyTime = 0;
+    private float lastTurnRightKeyTime = 0;
+   
     void Down(InputAction.CallbackContext callbackContext)
     {
         animator.SetTrigger(Slide);
@@ -194,7 +199,8 @@ public class PlayerMove : MonoBehaviour
 
         if ( curRoadConfig!=null && curRoadConfig.isTurn /*&& (curAutoRunDirection.direction==AutoRunDirection.Direction.Left || curAutoRunDirection.direction == AutoRunDirection.Direction.Right)*/)
         {
-            TurnLeft();
+            lastTurnLeftKeyTime = Time.time;
+            //TurnLeft();
         }
         else
         {
@@ -231,7 +237,8 @@ public class PlayerMove : MonoBehaviour
         
         if (curRoadConfig!=null && curRoadConfig.isTurn /*&& (curAutoRunDirection.direction==AutoRunDirection.Direction.Left || curAutoRunDirection.direction == AutoRunDirection.Direction.Right)*/)
         {
-            TurnRight();
+            lastTurnRightKeyTime = Time.time;
+            //TurnRight();
         }
         else
         {
@@ -262,6 +269,8 @@ public class PlayerMove : MonoBehaviour
     {
         Vector3 playerPos = transform.position; // 玩家位置
 
+        if (curRoadConfig == null)
+            return 0;
         // 定义三条直线
         Vector3 pN1 = curRoadConfig.transform.position- curRoadConfig.transform.right* lineGap, dN1 = curRoadConfig.transform.forward; // 第一条直线的点和方向向量
         Vector3 p0 = curRoadConfig.transform.position, d0 = curRoadConfig.transform.forward; // 第二条直线的点和方向向量
@@ -436,6 +445,61 @@ public class PlayerMove : MonoBehaviour
                 i++;
             }
     }
+    
+    
+    private AutoRunDirection lastDelayTurnDirection; 
+    //延迟转弯，和AutoRunCheck差不多，只不过这个只判断左右方向，并且会缓冲0.5秒的转弯输入以降低转弯难度
+    void DelayTurnCheck()
+    {
+        //因为实体实体生成时扎堆在0，0，0坐标生成，所以刚开始生成时不要执行以下方法
+        if(Time.time<showTime+1 || autoRun)
+            return;
+            
+        float radius = 0.5f; // 球体的半径
+        Vector3 center = transform.position+Vector3.up; // 球体中心设为物体当前位置
+            
+        // 获取球形区域内的所有碰撞体
+        Collider[] hitColliders = Physics.OverlapSphere(center, radius);
+            
+        int i = 0;
+            
+        while (i < hitColliders.Length)
+        {
+            // 碰撞体处理，例如检查标签来识别特定对象
+            if (hitColliders[i].gameObject.layer == LayerMask.NameToLayer("AutoRunTrigger"))
+            {
+                    
+                // 执行某些操作，比如触发事件
+                var curAutoRunDirection = hitColliders[i].gameObject.GetComponent<AutoRunDirection>();
+                //Log.Debug("检测到RunTrigger"+hitColliders[i].gameObject.name+"其父物体为:"+hitColliders[i].gameObject.transform.parent.name);
+
+                if (curAutoRunDirection != null)
+                {
+                    // bool isTurnRoad = curAutoRunDirection.direction == AutoRunDirection.Direction.Left ||
+                    //                   curAutoRunDirection.direction == AutoRunDirection.Direction.Right;
+                    bool delayTurnCheck = curAutoRunDirection.direction == AutoRunDirection.Direction.Left ||
+                                          curAutoRunDirection.direction == AutoRunDirection.Direction.Right;
+
+                    bool delayLeftTimeCheck = lastTurnLeftKeyTime + 0.5f >= Time.time;
+                    bool delayRightTimeCheck  =  lastTurnRightKeyTime + 0.5f >= Time.time;
+                    
+                    if (delayTurnCheck && (delayLeftTimeCheck|| delayRightTimeCheck) &&  curAutoRunDirection.GetComponentInParent<RoadConfig>()==curRoadConfig  && curAutoRunDirection!=lastDelayTurnDirection)
+                    {
+                        lastDelayTurnDirection = curAutoRunDirection;
+                        
+                        if(delayLeftTimeCheck)
+                            TurnLeft();
+                        if(delayRightTimeCheck)
+                            TurnRight();
+                        //GameEntry.Entity.ShowDebug3DText(transform.position+Vector3.up,transform.rotation,"Turn"+curAutoRunDirection.direction.ToString(),50);
+                    }
+                }
+                    
+                    
+            }
+            i++;
+        }
+    }
 
 
     private int lastTurnFrameCount;
@@ -456,12 +520,12 @@ public class PlayerMove : MonoBehaviour
 
         if (curAutoRunDirection.direction == AutoRunDirection.Direction.Left)
         {
-            Left(default);
+            TurnLeft();
         }
                 
         if (curAutoRunDirection.direction == AutoRunDirection.Direction.Right)
         {
-            Right(default);
+            TurnRight();
         }
 
         if (curAutoRunDirection.direction == AutoRunDirection.Direction.SwitchLine)
@@ -478,6 +542,7 @@ public class PlayerMove : MonoBehaviour
         animator.SetTrigger(Stumbled);
         StartCoroutine(SlowDownC());
         GameEntry.CameraShake.ShakeCamera(1f,1,0.35f);
+        GameEntry.Sound.PlaySound(10030);
     }
 
     

@@ -111,8 +111,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 261303995852326486}
-  - {fileID: 6628340299324495530}
   - {fileID: 6628340299140259299}
+  - {fileID: 6628340299324495530}
   - {fileID: 6628340299886776113}
   m_Father: {fileID: 261303995852366986}
   m_RootOrder: 1
@@ -310,14 +310,14 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10001
+          m_IntArgument: 20000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 261303995840871001}
-        m_TargetAssemblyTypeName: GameMain.UGuiForm, Assembly-CSharp
-        m_MethodName: Close
+        m_TargetAssemblyTypeName: GameMain.PauseForm, Assembly-CSharp
+        m_MethodName: Continue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -797,7 +797,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Pause.MainMenu
+  m_Text: Menu.SettingButton
 --- !u!1 &6628340299030522755
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,7 +907,7 @@ RectTransform:
   - {fileID: 6628340299030522754}
   - {fileID: 6628340299204257936}
   m_Father: {fileID: 261303995852142200}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -959,7 +959,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10001
+          m_IntArgument: 20000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1068,7 +1068,7 @@ GameObject:
   - component: {fileID: 6628340299324495528}
   - component: {fileID: 6628340299324495529}
   m_Layer: 5
-  m_Name: Mainmenu
+  m_Name: Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1089,11 +1089,11 @@ RectTransform:
   - {fileID: 6628340299876899394}
   - {fileID: 6628340298549650453}
   m_Father: {fileID: 261303995852142200}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: -224.54999}
+  m_AnchoredPosition: {x: 300, y: -315.44998}
   m_SizeDelta: {x: 600, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6628340299324495528
@@ -1141,14 +1141,14 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10001
+          m_IntArgument: 20000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 261303995840871001}
-        m_TargetAssemblyTypeName: PauseForm, Assembly-CSharp
-        m_MethodName: GoToMainMenu
+        m_TargetAssemblyTypeName: GameMain.PauseForm, Assembly-CSharp
+        m_MethodName: OpenSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1395,7 +1395,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10001
+          m_IntArgument: 20000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
