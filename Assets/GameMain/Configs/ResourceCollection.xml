@@ -18,6 +18,7 @@
       <Resource Name="Sounds" FileSystem="Resources" LoadType="0" Packed="True" />
       <Resource Name="Textures" FileSystem="Resources" LoadType="0" Packed="True" />
       <Resource Name="UI/UIForms" FileSystem="UI" LoadType="0" Packed="True" />
+      <Resource Name="UI/UIItems" LoadType="0" Packed="True" />
       <Resource Name="UI/UISounds" FileSystem="UI" LoadType="0" Packed="True" />
       <Resource Name="UI/UISprites/Common" FileSystem="UI" LoadType="0" Packed="True" />
       <Resource Name="UI/UISprites/Icons" FileSystem="UI" LoadType="0" Packed="True" />
@@ -58,12 +59,14 @@
       <Asset Guid="2fb1e6475a54d7e48a4ef91e1205704f" ResourceName="Sounds" />
       <Asset Guid="2ff6cb6fbc1120745803ea77c2f5747a" ResourceName="Sounds" />
       <Asset Guid="315e8ed2db27c254cb3366ff0793cd90" ResourceName="DataTables" />
+      <Asset Guid="3244f795c5fec7b4b8d58100bfd88ac4" ResourceName="UI/UIItems" />
       <Asset Guid="352da872791696c48af3b21132e3e3c3" ResourceName="DataTables" />
       <Asset Guid="3575c365f4ba83b4a81345660e5934a6" ResourceName="Sounds" />
       <Asset Guid="372a8b1e52bedc64b9207b12d167afaa" ResourceName="DataTables" />
       <Asset Guid="3869307335b89814392d60fe4a9518bf" ResourceName="Meshes" />
       <Asset Guid="3be3fac3611f4584695662c4889f722d" ResourceName="UI/UISprites/Common" />
       <Asset Guid="3ea8e146e62c9684c896d136b7d3af2e" ResourceName="Entities" />
+      <Asset Guid="3ecf4e54f1c10a34da42983cb87969bf" ResourceName="Entities" />
       <Asset Guid="3f54fcfdac53aec42ae18a6a1c6d8cb1" ResourceName="UI/UISprites/Common" />
       <Asset Guid="4069d31759c59be44a1a52c08008156a" ResourceName="Meshes" />
       <Asset Guid="40f389cf3a988c446908b13219a73959" ResourceName="Meshes" />
@@ -115,6 +118,7 @@
       <Asset Guid="8e5448c54545dab4580c0b85d45dc339" ResourceName="Meshes" />
       <Asset Guid="922c18c966e3ba64cbf8f7ed2b80802f" ResourceName="Sounds" />
       <Asset Guid="93c4923b7d2f345489cc88bd63a4d129" ResourceName="DataTables" />
+      <Asset Guid="96d2e77dd9853514da336717bd5627c0" ResourceName="UI/UIItems" />
       <Asset Guid="97d117308cf86924289e81e7e71dd5dd" ResourceName="DataTables" />
       <Asset Guid="98c959ddeb64f64459a6d6ad2d7181cb" ResourceName="Sounds" />
       <Asset Guid="9b433f0bb7fef6f4085c316a0d88c307" ResourceName="DataTables" />
@@ -167,6 +171,7 @@
       <Asset Guid="e830964cdb85ff3429bca484c16bab44" ResourceName="UI/UISounds" />
       <Asset Guid="e85864330b68dde498dcb6e8711815d3" ResourceName="UI/UISprites/Common" />
       <Asset Guid="ea38700f2cda9b049810ee442f77643d" ResourceName="DataTables" />
+      <Asset Guid="ead8981b4c827cc4e892caba602f0371" ResourceName="Entities" />
       <Asset Guid="ee7a30cceb2d11c4da28b2d3d61c3cdf" ResourceName="UI/UISounds" />
       <Asset Guid="efc09da6bf5aa14439e661e04518e67c" ResourceName="Sounds" />
       <Asset Guid="f2f4df0b7211e4c42a5638273525d8ee" ResourceName="UI/UISprites/Common" />

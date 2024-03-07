@@ -71,8 +71,8 @@ public class RoadGenerator : GameFrameworkComponent
 
         private int serialId;//生成中的路段实体Id，之后通过生成实体成功事件来赋值，注意是异步加载
         public Road roadEntity;
-        
-       
+
+        public bool growed=false;//异步加载实体可能还没来得及加载，所以先判断是否成功grow后再从叶子节点中删除这个Node
         
         public Node(int id,RoadGenerator roadGenerator,Vector3 pos,Quaternion rotation)
         {
@@ -116,6 +116,7 @@ public class RoadGenerator : GameFrameworkComponent
         {
             if(roadEntity==null)
                 return;
+            growed = true;
             var tailPoses = roadEntity.spawnTailPos;
             var tailRotations = roadEntity.spawnTailRotations;
 
@@ -249,7 +250,7 @@ public class RoadGenerator : GameFrameworkComponent
             int turnCount = 0;
             foreach (var node in allNodes)
             {
-                if (!node.roadEntity.triggered && node.roadEntity.roadConfig.isTurn && !node.died)
+                if (node.roadEntity!=null && !node.roadEntity.triggered && node.roadEntity.roadConfig.isTurn && !node.died)
                 {
                     turnCount++;
                 }
@@ -267,10 +268,19 @@ public class RoadGenerator : GameFrameworkComponent
                 for (int i = 0; i < tmpList.Count; i++)
                 {
                     tmpList[i].Grow();
-                    //从leafNodes删除grow过的节点，因为他们不再是叶子节点了
-                    leafNodes.Remove(tmpList[i]);
+                  
                 }
                 
+            }
+
+            for (int i = 0; i < leafNodes.Count; i++)
+            {
+                if (leafNodes[i].growed)
+                {
+                    //从leafNodes删除grow过的节点，因为他们不再是叶子节点了
+                    leafNodes.RemoveAt(i);
+                    i--;
+                }
             }
 
             foreach (var branchGroup in branchGroups)

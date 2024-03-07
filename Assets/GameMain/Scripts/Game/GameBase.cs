@@ -140,7 +140,7 @@ namespace GameMain
             // });
             //天理直接使用placeHolder生成
 
-            GameEntry.Entity.ShowSceneCam();
+           
             #endregion
 
             GameOver = false;
@@ -374,6 +374,7 @@ namespace GameMain
             {
                 Player = ne.Entity.Logic as Player;
                 playerMove = Player.GetComponent<PlayerMove>();
+                GameEntry.Entity.ShowSceneCam();
 
             }
 
