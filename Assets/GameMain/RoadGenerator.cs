@@ -227,7 +227,7 @@ public class RoadGenerator : GameFrameworkComponent
         roadTable.GetAllDataRows(tableRows);
         
         
-        rootNode = new Node(GetRandomEntityId(new List<int>()),this,Vector3.zero,Quaternion.identity);//从根节点开始生成
+        rootNode = new Node(80004,this,Vector3.zero,Quaternion.identity);//从根节点开始生成
         
         StartCoroutine(GenerateCo());
 
