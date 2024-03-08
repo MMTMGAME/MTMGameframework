@@ -366,7 +366,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (isGrounded)
         {
-            Debug.Log("Jump!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            //Debug.Log("Jump!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             animator.SetTrigger("Jump");
         }
       

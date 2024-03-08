@@ -20,6 +20,13 @@ public class PillarGenerator : GameFrameworkComponent
     private Vector2Int lastPlayerArea; // 玩家上次所在的区域
     private HashSet<Vector2Int> decoratedAreas = new HashSet<Vector2Int>(); // 已生成装饰的区域
 
+
+    public void PullDown(Vector3 dir)
+    {
+        
+    }
+    
+    
     void Start()
     {
         
@@ -90,7 +97,11 @@ public class PillarGenerator : GameFrameworkComponent
         int count = UnityEngine.Random.Range(areaCount.x,areaCount.y);
         for (int i = 0; i < count; i++)
         {
+            
             Vector3 decorationPos = center + new Vector3(Random.Range(-areaSize / 2, areaSize / 2), 0, Random.Range(-areaSize / 2, areaSize / 2));
+            
+            if(decorationPos.sqrMagnitude<625)
+                continue;//中心半径为25的范围不能生成柱子
             ShowRandomPillars(decorationPos);
         }
        

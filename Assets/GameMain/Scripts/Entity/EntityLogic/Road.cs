@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using GameMain;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityGameFramework.Runtime;
@@ -68,6 +69,26 @@ public class Road : Entity
         CachedTransform.DOLocalMove(spawnPos, 0.3f).SetEase(Ease.InQuad).OnComplete(SpawnPrimogem);
         
         
+        
+        PillarCheck();
+    }
+
+    void PillarCheck()
+    {
+        var colliders = Physics.OverlapBox(transform.TransformPoint(0, 0, 5), new Vector3(2, 5, 5), transform.rotation);
+        foreach (var collider in colliders)
+        {
+            if (collider.CompareTag("Pillar"))
+            {
+                var pillarComp = collider.GetComponent<Pillar>();
+                if (pillarComp)
+                {
+                    var dir = pillarComp.transform.position - transform.position;
+                    dir.y = 0;
+                    pillarComp.Collapse(dir);
+                }
+            }
+        }
     }
 
     

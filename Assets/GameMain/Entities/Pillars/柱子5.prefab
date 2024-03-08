@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7988658161465853144}
   - component: {fileID: 8822591075627715179}
+  - component: {fileID: 5326698861239426062}
   m_Layer: 0
   m_Name: "\u67F1\u5B505"
   m_TagString: Pillar
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7988658161465853143}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -114.17606, y: -46.312675, z: 1.4325761}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47,6 +48,22 @@ CapsuleCollider:
   m_Height: 162.41817
   m_Direction: 1
   m_Center: {x: 0, y: 55.07168, z: 0}
+--- !u!54 &5326698861239426062
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7988658161465853143}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 4
+  m_CollisionDetection: 0
 --- !u!1001 &7988658162140900170
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64,7 +81,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ba257b04470009748bdd742647cc0ced, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 49.4
+      value: 74.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ba257b04470009748bdd742647cc0ced, type: 3}
       propertyPath: m_LocalPosition.z
