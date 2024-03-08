@@ -77,6 +77,8 @@ public class PlayerMove : MonoBehaviour
         showTime = Time.time;
 
         autoRun = false;
+
+        
     }
     
     
@@ -205,7 +207,12 @@ public class PlayerMove : MonoBehaviour
         else
         {
             curLine = GetCurLineIndex();
-            var targetPos = CalTargetPosInLine(--curLine);
+            var targetLine = --curLine;
+            if (targetLine < -1)
+            {
+                targetLine = -1;
+            }
+            var targetPos = CalTargetPosInLine(targetLine);
             StartCoroutine(SwitchLineCoroutine(targetPos));
         }
     }
@@ -244,7 +251,12 @@ public class PlayerMove : MonoBehaviour
         {
             
             curLine = GetCurLineIndex();
-            var targetPos = CalTargetPosInLine(++curLine);
+            var targetLine = ++curLine;
+            if (targetLine > 1)
+            {
+                targetLine = 1;
+            }
+            var targetPos = CalTargetPosInLine(targetLine);
             StartCoroutine(SwitchLineCoroutine(targetPos));
         }
     }
@@ -354,6 +366,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (isGrounded)
         {
+            Debug.Log("Jump!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             animator.SetTrigger("Jump");
         }
       
