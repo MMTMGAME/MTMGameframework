@@ -41,6 +41,7 @@
     <String Key="GameOver.HighestRecord" Value="Highest Record" />
     <String Key="GameOver.NewRecord" Value="NewRecord" />
     <String Key="GameOver.PrimogemCollected" Value="Number of Primogems Collected:" />
+    <String Key="GameOver.Distance" Value="Distance:" />
     <String Key="GameControl.DropItemTip" Value="[F] Drop Item" />
     <String Key="GameControl.UseItemTip" Value="[Mouse Right] Use Item" />
     <String Key="LevelTarget.Level1" Value="Target：Fire SkyRocket" />

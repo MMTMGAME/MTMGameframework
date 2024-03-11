@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using GameMain;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
@@ -16,7 +17,9 @@ public class PlayerMove : MonoBehaviour
     private Rigidbody rb;
     private Animator animator;
     private PlayerInputActions playerInputActions;
-    
+
+    public float distance { get; private set; }
+
     [Header("基础移速，匹配动画基础速度")]
     public float baseSpeed = 5.457f;
     
@@ -172,7 +175,10 @@ public class PlayerMove : MonoBehaviour
     {
         if(isSwitchingLine)
             return;
-        transform.Translate(Vector3.forward * (speed * Time.deltaTime),Space.Self);
+        var delta = Vector3.forward * (speed * Time.deltaTime);
+        transform.Translate(delta,Space.Self);
+        distance += speed * Time.deltaTime;
+
     }
 
 
@@ -550,12 +556,15 @@ public class PlayerMove : MonoBehaviour
 
     #region 被绊倒
 
+    public float lastStumbleTime { get; private set; }
+
     public void OnStumble()
     {
         animator.SetTrigger(Stumbled);
         StartCoroutine(SlowDownC());
         GameEntry.CameraShake.ShakeCamera(1f,1,0.35f);
         GameEntry.Sound.PlaySound(10030);
+        lastStumbleTime = Time.time;
     }
 
     

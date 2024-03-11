@@ -107,6 +107,7 @@ public class RoadGenerator : GameFrameworkComponent
         {
             var row = roadGenerator.roadTable.GetDataRow(this.entityId);
             var blackListStr = row.BlackList.Split(",");
+            //Debug.LogError(blackListStr.ToString());
             var blackListInt = blackListStr.Select(int.Parse).ToList();
             return blackListInt;
         }
@@ -227,7 +228,7 @@ public class RoadGenerator : GameFrameworkComponent
         roadTable.GetAllDataRows(tableRows);
         
         
-        rootNode = new Node(80004,this,Vector3.zero,Quaternion.identity);//从根节点开始生成
+        rootNode = new Node(80005,this,Vector3.zero,Quaternion.identity);//从根节点开始生成
         
         StartCoroutine(GenerateCo());
 

@@ -44,6 +44,7 @@ public class MeleeWeaponAttack : WeaponAttack
             {
                 GameEntry.Sound.PlaySound(20000);
                 AIUtility.Attack(ownerBattleUnit,victim);
+                lastAttackedTime = Time.time;
             }
            
         }

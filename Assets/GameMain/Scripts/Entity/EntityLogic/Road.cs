@@ -83,9 +83,9 @@ public class Road : Entity
                 var pillarComp = collider.GetComponent<Pillar>();
                 if (pillarComp)
                 {
-                    var dir = pillarComp.transform.position - transform.position;
+                    var dir = transform.forward;
                     dir.y = 0;
-                    pillarComp.Collapse(dir);
+                    pillarComp.Collapse(dir*20);
                 }
             }
         }
@@ -117,8 +117,8 @@ public class Road : Entity
         }
         
     }
-    
-    
+
+  
 
     //坠落后Hide
     public void Fall()

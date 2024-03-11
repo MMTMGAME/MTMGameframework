@@ -24,6 +24,7 @@ public class Pillar : Entity // 假设这里应该是 MonoBehaviour，除非你�
     public void Collapse(Vector3 dir)
     {
         rb.AddTorque(dir);
+        rb.angularDrag = 0.15f;
     }
     public void StartMoving()
     {

@@ -11,12 +11,16 @@ public class LevelDisplayForm : UGuiForm
 
    public Image primogemIcon;
 
+   public Text distanceText;
+   
    private GameBase gameBase;
 
    public Image skillFillImage;
 
    private Animator animator;
    private float requiredSkillPoint;
+   
+   
    public void Init(GameBase gameBase)
    {
       this.gameBase = gameBase;
@@ -47,6 +51,7 @@ public class LevelDisplayForm : UGuiForm
 
       skillFillImage.fillAmount = gameBase.skillPoint/requiredSkillPoint;
 
+      distanceText.text = Mathf.CeilToInt(gameBase.playerMove.distance)+"米";
      
       animator.SetBool("Ready",gameBase.skillPoint >= requiredSkillPoint);
       

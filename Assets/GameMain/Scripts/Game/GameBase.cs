@@ -328,7 +328,7 @@ namespace GameMain
             
         }
 
-        private bool speedAdjustEnabled;
+        private bool speedAdjustEnabled=true;
 
         public void SwitchSpeedAdjust(bool status)
         {
@@ -350,7 +350,7 @@ namespace GameMain
         }
 
 
-        private PlayerMove playerMove;
+        public PlayerMove playerMove;
         void AdjustSpeed()
         {
             
@@ -358,7 +358,7 @@ namespace GameMain
                 return;
 
             float elapsedTime = Time.realtimeSinceStartup - startTime;
-            float duration = 300; // 5分钟
+            float duration = 450; // 5分钟
             if (elapsedTime <= duration) {
                 float progress = elapsedTime / duration;
                 GameEntry.Base.GameSpeed = 1 + (1.25f * Mathf.Log10(1 + 9 * progress));

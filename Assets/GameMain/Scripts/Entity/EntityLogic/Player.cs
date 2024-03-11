@@ -11,6 +11,7 @@ using GameEntry = GameMain.GameEntry;
 public class Player : BattleUnit
 {
     private PlayerData playerData;
+    public PlayerMove  PlayerMove { get; private set; }
 
     public Rigidbody rigid;
 
@@ -19,6 +20,8 @@ public class Player : BattleUnit
         base.OnShow(userData);
         playerData=userData as PlayerData;
 
+        PlayerMove = GetComponent<PlayerMove>();
+        
         if (playerData == null)
         {
             Log.Error("PlayerData is Invalid");
@@ -56,7 +59,8 @@ public class Player : BattleUnit
         GameEntry.Sound.PlaySound(BattleUnitData.DeadSoundId);
         
         GameEntry.Entity.transform.gameObject.SetActive(true);
-        GetComponent<PlayerMove>().enabled = false;
+        PlayerMove.enabled = false;
         CachedAnimator.SetTrigger("Die");
+        GetComponent<RigBuilder>().enabled = false;
     }
 }

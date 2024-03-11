@@ -137,12 +137,33 @@ namespace GameMain
                 bool highScore = currentGame.score >highestScore;
                 if(highScore)
                     GameEntry.Setting.SetInt("HighScore",Mathf.RoundToInt(currentGame.score));
+
+                var farthestDistance = GameEntry.Setting.GetInt("FarthestDistance");
+                bool newDistanceRecord = currentGame.playerMove.distance > farthestDistance;
+                if (newDistanceRecord)
+                {
+                    GameEntry.Setting.SetInt("FarthestDistance",Mathf.RoundToInt(currentGame.playerMove.distance));
+                }
+                
+                // 假设本地化的字符串已经定义好了
+                string distanceLabel = GameEntry.Localization.GetString("GameOver.Distance");
+                string gemsLabel = GameEntry.Localization.GetString("GameOver.PrimogemCollected");
+
+                // 检查是否有新的纪录，并构造相应的字符串
+                string distanceRecord = newDistanceRecord ? "<color=red>【新纪录】</color>" : "";
+                string highScoreRecord = highScore ? "<color=red>【新纪录】</color>" : "";
+
+                // 当前数据与历史最高数据的格式化字符串
+                string distanceStr = $"{distanceLabel} {distanceRecord}{Mathf.RoundToInt(currentGame.playerMove.distance)}/{farthestDistance}";
+                string highScoreStr = $"{gemsLabel} {highScoreRecord}{Mathf.RoundToInt(currentGame.score)}/{highestScore}";
+
+                // 最终的字符串
+                string finalStr = distanceStr + "\n" + highScoreStr;
                 GameEntry.UI.OpenDialog(new DialogParams()
                 {
                     Mode = 1,
                     Title = GameEntry.Localization.GetString("GameOver.Title"),
-                    Message = (highScore? "<size=50><color=green>"+GameEntry.Localization.GetString("GameOver.NewRecord")+"</color></size>\n":"<size=50><color=green>"+GameEntry.Localization.GetString("GameOver.HighestRecord")+" : "+ highestScore + "</color></size>\n")
-                              + GameEntry.Localization.GetString("GameOver.PrimogemCollected")+currentGame.score,
+                    Message = finalStr,
                     OnClickConfirm = delegate(object userData) { Retry(); },
                     ConfirmText = GameEntry.Localization.GetString("GameOver.Retry"),
                     OnClickCancel = delegate(object userData) { GotoMenu(0.5f); },
