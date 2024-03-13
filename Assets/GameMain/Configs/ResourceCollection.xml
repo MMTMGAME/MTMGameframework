@@ -53,10 +53,8 @@
       <Asset Guid="2402e01d67bcc8c4d9354f2d6d03487f" ResourceName="Sounds" />
       <Asset Guid="24ca310f92a6796408f1db7647ec4e55" ResourceName="UI/UISprites/Common" />
       <Asset Guid="25681e8055641e54b85aa317065c975c" ResourceName="Meshes" />
-      <Asset Guid="2613104b8a0126d48ab5b1528a7699ff" ResourceName="Sounds" />
       <Asset Guid="2aefb8df01ad49547bc4d8c30c5dc3c3" ResourceName="Entities" />
       <Asset Guid="2cbe5acf70a49534d8c78069d10c31b5" ResourceName="Meshes" />
-      <Asset Guid="2d60a06e99a38c341a27f67d2af35fe1" ResourceName="Sounds" />
       <Asset Guid="2fb1e6475a54d7e48a4ef91e1205704f" ResourceName="Sounds" />
       <Asset Guid="2ff6cb6fbc1120745803ea77c2f5747a" ResourceName="Sounds" />
       <Asset Guid="30cfc10533ec5d1468dd8bb8a6a9773f" ResourceName="Sounds" />
@@ -75,13 +73,10 @@
       <Asset Guid="419633b70d74bc94887dd5f5fb34d683" ResourceName="Meshes" />
       <Asset Guid="44c8db52241385c45bbb14a1718f17bf" ResourceName="Configs" />
       <Asset Guid="46d5cd414a99e84498708d0ff0b6fcf0" ResourceName="Meshes" />
-      <Asset Guid="473aa03b7f61c9b48925ca9c4e0b037f" ResourceName="Sounds" />
       <Asset Guid="489c0f90ad5264e4d8281ea2b49b8713" ResourceName="DataTables" />
       <Asset Guid="4a8ea1c78073ab649896c6e64753fe05" ResourceName="DataTables" />
       <Asset Guid="4c535a776db9d4c42be9229d51058224" ResourceName="UI/UISounds" />
       <Asset Guid="4e3df2e6f5a1df540a78dc78c906e0d1" ResourceName="Sounds" />
-      <Asset Guid="506c41c94ce948f4fb81567b75d6a2e0" ResourceName="Meshes" />
-      <Asset Guid="50725e825ed38e143be6721c73d9abeb" ResourceName="Textures" />
       <Asset Guid="52d777f20b37b47489de07a543b3acb6" ResourceName="Meshes" />
       <Asset Guid="5378dde924753374898b01be12d2242d" ResourceName="Meshes" />
       <Asset Guid="56b8df63bbad60749a69e38bc687fadf" ResourceName="UI/UISprites/Common" />
@@ -101,7 +96,6 @@
       <Asset Guid="6cbc2c323b77f804fb958fa4eca33998" ResourceName="UI/UISprites/Common" />
       <Asset Guid="6da33ae99170b044682cf1f76d978a8d" ResourceName="Entities" />
       <Asset Guid="6f24d3c049e58df4c88d560294776d58" ResourceName="Entities" />
-      <Asset Guid="712f7f5be55ea3145822a50e821a9d4d" ResourceName="Sounds" />
       <Asset Guid="74f34f93a27ece84795ad8195d9e560f" ResourceName="UI/UISprites/Common" />
       <Asset Guid="76aa6c921991225499b0478454f382d7" ResourceName="Entities" />
       <Asset Guid="77cbb7c5404c10242ab59953e0746314" ResourceName="Fonts" />
@@ -114,7 +108,6 @@
       <Asset Guid="7fd11dc5d29076d469d414dec2818f11" ResourceName="Configs" />
       <Asset Guid="86d4333c929bda642956b489f01d5122" ResourceName="Entities" />
       <Asset Guid="8b1acacd22538f34cb85287a0781ea5e" ResourceName="DataTables" />
-      <Asset Guid="8d9b97a186b2fa246a2dea0e6e9c0ae6" ResourceName="Sounds" />
       <Asset Guid="8e114ded6a865324588170636872943c" ResourceName="DataTables" />
       <Asset Guid="8e2a5b4019c295f4abd0ccc012397a2f" ResourceName="Meshes" />
       <Asset Guid="8e5448c54545dab4580c0b85d45dc339" ResourceName="Meshes" />
@@ -123,7 +116,6 @@
       <Asset Guid="9550ca0fcfa01ae4ba56362589f571ba" ResourceName="Entities" />
       <Asset Guid="96d2e77dd9853514da336717bd5627c0" ResourceName="UI/UIItems" />
       <Asset Guid="97d117308cf86924289e81e7e71dd5dd" ResourceName="DataTables" />
-      <Asset Guid="98c959ddeb64f64459a6d6ad2d7181cb" ResourceName="Sounds" />
       <Asset Guid="9b433f0bb7fef6f4085c316a0d88c307" ResourceName="DataTables" />
       <Asset Guid="9be2e1e45f4edd74c8764538ad306b78" ResourceName="Localization/Dictionaries" ResourceVariant="zh-cn" />
       <Asset Guid="9c3faac13c8ced84a9f3018303b7bb98" ResourceName="DataTables" />
@@ -143,10 +135,8 @@
       <Asset Guid="b0bb9a81340bb7d438c7d10fe7f4c648" ResourceName="Entities" />
       <Asset Guid="b0c71b16f02e72f4ea72fe658a5ee334" ResourceName="UI/UISounds" />
       <Asset Guid="b2cebe04343227945bab3729ca9a3493" ResourceName="DataTables" />
-      <Asset Guid="b3f9dd4a3359fc94e94d9030188f8051" ResourceName="Sounds" />
       <Asset Guid="b79fe1aacc026dd4e80f7d06f6c06dab" ResourceName="Entities" />
       <Asset Guid="ba257b04470009748bdd742647cc0ced" ResourceName="Meshes" />
-      <Asset Guid="ba8676627f740e1448de70b2cb77ddc8" ResourceName="Materials" />
       <Asset Guid="bb7dfad71c925de499c1e1974384cbd3" ResourceName="Sounds" />
       <Asset Guid="bbfd75fe6fe00e1448fe988173ede7f9" ResourceName="UI/UIForms" />
       <Asset Guid="c7d1e11dd37634b48a9dd4012b8e4306" ResourceName="UI/UISounds" />
