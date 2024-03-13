@@ -203,6 +203,9 @@ public class PlayerMove : MonoBehaviour
         if(isSwitchingLine /*|| isGrounded==false*/)
             return;
         
+        if(curRoadConfig==null)
+            return;
+        
         curLine--;
 
         if ( curRoadConfig!=null && curRoadConfig.isTurn /*&& (curAutoRunDirection.direction==AutoRunDirection.Direction.Left || curAutoRunDirection.direction == AutoRunDirection.Direction.Right)*/)
@@ -246,9 +249,12 @@ public class PlayerMove : MonoBehaviour
         if(isSwitchingLine /*|| isGrounded==false*/)
             return;
         
+        if(curRoadConfig==null)
+            return;
+        
         curLine++;
         
-        if (curRoadConfig!=null && curRoadConfig.isTurn /*&& (curAutoRunDirection.direction==AutoRunDirection.Direction.Left || curAutoRunDirection.direction == AutoRunDirection.Direction.Right)*/)
+        if (curRoadConfig.isTurn /*&& (curAutoRunDirection.direction==AutoRunDirection.Direction.Left || curAutoRunDirection.direction == AutoRunDirection.Direction.Right)*/)
         {
             lastTurnRightKeyTime = Time.time;
             //TurnRight();

@@ -59,11 +59,12 @@ public class RoadGenerator : GameFrameworkComponent
         }
     }
     
-    [System.Serializable]
+    
     private class Node //树的节点，一个节点对应一个路段，一个节点可以有多个子节点
     {
         public bool died;
-        
+
+        public int nodeId;
         public int entityId;
         public RoadGenerator roadGenerator;
         public Vector3 pos;
@@ -74,9 +75,10 @@ public class RoadGenerator : GameFrameworkComponent
 
         public bool growed=false;//异步加载实体可能还没来得及加载，所以先判断是否成功grow后再从叶子节点中删除这个Node
         
-        public Node(int id,RoadGenerator roadGenerator,Vector3 pos,Quaternion rotation)
+        public Node(int nodeId,int entityId,RoadGenerator roadGenerator,Vector3 pos,Quaternion rotation)
         {
-            this.entityId = id;
+            this.nodeId = nodeId;
+            this.entityId = entityId;
             this.pos = pos;
             this.rotation = rotation;
             this.roadGenerator = roadGenerator;
@@ -109,6 +111,13 @@ public class RoadGenerator : GameFrameworkComponent
             var blackListStr = row.BlackList.Split(",");
             //Debug.LogError(blackListStr.ToString());
             var blackListInt = blackListStr.Select(int.Parse).ToList();
+            if (nodeId < 10)//前是个路段不能生成被砸断口
+            {
+                if (!blackListInt.Contains(80013))
+                {
+                    blackListInt.Add(80013);
+                }
+            }
             return blackListInt;
         }
 
@@ -126,7 +135,7 @@ public class RoadGenerator : GameFrameworkComponent
             {
                
                 //子节点的位置在模型的尾部，可能有多个尾部，比如T型路段
-                childrenNodes.Add(new Node(roadGenerator.GetRandomEntityId(GetBlackList()), roadGenerator, tailPoses[i],
+                childrenNodes.Add(new Node(nodeId++,roadGenerator.GetRandomEntityId(GetBlackList()), roadGenerator, tailPoses[i],
                     tailRotations[i]
                     
                     ));
@@ -228,7 +237,7 @@ public class RoadGenerator : GameFrameworkComponent
         roadTable.GetAllDataRows(tableRows);
         
         
-        rootNode = new Node(80005,this,Vector3.zero,Quaternion.identity);//从根节点开始生成
+        rootNode = new Node(0,80005,this,Vector3.zero,Quaternion.identity);//从根节点开始生成
         
         StartCoroutine(GenerateCo());
 

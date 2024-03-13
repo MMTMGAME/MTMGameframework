@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerAnimatorAudioEvents : MonoBehaviour
 {
     public void PlayFootStepAudios()
-    {
+    { 
         GameEntry.Sound.PlaySound(UnityEngine.Random.Range(10002, 10006));
     }
     

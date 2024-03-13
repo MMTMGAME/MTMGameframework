@@ -8,6 +8,7 @@
 using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameFramework.Sound
 {
@@ -486,6 +487,7 @@ namespace GameFramework.Sound
             }
 
             m_SoundsBeingLoaded.Add(serialId);
+            //Debug.Log("加载中音效："+serialId);
             m_ResourceManager.LoadAsset(soundAssetName, priority, m_LoadAssetCallbacks, PlaySoundInfo.Create(serialId, soundGroup, playSoundParams, userData));
             return serialId;
         }
@@ -636,6 +638,7 @@ namespace GameFramework.Sound
 
             PlaySoundErrorCode? errorCode = null;
             ISoundAgent soundAgent = playSoundInfo.SoundGroup.PlaySound(playSoundInfo.SerialId, soundAsset, playSoundInfo.PlaySoundParams, out errorCode);
+            
             if (soundAgent != null)
             {
                 if (m_PlaySoundSuccessEventHandler != null)

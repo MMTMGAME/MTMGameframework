@@ -8,12 +8,14 @@ using UnityEngine;
 public class Primogem : Entity
 {
     private PrimogemData primogemData;
+
+    private Tween tween;
     protected override void OnShow(object userData)
     {
         base.OnShow(userData);
         primogemData = (PrimogemData)userData;
         GameEntry.Entity.AttachEntity(this,primogemData.ownerId);
-        transform.DOJump(transform.position + Vector3.up * 0.1f, 1f, 1, 2).SetLoops(-1);
+        tween=transform.DOJump(transform.position + Vector3.up * 0.1f, 1f, 1, 2).SetLoops(-1);
     }
 
     protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -22,11 +24,15 @@ public class Primogem : Entity
         transform.Rotate(Vector3.up,30*elapseSeconds);
         
     }
-    
-    
 
-    
-    
+
+    protected override void OnHide(bool isShutdown, object userData)
+    {
+        base.OnHide(isShutdown, userData);
+        tween?.Kill();
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         var player = other.gameObject.GetComponent<Player>();
