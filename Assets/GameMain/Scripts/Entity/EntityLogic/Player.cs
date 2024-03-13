@@ -33,7 +33,7 @@ public class Player : BattleUnit
         GetComponent<RigBuilder>().Build();
         
         //测试跟随抖动
-        GameEntry.EntityUi.ShowEntityUi (new ShowHpBarItemInfo(GameEntry.EntityUi.GenerateSerialId(), this, 1, 1));
+        //GameEntry.EntityUi.ShowEntityUi (new ShowHpBarItemInfo(GameEntry.EntityUi.GenerateSerialId(), this, 1, 1));
 
     }
 
