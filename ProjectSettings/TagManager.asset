@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Road
   - Pillar
+  - Bridge
   layers:
   - Default
   - TransparentFX

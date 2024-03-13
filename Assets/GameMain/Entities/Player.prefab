@@ -13541,6 +13541,7 @@ GameObject:
   - component: {fileID: 5841587623802206078}
   - component: {fileID: 6627186057086148438}
   - component: {fileID: 919811246422749458}
+  - component: {fileID: 1729778353797975253}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -13707,6 +13708,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f89cb21c338a2842bd2d13fe5ea79fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1729778353797975253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578454011474156098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e220b2b8b63e040bd97f83c27356d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8582458098500236032
