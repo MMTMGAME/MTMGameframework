@@ -14,10 +14,15 @@ public class Pillar : Entity // 假设这里应该是 MonoBehaviour，除非你�
 
     private Vector3 startPosition;
     private Rigidbody rb;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
     private void Start()
     {
         startPosition = transform.position;
-        rb = GetComponent<Rigidbody>();
+        
     }
 
 

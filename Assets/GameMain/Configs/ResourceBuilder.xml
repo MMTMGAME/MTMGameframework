@@ -2,8 +2,8 @@
 <UnityGameFramework>
   <ResourceBuilder>
     <Settings>
-      <InternalResourceVersion>17</InternalResourceVersion>
-      <Platforms>1</Platforms>
+      <InternalResourceVersion>19</InternalResourceVersion>
+      <Platforms>32</Platforms>
       <AssetBundleCompression>2</AssetBundleCompression>
       <CompressionHelperTypeName>UnityGameFramework.Runtime.DefaultCompressionHelper</CompressionHelperTypeName>
       <AdditionalCompressionSelected>True</AdditionalCompressionSelected>
@@ -12,8 +12,8 @@
       </BuildEventHandlerTypeName>
       <OutputDirectory>D:/UnityProjects/GenshinRun/AssetBundles</OutputDirectory>
       <OutputPackageSelected>True</OutputPackageSelected>
-      <OutputFullSelected>True</OutputFullSelected>
-      <OutputPackedSelected>True</OutputPackedSelected>
+      <OutputFullSelected>False</OutputFullSelected>
+      <OutputPackedSelected>False</OutputPackedSelected>
     </Settings>
   </ResourceBuilder>
 </UnityGameFramework>

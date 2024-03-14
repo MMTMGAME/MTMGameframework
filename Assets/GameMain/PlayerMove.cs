@@ -92,6 +92,7 @@ public class PlayerMove : MonoBehaviour
         playerInputActions.Player.Left.performed += Left;
         playerInputActions.Player.Right.performed += Right;
         playerInputActions.Player.Down.performed += Down;
+        playerInputActions.Player.F.performed += UseSkill;
 
         swipeDetection.swipeUp += Jump;
         swipeDetection.swipeLeft += Left;
@@ -108,6 +109,7 @@ public class PlayerMove : MonoBehaviour
         playerInputActions.Player.Left.performed -= Left;
         playerInputActions.Player.Right.performed -= Right;
         playerInputActions.Player.Down.performed -= Down;
+        playerInputActions.Player.F.performed -= UseSkill;
         
         swipeDetection.swipeUp -= Jump;
         swipeDetection.swipeLeft -= Left;
@@ -190,7 +192,20 @@ public class PlayerMove : MonoBehaviour
 
     private float lastTurnLeftKeyTime = 0;
     private float lastTurnRightKeyTime = 0;
-   
+
+
+    void UseSkill(InputAction.CallbackContext callbackContext)
+    {
+        try
+        {
+            (GameEntry.Procedure.CurrentProcedure as ProcedureLevel)?.GetGameBase().UseSkill();
+        }
+        catch (Exception e)
+        {
+           //释放技能
+        }
+        
+    }
     void Down(InputAction.CallbackContext callbackContext)
     {
         animator.SetTrigger(Slide);

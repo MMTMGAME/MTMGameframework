@@ -12,6 +12,7 @@ public class LevelDisplayForm : UGuiForm
    public Image primogemIcon;
 
    public Text distanceText;
+   public Image useSkillKeyTip;
    
    private GameBase gameBase;
 
@@ -19,7 +20,9 @@ public class LevelDisplayForm : UGuiForm
 
    private Animator animator;
    private float requiredSkillPoint;
-   
+
+
+   private bool isWindows;
    
    public void Init(GameBase gameBase)
    {
@@ -28,6 +31,7 @@ public class LevelDisplayForm : UGuiForm
       
          
       requiredSkillPoint = GameEntry.Config.GetFloat("Game.RequiredSkillPoint", 50);
+      isWindows = !Application.isMobilePlatform;
    }
 
    public void OpenPauseForm()
@@ -54,6 +58,19 @@ public class LevelDisplayForm : UGuiForm
       distanceText.text = Mathf.CeilToInt(gameBase.playerMove.distance)+"米";
      
       animator.SetBool("Ready",gameBase.skillPoint >= requiredSkillPoint);
+
+      if (isWindows)
+      {
+         TrySetActive(useSkillKeyTip.gameObject,gameBase.skillPoint >= requiredSkillPoint);
+      }
+      
+   }
+
+   void TrySetActive(GameObject target,bool status)
+   {
+      if(target.activeSelf==status)
+         return;//检测是否有必要SetActive，否则会很耗性能
+      target.SetActive(status);
       
    }
 }
