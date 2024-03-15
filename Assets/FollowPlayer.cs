@@ -54,8 +54,8 @@ public class FollowPlayer : MonoBehaviour
 
     }
 
-    // private void OnDisable()
-    // {
-    //     GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
-    // }
+    private void OnDisable()
+    {
+        GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
+    }
 }
