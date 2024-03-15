@@ -16,12 +16,12 @@ public class BridgeCheck : MonoBehaviour
     {
         while (true)
         {
-            Collider[] hits = Physics.OverlapSphere(transform.position, 20f);
+            Collider[] hits = Physics.OverlapBox(transform.position, new Vector3(20,2,20));
             HashSet<BridgeMaterialsSwitch> currentBridges = new HashSet<BridgeMaterialsSwitch>();
 
             foreach (var hit in hits)
             {
-                if (hit.CompareTag("Bridge"))
+                if (hit.CompareTag("Bridge") || hit.CompareTag("Pillar"))
                 {
                     BridgeMaterialsSwitch bridgeSwitch = hit.GetComponent<BridgeMaterialsSwitch>();
                     if (bridgeSwitch != null)
@@ -35,8 +35,15 @@ public class BridgeCheck : MonoBehaviour
                 }
             }
 
-            foreach (var bridge in bridgesInProximity)
+            for (var i = 0; i < bridgesInProximity.Count; i++)
             {
+                var bridge = bridgesInProximity[i];
+                if (bridge == null)
+                {
+                    i--;
+                    continue;
+                }
+                
                 if (!currentBridges.Contains(bridge))
                 {
                     bridge.SwitchToOpaque();

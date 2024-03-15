@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6231309046803283898}
   - component: {fileID: 545655933577974638}
   - component: {fileID: 311270377249048779}
+  - component: {fileID: -3807054876486630100}
   m_Layer: 0
   m_Name: "\u67F1\u5B502"
   m_TagString: Pillar
@@ -64,6 +65,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
+--- !u!114 &-3807054876486630100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231309046803283899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123bc3c68f7980f4fbb31abb48f0b8e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  opaqueMaterial: {fileID: 2100000, guid: 1a2d5f52322d88045b6c607c4a405e70, type: 2}
+  transparentMaterial: {fileID: 2100000, guid: 8b32d6df20e37344b94089ce503b779e, type: 2}
 --- !u!1001 &6231309046581339446
 PrefabInstance:
   m_ObjectHideFlags: 0

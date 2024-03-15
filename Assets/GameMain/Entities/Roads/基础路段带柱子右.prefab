@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 1072858077803553192}
   - component: {fileID: 8589052730804641306}
   - component: {fileID: 1321576184975729624}
+  - component: {fileID: 959765692882644435}
   m_Layer: 0
   m_Name: "\u67F1\u5B503"
   m_TagString: Pillar
@@ -367,6 +368,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &959765692882644435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2587724679349241595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123bc3c68f7980f4fbb31abb48f0b8e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  opaqueMaterial: {fileID: 2100000, guid: 56fc105266a0fef419897d1ce4aee964, type: 2}
+  transparentMaterial: {fileID: 2100000, guid: be96ffe709096214aab8d951509ecfe0, type: 2}
 --- !u!1 &4243155329774031249
 GameObject:
   m_ObjectHideFlags: 0

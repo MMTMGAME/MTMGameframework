@@ -9,7 +9,7 @@ public class BridgeMaterialsSwitch : MonoBehaviour
     void Start()
     {
        
-        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
 
         meshRenderer.material = opaqueMaterial;
     }
