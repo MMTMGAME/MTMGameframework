@@ -375,6 +375,8 @@ namespace GameMain
                 Player = ne.Entity.Logic as Player;
                 playerMove = Player.GetComponent<PlayerMove>();
                 GameEntry.Entity.ShowSceneCam();
+                
+                GameEntry.Entity.ShowEffectCloud(new EffectCloudData(GameEntry.Entity.GenerateSerialId(),10,Player.transform));
 
             }
 

@@ -114,6 +114,12 @@ namespace GameMain
             entityComponent.ShowEntity(typeof(Effect), "Effect", Constant.AssetPriority.EffectAsset, data);
         }
         
+        public static void ShowEffectCloud(this EntityComponent entityComponent, EffectCloudData data)
+        {
+            entityComponent.ShowEntity(typeof(EffectCloud), "Player", Constant.AssetPriority.EffectAsset, data);
+        }
+        
+        
         public static void ShowObstacle(this EntityComponent entityComponent, ObstacleData data)
         {
             entityComponent.ShowEntity(typeof(Obstacle), "Road", Constant.AssetPriority.MapAsset, data);
