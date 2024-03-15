@@ -361,7 +361,7 @@ namespace GameMain
             float duration = 450; // 5分钟
             if (elapsedTime <= duration) {
                 float progress = elapsedTime / duration;
-                GameEntry.Base.GameSpeed = 1 + (1.25f * Mathf.Log10(1 + 9 * progress));
+                GameEntry.Base.GameSpeed = 1 + (1f * Mathf.Log10(1 + 9 * progress));
             }
             
         }

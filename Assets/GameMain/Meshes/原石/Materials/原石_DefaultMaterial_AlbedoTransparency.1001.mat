@@ -8,16 +8,17 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: "\u539F\u77F3_DefaultMaterial_AlbedoTransparency.1001"
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: cd83cf70b9e641149b0f60fc82851812, type: 3}
   m_ValidKeywords:
+  - CURVEDWORLD_BEND_TYPE_TWISTEDSPIRAL_Z_POSITIVE
   - _ALPHAPREMULTIPLY_ON
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - CURVEDWORLD_BEND_ID_1
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -78,5 +79,6 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CurvedWorldBendSettings: {r: 29, g: 1, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

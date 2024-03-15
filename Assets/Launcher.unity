@@ -414,7 +414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   areaSize: 500
-  areaCount: {x: 12, y: 24}
+  areaCount: {x: 7, y: 12}
 --- !u!4 &677558318 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 642739819890595687, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
@@ -621,7 +621,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1844984924396876165, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
       propertyPath: m_EditorResourceMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1844984924396877315, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
       propertyPath: m_AssetCapacity
