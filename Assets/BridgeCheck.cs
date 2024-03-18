@@ -40,6 +40,7 @@ public class BridgeCheck : MonoBehaviour
                 var bridge = bridgesInProximity[i];
                 if (bridge == null)
                 {
+                    bridgesInProximity.RemoveAt(i);
                     i--;
                     continue;
                 }
