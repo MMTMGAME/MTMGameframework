@@ -112,7 +112,7 @@ public class PillarGenerator : GameFrameworkComponent
         int id = 90000 + UnityEngine.Random.Range(0, 9);
         GameEntry.Entity.ShowPillar(new PillarData(GameEntry.Entity.GenerateSerialId(),id)
         {
-            Position = UnityEngine.Random.Range(0,10)==0?pos: pos-Vector3.up*UnityEngine.Random.Range(75,110),
+            Position = (UnityEngine.Random.Range(0,10)==0 && player!=null && Vector3.Distance(pos,player.transform.position)>1600)?pos: pos-Vector3.up*UnityEngine.Random.Range(75,110),
             Rotation = Quaternion.Euler(0,UnityEngine.Random.Range(0,360),0)
         });
     }
