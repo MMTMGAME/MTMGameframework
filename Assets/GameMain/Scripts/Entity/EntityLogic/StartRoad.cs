@@ -13,12 +13,19 @@ public class StartRoad : Entity
     {
         base.OnShow(userData);
         startRoadData = (StartRoadData)userData;
-        
-        Invoke(nameof(HideSelf),5);
+
+        StartCoroutine(HideSelf());
     }
 
-    void HideSelf()
+    IEnumerator HideSelf()
     {
+        yield return new WaitForSeconds(5);
         GameEntry.Entity.HideEntity(this);
+    }
+
+    protected override void OnRecycle()
+    {
+        base.OnRecycle();
+        StopAllCoroutines();
     }
 }

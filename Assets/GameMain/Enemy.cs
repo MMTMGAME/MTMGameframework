@@ -118,6 +118,8 @@ public class Enemy : BattleUnit
         }
         
         //远程武器逻辑，远程武器只要在弹幕路段就可以直接攻击
+        if(m_Weapons.Count<2)
+            return;
         if (isBarrageMode)
         {
             m_Weapons[1].TryAttack();

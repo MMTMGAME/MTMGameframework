@@ -83,9 +83,9 @@ public class PlayerMove : MonoBehaviour
         showTime = Time.time;
 
         autoRun = false;
-        
 
-        
+        curRoad = null;
+
     }
 
 
@@ -474,6 +474,8 @@ public class PlayerMove : MonoBehaviour
         autoRun = status;
         if (autoRun)
         {
+            if(isBarrageMode)
+                return;//弹幕模式不禁用控制。
             playerInputActions.Disable();
             swipeDetection.Disable();
         }

@@ -641,7 +641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1844984924396876165, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
       propertyPath: m_EditorResourceMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1844984924396877315, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
       propertyPath: m_AssetCapacity
@@ -664,8 +664,12 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1844984924397042225, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
-      propertyPath: m_ActiveWindow
+      propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844984924397042225, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_ActiveWindow
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7671661395686638836, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
       propertyPath: m_MatchWidthOrHeight

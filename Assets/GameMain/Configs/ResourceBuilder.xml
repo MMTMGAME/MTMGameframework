@@ -2,14 +2,13 @@
 <UnityGameFramework>
   <ResourceBuilder>
     <Settings>
-      <InternalResourceVersion>19</InternalResourceVersion>
-      <Platforms>32</Platforms>
+      <InternalResourceVersion>20</InternalResourceVersion>
+      <Platforms>1</Platforms>
       <AssetBundleCompression>2</AssetBundleCompression>
       <CompressionHelperTypeName>UnityGameFramework.Runtime.DefaultCompressionHelper</CompressionHelperTypeName>
       <AdditionalCompressionSelected>True</AdditionalCompressionSelected>
       <ForceRebuildAssetBundleSelected>False</ForceRebuildAssetBundleSelected>
-      <BuildEventHandlerTypeName>
-      </BuildEventHandlerTypeName>
+      <BuildEventHandlerTypeName>GameMain.Editor.GameMainBuildEventHandler</BuildEventHandlerTypeName>
       <OutputDirectory>D:/UnityProjects/GenshinRun/AssetBundles</OutputDirectory>
       <OutputPackageSelected>True</OutputPackageSelected>
       <OutputFullSelected>False</OutputFullSelected>

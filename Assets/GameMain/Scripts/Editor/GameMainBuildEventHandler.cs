@@ -13,7 +13,7 @@ using UnityGameFramework.Editor.ResourceTools;
 
 namespace GameMain.Editor
 {
-    public sealed class StarForceBuildEventHandler : IBuildEventHandler
+    public sealed class GameMainBuildEventHandler : IBuildEventHandler
     {
         public bool ContinueOnFailure
         {
