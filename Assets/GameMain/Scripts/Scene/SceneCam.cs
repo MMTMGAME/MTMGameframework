@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using DG.Tweening;
+using GameFramework.Event;
 using GameMain;
 using UnityEngine;
 
@@ -12,6 +14,48 @@ public class SceneCam : Entity
    public CinemachineTargetGroup cinemachineTargetGroup;
 
    public ParticleSystem speedLineFx;
+
+   private Cinemachine3rdPersonFollow thirdPerson;
+
+   public float barrageModeHeight = 9.17f;
+   public float barrageModeZDistance = -10.64f;
+   private float normalModeHeight;
+   private float normalModeZDistance;
+
+
+   private void Start()
+   {
+      thirdPerson=cinemachine.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+      normalModeHeight = thirdPerson.VerticalArmLength;
+      normalModeZDistance = thirdPerson.ShoulderOffset.z;
+   }
+
+   private void OnEnable()
+   {
+      GameEntry.Event.Subscribe(PlayerEnterBarrageRoadEvtArgs.EventId,OnPlayerEnterBarrageRoad);
+      GameEntry.Event.Subscribe(PlayerExitBarrageRoadEvtArgs.EventId,OnPlayerExitBarrageRoad);
+   }
+
+   private void OnDisable()
+   {
+      GameEntry.Event.Unsubscribe(PlayerEnterBarrageRoadEvtArgs.EventId,OnPlayerEnterBarrageRoad);
+      GameEntry.Event.Unsubscribe(PlayerExitBarrageRoadEvtArgs.EventId,OnPlayerExitBarrageRoad);
+   }
+
+   void OnPlayerEnterBarrageRoad(object sender,GameEventArgs args)
+   {
+      DOTween.To(() => thirdPerson.VerticalArmLength, (x) => thirdPerson.VerticalArmLength = x, barrageModeHeight, 1);
+      DOTween.To(() => thirdPerson.ShoulderOffset.z, (x) => thirdPerson.ShoulderOffset.z = x, barrageModeZDistance, 1);
+     
+   }
+   
+   void OnPlayerExitBarrageRoad
+      (object sender,GameEventArgs args)
+   {
+      DOTween.To(() => thirdPerson.VerticalArmLength, (x) => thirdPerson.VerticalArmLength = x, normalModeHeight, 1);
+      DOTween.To(() => thirdPerson.ShoulderOffset.z, (x) => thirdPerson.ShoulderOffset.z = x, normalModeZDistance, 1);
+
+   }
 
    protected override void OnInit(object userData)
    {

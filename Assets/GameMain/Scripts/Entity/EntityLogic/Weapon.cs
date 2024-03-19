@@ -97,6 +97,11 @@ namespace GameMain
             WeaponAttack.Attack();
         }
 
+        public void StopAttack()
+        {
+            WeaponAttack.StopAttack();
+        }
+
        
     }
 }

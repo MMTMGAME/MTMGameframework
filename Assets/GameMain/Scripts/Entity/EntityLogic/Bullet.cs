@@ -107,5 +107,10 @@ namespace GameMain
                 GameEntry.Entity.HideEntity(this.Entity);
             }
         }
+
+        
+        
     }
+    
+    
 }

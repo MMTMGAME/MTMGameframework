@@ -18,8 +18,11 @@ public abstract class BulletStrategy : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
 
+        
         rigidBody.useGravity = bulletData.useGravity;
         collider.isTrigger = bulletData.isTrigger;
+        
+        //rigidBody.velocity=Vector3.zero;
     }
     
     public virtual void Update()
@@ -43,6 +46,7 @@ public abstract class BulletStrategy : MonoBehaviour
                 return;
             var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
             AIUtility.BulletAttack((Entity)owner.Logic,bullet,bullet.GetImpactData(), targetAbleObject);
+            GameEntry.Sound.PlaySound(bulletData.deadSoundIds.RandomNonEmptyElement());
         }
     }
 
@@ -61,6 +65,8 @@ public abstract class BulletStrategy : MonoBehaviour
             var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
                 
             AIUtility.BulletAttack((Entity)owner.Logic,bullet,bullet.GetImpactData(), targetAbleObject);
+
+            GameEntry.Sound.PlaySound(bulletData.deadSoundIds.RandomNonEmptyElement());
         }
     }
 }

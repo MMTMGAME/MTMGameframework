@@ -43,8 +43,12 @@ public class Player : BattleUnit
 
     }
 
+    public bool Invincible { get; set; }
+
     public override void ApplyDamage(Entity attacker, int damageHP)
     {
+        if(Invincible)
+            return;
         base.ApplyDamage(attacker, damageHP);
         CachedAnimator.SetTrigger("Damaged");
         GameEntry.Sound.PlaySound(UnityEngine.Random.Range(10040, 10042));

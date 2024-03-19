@@ -31,6 +31,11 @@ public class MeleeWeaponAttack : WeaponAttack
         ownerBattleUnit?.CachedAnimator.SetTrigger("Attack");
     }
 
+    public override void StopAttack()
+    {
+        //DoNothing
+    }
+
 
     private float lastAttackedTime;
     private void OnTriggerEnter(Collider other)

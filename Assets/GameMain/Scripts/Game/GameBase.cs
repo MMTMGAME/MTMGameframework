@@ -7,10 +7,13 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
+using AmazingAssets.CurvedWorld;
 using DG.Tweening;
 using GameFramework;
 using GameFramework.Event;
+using GameFramework.Fsm;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -47,15 +50,155 @@ namespace GameMain
             return gameStartEventArgs;
         }
     }
-
-  
     
+    
+    //状态机决定当前道路模式,如普通模式，扭曲模式，弹幕模式
+    public class NormalMode : FsmState<GameBase>
+    {
+        private float baseDuration = 30;
+        private float duration ;
+        private float enterRealTime;
+        protected override void OnEnter(IFsm<GameBase> fsm)
+        {
+            base.OnEnter(fsm);
+            enterRealTime = fsm.Owner.elapsedRealTime;
+            
+            Log.Info("NormalMode Enter");
+
+            duration = baseDuration;
+
+            if (fsm.GetData("ExtraDuration") != null)
+            {
+                VarInt16 extraDuration = fsm.GetData("ExtraDuration") as VarInt16;
+                duration += extraDuration;
+            }
+           
+
+
+        }
+
+        protected override void OnUpdate(IFsm<GameBase> fsm, float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
+            //Log.Info($"{fsm.Owner.elapsedRealTime},{enterRealTime},{duration}");
+            if ( fsm.Owner.elapsedRealTime-enterRealTime>duration )
+            {
+                int rand = UnityEngine.Random.Range(0, 2);
+                if(rand==0)
+                    ChangeState<TwistMode>(fsm);
+                else
+                {
+                    ChangeState<BarrageMode>(fsm);
+                }
+                
+                //ChangeState<BarrageMode>(fsm);
+            }
+        }
+        
+    }
+
+    public class TwistMode : FsmState<GameBase>
+    {
+        public CurvedWorldController curvedWorldController;
+
+        private float enterTime;
+        private float duration;
+        protected override void OnInit(IFsm<GameBase> fsm)
+        {
+            base.OnInit(fsm);
+            curvedWorldController = GameObject.FindObjectOfType<CurvedWorldController>();
+        }
+
+        protected override void OnEnter(IFsm<GameBase> fsm)
+        {
+            base.OnEnter(fsm);
+            
+            DOTween.To(()=>curvedWorldController.bendCurvatureSize, (x) => curvedWorldController.bendCurvatureSize = x, 1,
+                1);
+            duration = UnityEngine.Random.Range(45, 90);
+            enterTime = fsm.Owner.elapsedRealTime;
+            Log.Info("Twist Mode Enter");
+        }
+
+        protected override void OnUpdate(IFsm<GameBase> fsm, float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
+            if (fsm.Owner.elapsedRealTime - enterTime>duration)
+            {
+                ChangeState<NormalMode>(fsm);
+            }
+        }
+
+        protected override void OnLeave(IFsm<GameBase> fsm, bool isShutdown)
+        {
+            base.OnLeave(fsm, isShutdown);
+            DOTween.To(()=>curvedWorldController.bendCurvatureSize, (x) => curvedWorldController.bendCurvatureSize = x, 0,
+                1);
+        }
+    }
+
+    public class BarrageMode : FsmState<GameBase>
+    {
+
+        private int startId;
+        //private bool showedEndRoad;
+        
+        private IFsm<GameBase> myFsm;
+        protected override void OnEnter(IFsm<GameBase> fsm)
+        {
+            base.OnEnter(fsm);
+           
+            
+            Log.Info("Barrage Mode Enter");
+            GameEntry.RoadGenerator.StartBarrageRoad();
+            
+            GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId,OnShowEntitySuccess);
+            
+            myFsm = fsm;
+
+        }
+
+        void OnShowEntitySuccess(object sender, GameEventArgs args)
+        {
+            ShowEntitySuccessEventArgs ne = (ShowEntitySuccessEventArgs)args;
+            if (ne.EntityLogicType == typeof(Road))
+            {
+                var road = ne.Entity.Logic as Road;
+                if (road.roadData.TypeId == 80500)
+                {
+                    GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId,OnShowEntitySuccess);
+
+                    try
+                    {
+                        myFsm.SetData("ExtraDuration", (VarInt16)30); //回到normalMode后，normalMode增加30秒duration。
+                        ChangeState<NormalMode>(myFsm);
+                    }
+                    catch (Exception e)
+                    {
+                        //DONothing
+                    }
+                   
+                }
+            }
+
+        }
+        
+        
+        
+        
+        
+    }
+
+
+
     public abstract class GameBase
     {
         /// <summary>
         /// 记录这个GameBase加载了几次，没啥用，只是用来提醒Gamebase这个示例会被多次加载，所以需要注意在初始化的时候重置相关变量
         /// </summary>
         public int loadCount = 0;
+        
+        
         public Player Player
         {
             get;
@@ -90,7 +233,11 @@ namespace GameMain
         public SceneCam SceneCam { get; private set; }
         private PlayerInputActions playerInputActions;
 
-        private float startTime;//记录游戏开始的时间
+        public float startTime;//记录游戏开始的时间
+        public float elapsedRealTime;
+
+        private IFsm<GameBase> fsm;
+
         public virtual void Initialize()
         {
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
@@ -162,6 +309,14 @@ namespace GameMain
             
             //触发游戏开始事件
             GameEntry.Event.Fire(this,GameStartEventArgs.Create());
+            
+            elapsedRealTime = 0;
+            //状态机
+            List<FsmState<GameBase>> states = new List<FsmState<GameBase>>(){new NormalMode(),new TwistMode(),new BarrageMode()};
+            fsm=GameEntry.Fsm.CreateFsm("GameBase.ModeFSM" + loadCount, this, states);
+            fsm.Start<NormalMode>();
+            
+            GameEntry.Event.Fire(this,PlayerExitBarrageRoadEvtArgs.Create());
         }
         
         
@@ -234,7 +389,8 @@ namespace GameMain
             usingSKill = true;
             SwitchSpeedAdjust(false);
             GameEntry.Sound.PlayUISound(20009);
-            
+
+            Player.Invincible = true;
             var skillDuration = GameEntry.Config.GetFloat("Game.SkillDuration", 7);
             SceneCam.SwitchSpeedline(true);
             // 启用技能时的设置
@@ -269,6 +425,8 @@ namespace GameMain
                 usingSKill = false;
                 
                 SceneCam.SwitchSpeedline(false);
+
+                Player.Invincible = false;
             });
 
             
@@ -323,7 +481,8 @@ namespace GameMain
             {
                 GameOver = true;
                 Log.Debug("GameOver!!");
-                
+                GameEntry.Fsm.DestroyFsm(fsm);
+                GameEntry.Event.Fire(this,PlayerExitBarrageRoadEvtArgs.Create());
             }
             
         }
@@ -356,11 +515,11 @@ namespace GameMain
             
             if(playerMove==null)
                 return;
-
-            float elapsedTime = Time.realtimeSinceStartup - startTime;
+            
+            elapsedRealTime = Time.realtimeSinceStartup - startTime;
             float duration = 450; // 5分钟
-            if (elapsedTime <= duration) {
-                float progress = elapsedTime / duration;
+            if (elapsedRealTime <= duration) {
+                float progress = elapsedRealTime / duration;
                 GameEntry.Base.GameSpeed = 1 + (1f * Mathf.Log10(1 + 9 * progress));
             }
             

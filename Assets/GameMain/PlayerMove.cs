@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using GameFramework.Event;
 using GameMain;
 using NaughtyAttributes;
 using UnityEngine;
@@ -22,6 +23,8 @@ public class PlayerMove : MonoBehaviour
 
     [Header("基础移速，匹配动画基础速度")]
     public float baseSpeed = 5.457f;
+
+    [Header("弹幕路段左右移动速度")] public float shiftSpeed = 5.457f;
     
     [Space(2)] public float jumpForce;
 
@@ -80,12 +83,13 @@ public class PlayerMove : MonoBehaviour
         showTime = Time.time;
 
         autoRun = false;
+        
 
         
     }
-    
-    
 
+
+    public bool isBarrageMode;
     private void OnEnable()
     {
         playerInputActions.Player.Space.performed += Jump;
@@ -98,6 +102,9 @@ public class PlayerMove : MonoBehaviour
         swipeDetection.swipeLeft += Left;
         swipeDetection.swipeRight += Right;
         swipeDetection.swipeDown += Down;
+        
+        GameEntry.Event.Subscribe(PlayerEnterBarrageRoadEvtArgs.EventId,OnPlayerEnterBarrageRoad);
+        GameEntry.Event.Subscribe(PlayerExitBarrageRoadEvtArgs.EventId,OnPlayerExitBarrageRoad);
         
         playerInputActions.Enable();
         
@@ -116,7 +123,21 @@ public class PlayerMove : MonoBehaviour
         swipeDetection.swipeRight -= Right;
         swipeDetection.swipeDown -= Down;
         
+        
+        GameEntry.Event.Unsubscribe(PlayerEnterBarrageRoadEvtArgs.EventId,OnPlayerEnterBarrageRoad);
+        GameEntry.Event.Unsubscribe(PlayerExitBarrageRoadEvtArgs.EventId,OnPlayerExitBarrageRoad);
+        
         playerInputActions.Disable();
+    }
+
+    void OnPlayerEnterBarrageRoad(object sender, GameEventArgs args)
+    {
+        isBarrageMode = true;
+    }
+
+    void OnPlayerExitBarrageRoad(object sender, GameEventArgs args)
+    {
+        isBarrageMode = false;
     }
 
     // Update is called once per frame
@@ -181,6 +202,12 @@ public class PlayerMove : MonoBehaviour
         transform.Translate(delta,Space.Self);
         distance += speed * Time.deltaTime;
 
+        if (isBarrageMode)
+        {
+            var vector2 = playerInputActions.Player.Move.ReadValue<Vector2>();
+            transform.Translate(transform.right * (vector2.x * shiftSpeed * Time.deltaTime),Space.World);
+        }
+
     }
 
 
@@ -230,14 +257,22 @@ public class PlayerMove : MonoBehaviour
         }
         else
         {
-            curLine = GetCurLineIndex();
-            var targetLine = --curLine;
-            if (targetLine < -1)
+            if (isBarrageMode)
             {
-                targetLine = -1;
+                //DOnothing
             }
-            var targetPos = CalTargetPosInLine(targetLine);
-            StartCoroutine(SwitchLineCoroutine(targetPos));
+            else
+            {
+                curLine = GetCurLineIndex();
+                var targetLine = --curLine;
+                if (targetLine < -1)
+                {
+                    targetLine = -1;
+                }
+                var targetPos = CalTargetPosInLine(targetLine);
+                StartCoroutine(SwitchLineCoroutine(targetPos));
+            }
+           
         }
     }
 
@@ -276,15 +311,22 @@ public class PlayerMove : MonoBehaviour
         }
         else
         {
-            
-            curLine = GetCurLineIndex();
-            var targetLine = ++curLine;
-            if (targetLine > 1)
+            if (isBarrageMode)
             {
-                targetLine = 1;
+                //DOnothing
             }
-            var targetPos = CalTargetPosInLine(targetLine);
-            StartCoroutine(SwitchLineCoroutine(targetPos));
+            else
+            {
+                curLine = GetCurLineIndex();
+                var targetLine = ++curLine;
+                if (targetLine > 1)
+                {
+                    targetLine = 1;
+                }
+
+                var targetPos = CalTargetPosInLine(targetLine);
+                StartCoroutine(SwitchLineCoroutine(targetPos));
+            }
         }
     }
 

@@ -7,6 +7,7 @@ public class RoadConfig : MonoBehaviour
 {
     
     [FormerlySerializedAs("isBranch")] public bool isTurn;
+    public bool isBarrageRoad;
     public Transform[] tails;
 
     [Header("原石生成")]

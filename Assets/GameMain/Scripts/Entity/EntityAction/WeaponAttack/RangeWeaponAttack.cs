@@ -25,4 +25,9 @@ public class RangeWeaponAttack : WeaponAttack
         });
         GameEntry.Sound.PlaySound(m_WeaponData.BulletSoundId);
     }
+
+    public override void StopAttack()
+    {
+        //DoNothing
+    }
 }

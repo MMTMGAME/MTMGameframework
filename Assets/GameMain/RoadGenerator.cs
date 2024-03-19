@@ -111,7 +111,7 @@ public class RoadGenerator : GameFrameworkComponent
             var blackListStr = row.BlackList.Split(",");
             //Debug.LogError(blackListStr.ToString());
             var blackListInt = blackListStr.Select(int.Parse).ToList();
-            if (nodeId < 10)//前是个路段不能生成被砸断口
+            if (nodeId < 10)//前10个路段不能生成被砸断口
             {
                 if (!blackListInt.Contains(80013))
                 {
@@ -135,7 +135,7 @@ public class RoadGenerator : GameFrameworkComponent
             {
                
                 //子节点的位置在模型的尾部，可能有多个尾部，比如T型路段
-                childrenNodes.Add(new Node(nodeId++,roadGenerator.GetRandomEntityId(GetBlackList()), roadGenerator, tailPoses[i],
+                childrenNodes.Add(new Node(nodeId++,roadGenerator.GetRandomEntityId(GetBlackList(),entityId,roadEntity.transform.position,roadEntity.transform.rotation), roadGenerator, tailPoses[i],
                     tailRotations[i]
                     
                     ));
@@ -193,28 +193,60 @@ public class RoadGenerator : GameFrameworkComponent
         
     }
 
-
+    //设置协程执行频率
     public void SetCheckTime(float multiplier)
     {
         checkTime = baseCheckTime * (1 / (1+multiplier));
     }
+
+
+    //让下一次道路生成时强制生成81000,也就是弹幕道路
+    public void StartBarrageRoad()
+    {
+        spawnBarrageStartRoad = true;
+       
+    }
+
+   
+
+    private bool spawnBarrageStartRoad = false;
+    private bool isBarrageMode;
     /// <summary>
-    /// 随机获取Id，尚未实现黑名单支持
+    /// 随机获取Id
     /// </summary>
     /// <returns></returns>
-    private int GetRandomEntityId(List<int> blackList)
+    private int GetRandomEntityId(List<int> blackList,int fromId,Vector3 pos,Quaternion roation )
     {
         //return 80005;
-        var ids = roadTable.GetDataRows(x => blackList.Contains(x.Id)==false);
+
+        if (spawnBarrageStartRoad )
+        {
+            if (fromId == 80000)
+            {
+                //GameEntry.Entity.ShowDebug3DText(pos,roation, "spawnBarrageStartRoad,T字路段返回基础路段",9999);
+                return 80005;
+                
+            }
+            else
+            {
+                //GameEntry.Entity.ShowDebug3DText(pos,roation, "spawnBarrageStartRoad,生成弹幕起始路段",9999);
+                spawnBarrageStartRoad = false;
+                return 80500;
+            }
+          
+        }
+        
+        //普通情况下弹幕道路不参与生成
+        DRRoad[] ids=roadTable.GetDataRows(x => !blackList.Contains(x.Id) && x.Id < 80100);
+        
+        
         var element = ids.RandomNonEmptyElement();
+        
         return element.Id;
     }
 
     private int ShowRoadForNode(Node node)//生成实体
     {
-        //var row = roadTable.GetDataRow(node.entityId);
-        
-        
         int serialId = GameEntry.Entity.GenerateSerialId();
         GameEntry.Entity.ShowRoad(new RoadData(serialId,node.entityId)
         {

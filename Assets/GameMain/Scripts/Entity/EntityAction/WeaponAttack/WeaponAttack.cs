@@ -15,4 +15,6 @@ public abstract class WeaponAttack : MonoBehaviour
         Weapon = weapon;
     }
     public abstract void Attack();
+
+    public abstract void StopAttack();
 }

@@ -9807,6 +9807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTurn: 0
+  isBarrageRoad: 0
   tails:
   - {fileID: 4559014768741586469}
   primogems: []
@@ -15476,7 +15477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 4
-  lineIndex: -1
+  lineIndex: 1
 --- !u!54 &2086239889987806165
 Rigidbody:
   m_ObjectHideFlags: 0

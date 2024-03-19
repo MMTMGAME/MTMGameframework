@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameFramework.Event;
 using GameMain;
 using UnityEngine;
 
@@ -23,6 +24,8 @@ public class Enemy : BattleUnit
     private float attackFollowDistance = 0;//攻击距离
 
     private float lerpValue = 4f;
+
+    private bool isBarrageMode;
     
     protected override void OnShow(object userData)
     {
@@ -31,6 +34,28 @@ public class Enemy : BattleUnit
 
         GetPlayer();
         animator = GetComponent<Animator>();
+    }
+
+    private void OnEnable()
+    {
+        GameEntry.Event.Subscribe(PlayerEnterBarrageRoadEvtArgs.EventId,OnPlayerEnterBarrageRoad);
+        GameEntry.Event.Subscribe(PlayerExitBarrageRoadEvtArgs.EventId,OnPlayerExitBarrageRoad);
+    }
+    
+    void OnPlayerEnterBarrageRoad(object sender, GameEventArgs args)
+    {
+        isBarrageMode = true;
+    }
+
+    void OnPlayerExitBarrageRoad(object sender, GameEventArgs args)
+    {
+        isBarrageMode = false;
+    }
+
+    private void OnDisable()
+    {
+        GameEntry.Event.Unsubscribe(PlayerEnterBarrageRoadEvtArgs.EventId,OnPlayerEnterBarrageRoad);
+                GameEntry.Event.Unsubscribe(PlayerExitBarrageRoadEvtArgs.EventId,OnPlayerExitBarrageRoad);
     }
 
     void GetPlayer()
@@ -89,17 +114,26 @@ public class Enemy : BattleUnit
         var distance = Vector3.Distance(transform.position, player.transform.position);
         if (distance < attackDistance && player.IsDead==false && attackAble)
         {
-            //举例攻击，因此用简单的写法
-            for (int i = 0; i < m_Weapons.Count; i++)
-            {
-                m_Weapons[i].TryAttack();//因为是举例，武器直接大范围攻击
-            }
+            m_Weapons[0].TryAttack();//因为是举例，武器直接大范围攻击
+        }
+        
+        //远程武器逻辑，远程武器只要在弹幕路段就可以直接攻击
+        if (isBarrageMode)
+        {
+            m_Weapons[1].TryAttack();
+        }
+        else
+        {
+            m_Weapons[1].StopAttack();
+            
         }
     }
 
     protected override void TryAttack()
     {
         //base.TryAttack();
-        //这个游戏中不使用onUpdate的代码进行控制
+        //这个游戏中不使用onUpdate的代码进行控制,覆盖父类代码，不要执行父类逻辑
     }
+    
+    
 }

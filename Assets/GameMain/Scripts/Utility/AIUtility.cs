@@ -141,7 +141,7 @@ namespace GameMain
 
            
 
-           
+           Debug.Log("攻击伤害"+targetDamageHP);
             victim.ApplyDamage(attacker, targetDamageHP);
             
         }
