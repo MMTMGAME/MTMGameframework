@@ -56,6 +56,15 @@ public class FollowPlayer : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
+        try
+        {
+            GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
+        }
+        catch (Exception e)
+        {
+            //DoNothing
+            
+        }
+        
     }
 }

@@ -32,6 +32,12 @@ namespace GameMain
             set;
         }
 
+        public bool IgnoreFade
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// 消息内容。
         /// </summary>

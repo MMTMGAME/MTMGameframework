@@ -23,6 +23,20 @@ namespace GameMain
         private CanvasGroup m_CanvasGroup = null;
         private List<Canvas> m_CachedCanvasContainer = new List<Canvas>();
 
+
+        private Coroutine canvasGroupFadeInCoroutine;
+      
+
+        public void ShowCanvasGroupImmidiately()
+        {
+            if (canvasGroupFadeInCoroutine != null)
+            {
+                StopCoroutine(canvasGroupFadeInCoroutine);
+            }
+
+            m_CanvasGroup.alpha = 1;
+
+        }
         public int OriginalDepth
         {
             get;
@@ -121,10 +135,11 @@ namespace GameMain
 #endif
         {
             base.OnOpen(userData);
-
+            
             m_CanvasGroup.alpha = 0f;
             StopAllCoroutines();
-            StartCoroutine(m_CanvasGroup.FadeToAlpha(1f, FadeTime));
+            
+            canvasGroupFadeInCoroutine=StartCoroutine(m_CanvasGroup.FadeToAlpha(1f, FadeTime));
         }
 
 #if UNITY_2017_3_OR_NEWER

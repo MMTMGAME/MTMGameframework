@@ -1,3 +1,4 @@
+using System.Collections;
 using GameFramework.Localization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,7 +30,7 @@ namespace GameMain
 
         void SetGameSpeedTo0()
         {
-            GameEntry.Base.GameSpeed = 0;
+            GameEntry.Base.GameSpeed = 0f;
         }
 
 
@@ -56,6 +57,30 @@ namespace GameMain
 
         public void QuitGame()
         {
+            //Time.timeScale = 1;
+            StartCoroutine(QuitGameCoroutine());
+            // Time.timeScale = 1;
+            // GameEntry.UI.OpenDialog(new DialogParams()
+            // {
+            //     Mode = 2,
+            //     Title = GameEntry.Localization.GetString("AskQuitGame.Title"),
+            //     Message = GameEntry.Localization.GetString("AskQuitGame.Message"),
+            //     OnClickConfirm = delegate(object userData)
+            //     {
+            //         //UnityGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit);
+            //
+            //         
+            //         Application.Quit();
+            //     },
+            // });
+
+            //ShowCanvasGroupImmidiately();
+
+        }
+
+        IEnumerator QuitGameCoroutine()
+        {
+            
             GameEntry.UI.OpenDialog(new DialogParams()
             {
                 Mode = 2,
@@ -63,9 +88,13 @@ namespace GameMain
                 Message = GameEntry.Localization.GetString("AskQuitGame.Message"),
                 OnClickConfirm = delegate(object userData)
                 {
-                    UnityGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit);
+                    //UnityGameFramework.Runtime.GameEntry.Shutdown(ShutdownType.Quit);
+                    
+                    Application.Quit();
                 },
             });
+            yield return null;
+            
         }
 
 
@@ -81,10 +110,6 @@ namespace GameMain
             }
         }
     
-        protected override void OnClose(bool isShutdown, object userData)
-        {
-            base.OnClose(isShutdown, userData);
-           
-        }
+       
     }
 }

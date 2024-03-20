@@ -18,15 +18,24 @@ namespace GameMain
     {
         public static IEnumerator FadeToAlpha(this CanvasGroup canvasGroup, float alpha, float duration)
         {
-            float time = 0f;
+            float startTime = Time.realtimeSinceStartup;
             float originalAlpha = canvasGroup.alpha;
+            float time = 0f;
+
             while (time < duration)
             {
-                time += Time.deltaTime;
+                // 计算自上一帧以来经过的实际时间
+                float deltaTime = Time.realtimeSinceStartup - startTime - time;
+                time += deltaTime;
+
+                // 使用实际时间更新 CanvasGroup 的透明度
                 canvasGroup.alpha = Mathf.Lerp(originalAlpha, alpha, time / duration);
-                yield return new WaitForEndOfFrame();
+
+                // 等待直到下一帧
+                yield return null;
             }
 
+            // 确保动画完成后设置确切的目标透明度
             canvasGroup.alpha = alpha;
         }
 
