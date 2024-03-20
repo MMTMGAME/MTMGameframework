@@ -52,7 +52,7 @@ public class BarrageWeaponAttack : WeaponAttack
             });
             GameEntry.Sound.PlaySound(m_WeaponData.BulletSoundId);
             
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.75f);
             
         }
     }

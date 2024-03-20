@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTurn: 1
+  isBarrageRoad: 0
   tails:
   - {fileID: 4751006636163619130}
   - {fileID: 4751006637795148202}
@@ -168,8 +169,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 0.8703565}
-  m_Center: {x: 2.2897884e-16, y: 0, z: 0.0648218}
+  m_Size: {x: 1.8652602, y: 1, z: 0.8703565}
+  m_Center: {x: 0.4326312, y: 0, z: 0.064821795}
 --- !u!114 &1361500936668934043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,8 +557,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 0.82747823}
-  m_Center: {x: 1.1770601e-15, y: 0, z: 0.08626087}
+  m_Size: {x: 1.8656077, y: 1, z: 0.82747805}
+  m_Center: {x: -0.4328049, y: 0, z: 0.08626086}
 --- !u!114 &5679027022299807970
 MonoBehaviour:
   m_ObjectHideFlags: 0

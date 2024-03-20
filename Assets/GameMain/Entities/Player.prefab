@@ -13495,6 +13495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseSpeed: 11.718
+  shiftSpeed: 5.457
   jumpForce: 810
   curLine: 1
   lineGap: 1
@@ -13505,6 +13506,7 @@ MonoBehaviour:
   groundCheckLayer:
     serializedVersion: 2
     m_Bits: 64
+  isBarrageMode: 0
 --- !u!54 &1540904356477536814
 Rigidbody:
   m_ObjectHideFlags: 0

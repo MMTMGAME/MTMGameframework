@@ -67,10 +67,10 @@ namespace GameMain.Editor
                 return;
             }
 
-            if (platform != Platform.Windows)
-            {
-                return;
-            }
+            // if (platform != Platform.Windows)
+            // {
+            //     return;
+            // }
 
             string streamingAssetsPath = Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "StreamingAssets"));
             string[] fileNames = Directory.GetFiles(outputPackagePath, "*", SearchOption.AllDirectories);

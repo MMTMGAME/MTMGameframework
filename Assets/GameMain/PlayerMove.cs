@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using UnityGameFramework.Runtime;
+
 using Entity = UnityGameFramework.Runtime.Entity;
 using GameEntry = GameMain.GameEntry;
 
@@ -260,6 +261,13 @@ public class PlayerMove : MonoBehaviour
             if (isBarrageMode)
             {
                 //DOnothing
+
+                if (true || UnityEngine.Device.Application.isMobilePlatform)
+                {
+                    var targetPos = transform.TransformPoint(-lineGap , 0, speed * switchLineDuration);
+                    StartCoroutine(SwitchLineCoroutine(targetPos));
+                    Log.Debug("左滑");
+                }
             }
             else
             {
@@ -314,6 +322,13 @@ public class PlayerMove : MonoBehaviour
             if (isBarrageMode)
             {
                 //DOnothing
+                if (true||  UnityEngine.Device.Application.isMobilePlatform)
+                {
+
+                    var targetPos = transform.TransformPoint(lineGap, 0, speed * switchLineDuration);
+                    StartCoroutine(SwitchLineCoroutine(targetPos));
+                    
+                }
             }
             else
             {
@@ -571,9 +586,9 @@ public class PlayerMove : MonoBehaviour
                     {
                         lastDelayTurnDirection = curAutoRunDirection;
                         
-                        if(delayLeftTimeCheck)
+                        if(delayLeftTimeCheck&& curAutoRunDirection.direction==AutoRunDirection.Direction.Left)
                             TurnLeft();
-                        if(delayRightTimeCheck)
+                        if(delayRightTimeCheck && curAutoRunDirection.direction==AutoRunDirection.Direction.Right)
                             TurnRight();
                         //GameEntry.Entity.ShowDebug3DText(transform.position+Vector3.up,transform.rotation,"Turn"+curAutoRunDirection.direction.ToString(),50);
                     }

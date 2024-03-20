@@ -83,6 +83,10 @@ namespace GameMain
             //Log.Info($"{fsm.Owner.elapsedRealTime},{enterRealTime},{duration}");
             if ( fsm.Owner.elapsedRealTime-enterRealTime>duration )
             {
+                
+                // ChangeState<BarrageMode>(fsm);
+                // return;
+                
                 int rand = UnityEngine.Random.Range(0, 2);
                 if(rand==0)
                     ChangeState<TwistMode>(fsm);
@@ -91,7 +95,7 @@ namespace GameMain
                     ChangeState<BarrageMode>(fsm);
                 }
                 
-                //ChangeState<BarrageMode>(fsm);
+                
             }
         }
         
