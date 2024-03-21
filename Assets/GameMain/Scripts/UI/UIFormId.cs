@@ -37,5 +37,10 @@ namespace GameMain
         PauseForm= 103,
         
         SettingFormPortrait = 105,
+        
+        /// <summary>
+        /// 游戏结算
+        /// </summary>
+        GameEndForm=106,
     }
 }

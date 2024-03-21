@@ -163,6 +163,18 @@ namespace GameMain
                 uiComponent.OpenUIForm(UIFormId.DialogForm, dialogParams);
             }
         }
+        
+        public static void OpenGameEndDialog(this UIComponent uiComponent, DialogParams dialogParams)
+        {
+            if (((ProcedureBase)GameEntry.Procedure.CurrentProcedure).UseNativeDialog)
+            {
+                OpenNativeDialog(dialogParams);
+            }
+            else
+            {
+                uiComponent.OpenUIForm(UIFormId.GameEndForm, dialogParams);
+            }
+        }
 
         private static void OpenNativeDialog(DialogParams dialogParams)
         {

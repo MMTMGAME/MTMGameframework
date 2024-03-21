@@ -8,6 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using GameFramework.Entity;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -122,13 +124,44 @@ namespace GameMain
         }
 
 
-        public static void Attack(TargetableObject attacker, TargetableObject victim)
+        private static List<IEntity> cachedEntities = null;
+        /// <summary>
+        /// 寻找目标
+        /// </summary>
+        /// <param name="selfCampType"></param>
+        /// <param name="relationType"></param>
+        public static Transform FindBattleUnit(Transform selfTrans,CampType selfCampType, RelationType relationType,float radius)
+        {
+            var playerList = GameEntry.Entity.GetEntityGroup("Player").GetAllEntities();
+            var battleUnitList = GameEntry.Entity.GetEntityGroup("BattleUnit").GetAllEntities();
+            
+            cachedEntities.Clear();
+            cachedEntities.AddRange(playerList);
+            cachedEntities.AddRange(battleUnitList);
+
+            foreach (var entity in cachedEntities)
+            {
+                var go = (GameObject)entity.Handle;
+                if (Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - selfTrans.position) <
+                    radius * radius)
+                {
+
+                    return go.transform;
+                }
+            }
+
+            return null;
+
+        }
+
+        public static void Attack(TargetableObject attacker,Weapon weapon, TargetableObject victim)
         {
             if (attacker == null || victim == null)
             {
                 return;
             }
-            
+
+            int attack = weapon.m_WeaponData.Attack;
             ImpactData attackerImpactData = attacker.GetImpactData();
             ImpactData victimImpactData = victim.GetImpactData();
             if (GetRelation(attackerImpactData.Camp, victimImpactData.Camp) == RelationType.Friendly)
@@ -137,7 +170,7 @@ namespace GameMain
             }
 
            
-            int targetDamageHP = CalcDamageHP(attackerImpactData.Attack, victimImpactData.Defense);
+            int targetDamageHP = CalcDamageHP(attack, victimImpactData.Defense);
 
            
 
