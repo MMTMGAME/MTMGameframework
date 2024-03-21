@@ -33,5 +33,9 @@ namespace GameMain
         /// 关于。
         /// </summary>
         AboutForm = 102,
+        
+        PauseForm= 103,
+        
+        SettingFormPortrait = 105,
     }
 }

@@ -24,7 +24,8 @@ namespace GameMain
 
         public void OnSettingButtonClick()
         {
-            GameEntry.UI.OpenUIForm(UIFormId.SettingForm);
+            var landscape = Screen.width > Screen.height;//横竖屏判断
+            GameEntry.UI.OpenUIForm(landscape?UIFormId.SettingForm: UIFormId.SettingFormPortrait);
         }
 
         public void OnAboutButtonClick()

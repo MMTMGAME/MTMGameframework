@@ -13,7 +13,7 @@ using UnityGameFramework.Editor.ResourceTools;
 
 namespace GameMain.Editor
 {
-    public sealed class StarForceBuildEventHandler : IBuildEventHandler
+    public sealed class GameMainBuildEventHandler : IBuildEventHandler
     {
         public bool ContinueOnFailure
         {
@@ -66,11 +66,12 @@ namespace GameMain.Editor
             {
                 return;
             }
-
-            if (platform != Platform.Windows)
-            {
-                return;
-            }
+            
+            //不知道这里为什么要return，取消掉return就能自动打包和移动文件到StreamingAssets了。
+            // if (platform != Platform.Windows)
+            // {
+            //     return;
+            // }
 
             string streamingAssetsPath = Utility.Path.GetRegularPath(Path.Combine(Application.dataPath, "StreamingAssets"));
             string[] fileNames = Directory.GetFiles(outputPackagePath, "*", SearchOption.AllDirectories);
