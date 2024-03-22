@@ -12,6 +12,7 @@ using GameFramework.Scene;
 #endif
 using GameFramework.Sound;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;

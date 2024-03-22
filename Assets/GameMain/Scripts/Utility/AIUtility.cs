@@ -18,6 +18,7 @@ namespace GameMain
     /// <summary>
     /// AI 工具类。
     /// </summary>
+    [IncludeInSettings(true)]
     public static class AIUtility
     {
         private static Dictionary<CampPair, RelationType> s_CampPairToRelation = new Dictionary<CampPair, RelationType>();
@@ -130,7 +131,7 @@ namespace GameMain
         /// </summary>
         /// <param name="selfCampType"></param>
         /// <param name="relationType"></param>
-        public static Transform FindBattleUnit(Transform selfTrans,CampType selfCampType, RelationType relationType,float radius)
+        public static Transform FindBattleUnit(TargetableObject self, RelationType relationType,float radius)
         {
             var playerList = GameEntry.Entity.GetEntityGroup("Player").GetAllEntities();
             var battleUnitList = GameEntry.Entity.GetEntityGroup("BattleUnit").GetAllEntities();
@@ -139,15 +140,20 @@ namespace GameMain
             cachedEntities.AddRange(playerList);
             cachedEntities.AddRange(battleUnitList);
 
+            
             foreach (var entity in cachedEntities)
             {
-                var go = (GameObject)entity.Handle;
-                if (Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - selfTrans.position) <
-                    radius * radius)
+                //var go = (GameObject)entity.Handle;
+                if (entity.Handle is TargetableObject targetableObject)
                 {
+                    if (Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - self.transform.position) <
+                        radius * radius && GetRelation(self.GetImpactData().Camp,targetableObject.GetImpactData().Camp)==relationType)
+                    {
 
-                    return go.transform;
+                        return targetableObject.transform;
+                    }
                 }
+               
             }
 
             return null;

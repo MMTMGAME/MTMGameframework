@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 627225532179611430}
   - component: {fileID: 6192305161892129049}
   m_Layer: 0
-  m_Name: Chaser
+  m_Name: Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

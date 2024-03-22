@@ -17,6 +17,8 @@ public class BattleUnit : TargetableObject
     [SerializeField] protected List<Armor> m_Armors = new List<Armor>();
 
 
+    public Weapon CurrentWeapon;
+
 #if UNITY_2017_3_OR_NEWER
     protected override void OnShow(object userData)
 #else

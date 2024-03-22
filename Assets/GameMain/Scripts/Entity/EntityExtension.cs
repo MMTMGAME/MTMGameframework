@@ -9,11 +9,13 @@ using GameFramework.DataTable;
 using System;
 using System.Reflection;
 using GameMain;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace GameMain
 {
+    [IncludeInSettings(true)]
     public static class EntityExtension
     {
         // 关于 EntityId 的约定：

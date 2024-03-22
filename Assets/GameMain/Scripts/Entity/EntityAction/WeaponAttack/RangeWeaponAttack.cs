@@ -23,6 +23,6 @@ public class RangeWeaponAttack : WeaponAttack
             Position = shootPoint.position,
             Rotation = shootPoint.rotation,
         });
-        GameEntry.Sound.PlaySound(m_WeaponData.BulletSoundId);
+        GameEntry.Sound.PlaySound(m_WeaponData.BulletSoundId,transform.position);
     }
 }
