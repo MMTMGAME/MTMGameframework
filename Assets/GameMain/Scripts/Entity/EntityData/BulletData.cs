@@ -22,7 +22,7 @@ namespace GameMain
         private CampType m_OwnerCamp = CampType.Unknown;
 
         [SerializeField]
-        private int m_Attack = 0;
+        private int weaponIndex = 0;
 
         [SerializeField]
         private float m_Speed = 0f;
@@ -43,12 +43,12 @@ namespace GameMain
 
         [FormerlySerializedAs("bulletStrategy")] public string bulletStrategyComp;
         public string specialData;
-        public BulletData(int entityId, int typeId, int ownerId, CampType ownerCamp, int attack, float speed,float keepTime)
+        public BulletData(int entityId, int typeId, int ownerId, CampType ownerCamp, int weaponIndex, float speed,float keepTime)
             : base(entityId, typeId)
         {
             m_OwnerId = ownerId;
             m_OwnerCamp = ownerCamp;
-            m_Attack = attack;
+            weaponIndex = weaponIndex;
             m_Speed = speed;
             this.m_keepTime = keepTime;
             
@@ -93,11 +93,11 @@ namespace GameMain
             }
         }
 
-        public int Attack
+        public int WeaponIndex
         {
             get
             {
-                return m_Attack;
+                return weaponIndex;
             }
         }
 

@@ -76,7 +76,7 @@ namespace GameMain
             }
 
             Log.Warning("Unknown relation between '{0}' and '{1}'.", first.ToString(), second.ToString());
-            return RelationType.Unknown;
+            return RelationType.None;
         }
 
         /// <summary>
@@ -125,58 +125,95 @@ namespace GameMain
         }
 
 
-        private static List<IEntity> cachedEntities = null;
+      
+
+        private static List<IEntity> cachedEntities = new List<IEntity>();
+        private static float lastUpdateTime = 0;
         /// <summary>
         /// 寻找目标
         /// </summary>
         /// <param name="selfCampType"></param>
         /// <param name="relationType"></param>
-        public static Transform FindBattleUnit(TargetableObject self, RelationType relationType,float radius)
+        public static TargetableObject FindBattleUnit(BattleUnit self, RelationType relationTypes, Vector3 center, float radius)
         {
-            var playerList = GameEntry.Entity.GetEntityGroup("Player").GetAllEntities();
-            var battleUnitList = GameEntry.Entity.GetEntityGroup("BattleUnit").GetAllEntities();
-            
-            cachedEntities.Clear();
-            cachedEntities.AddRange(playerList);
-            cachedEntities.AddRange(battleUnitList);
-
-            
+            if (Time.time > lastUpdateTime + 0.5f) // 每0.5秒更新一次，降低消耗
+            {
+                var playerList = GameEntry.Entity.GetEntityGroup("Player").GetAllEntities();
+                var battleUnitList = GameEntry.Entity.GetEntityGroup("BattleUnit").GetAllEntities();
+        
+                cachedEntities.Clear();
+                cachedEntities.AddRange(playerList);
+                cachedEntities.AddRange(battleUnitList);
+        
+                lastUpdateTime = Time.time;
+            }
+    
             foreach (var entity in cachedEntities)
             {
-                //var go = (GameObject)entity.Handle;
-                if (entity.Handle is TargetableObject targetableObject)
+                if (((UnityGameFramework.Runtime.Entity)entity).Logic is TargetableObject targetableObject)
                 {
-                    if (Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - self.transform.position) <
-                        radius * radius && GetRelation(self.GetImpactData().Camp,targetableObject.GetImpactData().Camp)==relationType)
+                    if (entity.Handle!=null && Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
+                        && (GetRelation(self.GetImpactData().Camp, targetableObject.GetImpactData().Camp) & relationTypes) != RelationType.None 
+                        && targetableObject.Available && !targetableObject.IsDead)
                     {
-
-                        return targetableObject.transform;
+                        return targetableObject;
                     }
                 }
-               
             }
 
             return null;
+        }
+        
+        public static List<TargetableObject> FindBattleUnits(BattleUnit self, RelationType relationTypes, Vector3 center, float radius)
+        {
+            List<TargetableObject> ret = new List<TargetableObject>(); 
+            if (Time.time > lastUpdateTime + 0.5f) // 每0.5秒更新一次，降低消耗
+            {
+                var playerList = GameEntry.Entity.GetEntityGroup("Player").GetAllEntities();
+                var battleUnitList = GameEntry.Entity.GetEntityGroup("BattleUnit").GetAllEntities();
+        
+                cachedEntities.Clear();
+                cachedEntities.AddRange(playerList);
+                cachedEntities.AddRange(battleUnitList);
+        
+                lastUpdateTime = Time.time;
+            }
+    
+            foreach (var entity in cachedEntities)
+            {
+                if (((UnityGameFramework.Runtime.Entity)entity).Logic is TargetableObject targetableObject)
+                {
+                    if (Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
+                        && (GetRelation(self.GetImpactData().Camp, targetableObject.GetImpactData().Camp) & relationTypes) != RelationType.None 
+                        && targetableObject.Available && !targetableObject.IsDead)
+                    {
+                       ret.Add(targetableObject);
+                    }
+                }
+            }
 
+            return ret;
         }
 
-        public static void Attack(TargetableObject attacker,Weapon weapon, TargetableObject victim)
+
+        public static void Attack(BattleUnit attacker,Weapon weapon, TargetableObject victim)
         {
             if (attacker == null || victim == null)
             {
                 return;
             }
+            
 
             int attack = weapon.m_WeaponData.Attack;
-            ImpactData attackerImpactData = attacker.GetImpactData();
-            ImpactData victimImpactData = victim.GetImpactData();
-            if (GetRelation(attackerImpactData.Camp, victimImpactData.Camp) == RelationType.Friendly)
+            BattleData attackerBattleData = attacker.GetImpactData();
+            BattleData victimBattleData = victim.GetImpactData();
+            if (GetRelation(attackerBattleData.Camp, victimBattleData.Camp) == RelationType.Friendly)
             {
                 return;
             }
 
            
-            int targetDamageHP = CalcDamageHP(attack, victimImpactData.Defense);
+            int targetDamageHP = CalcDamageHP(attack, victimBattleData.Defense);
 
            
 
@@ -185,24 +222,32 @@ namespace GameMain
             
         }
 
-        public static void BulletAttack(Entity bulletOwner,Entity bullet, ImpactData bulletImpactData, TargetableObject victim)
+        public static void BulletAttack(BattleUnit bulletOwner,Bullet bullet, TargetableObject victim)
         {
-            ImpactData victimImpactData = victim.GetImpactData();
-            if (GetRelation(bulletImpactData.Camp, victimImpactData.Camp) == RelationType.Friendly)
+            BattleData victimBattleData = victim.GetImpactData();
+            BattleData bulletBattleData = bullet.GetImpactData();
+            if (GetRelation(bulletBattleData.Camp, victimBattleData.Camp) == RelationType.Friendly)
             {
-                
                 return;
             }
 
-            int damageHp = CalcDamageHP(bulletImpactData.Attack, victimImpactData.Defense);
+            var bulletData = bullet.m_BulletData;
+
+            var weapon = bulletOwner.GetWeaponByIndex(bulletData.WeaponIndex);
+            
+            
+            
+            int damageHp = CalcDamageHP(weapon.m_WeaponData.Attack, victimBattleData.Defense);
+            
             
             victim.ApplyDamage(bulletOwner,damageHp);
+            
             GameEntry.Entity.HideEntity(bullet);
         }
         
        
 
-        public static void ExplosionWithForce(TargetableObject attacker, Vector3 center, float radius, int power)
+        public static void ExplosionWithForce(BattleUnit attacker, Vector3 center, float radius, int power)
         {
             HashSet<Entity> damagedEntities = new HashSet<Entity>();
             Dictionary<Rigidbody, Vector3> forceOnRigidbodies = new Dictionary<Rigidbody, Vector3>();
@@ -272,7 +317,7 @@ namespace GameMain
 
         
         // 爆炸效果实现
-        public static void Explosion(TargetableObject attacker,Vector3 center, float radius,int power)
+        public static void Explosion(BattleUnit attacker,Vector3 center, float radius,int power)
         {
             // 记录已经受到伤害的实体，以确保同一个实体只受到一次伤害
             HashSet<Entity> damagedEntities = new HashSet<Entity>();

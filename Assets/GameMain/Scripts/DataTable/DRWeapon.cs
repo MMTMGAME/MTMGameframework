@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-03-21 15:11:47.584
+// 生成时间：2024-03-26 17:34:40.685
 //------------------------------------------------------------
 
 using GameFramework;
@@ -82,15 +82,6 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取附加路径。
-        /// </summary>
-        public string Path
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 获取攻击模板。
         /// </summary>
         public string AttackLogicComponent
@@ -125,7 +116,6 @@ namespace GameMain
             BulletId = int.Parse(columnStrings[index++]);
             BulletSpeed = float.Parse(columnStrings[index++]);
             BulletSoundId = int.Parse(columnStrings[index++]);
-            Path = columnStrings[index++];
             AttackLogicComponent = columnStrings[index++];
             ShootPoint = columnStrings[index++];
 
@@ -145,7 +135,6 @@ namespace GameMain
                     BulletId = binaryReader.Read7BitEncodedInt32();
                     BulletSpeed = binaryReader.ReadSingle();
                     BulletSoundId = binaryReader.Read7BitEncodedInt32();
-                    Path = binaryReader.ReadString();
                     AttackLogicComponent = binaryReader.ReadString();
                     ShootPoint = binaryReader.ReadString();
                 }

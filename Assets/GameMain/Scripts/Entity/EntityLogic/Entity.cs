@@ -8,10 +8,11 @@
 using GameFramework;
 using UnityEngine;
 using UnityGameFramework.Runtime;
+using StateGraph = Unity.VisualScripting.StateGraph;
 
 namespace GameMain
 {
-    public abstract class Entity : EntityLogic
+    public class Entity : EntityLogic
     {
         [SerializeField]
         private EntityData m_EntityData = null;
@@ -33,6 +34,11 @@ namespace GameMain
         {
             get;
             private set;
+        }
+
+        public AIData GetAIData()
+        {
+                return m_EntityData.AIData;
         }
 
 #if UNITY_2017_3_OR_NEWER
@@ -76,6 +82,13 @@ namespace GameMain
             CachedTransform.localRotation = m_EntityData.Rotation;
             CachedTransform.localScale = Vector3.one;
             
+            //在这里加载状态机
+            if (m_EntityData.AIData != null)
+            {
+                    GameEntry.AI.AttachStateGraphToEntity(new LoadStateGraphInfo(m_EntityData.Id,m_EntityData.AIData.AssetName));
+            }
+            
+
         }
 
 #if UNITY_2017_3_OR_NEWER

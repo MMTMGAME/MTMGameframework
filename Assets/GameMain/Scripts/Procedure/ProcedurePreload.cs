@@ -33,7 +33,8 @@ namespace GameMain
             
             "BattleUnit",
             "Bullet",
-            "EntityUi"
+            "EntityUi",
+            "AI",
         };
 
         private Dictionary<string, bool> m_LoadedFlag = new Dictionary<string, bool>();

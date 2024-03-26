@@ -10,21 +10,22 @@ using System.Runtime.InteropServices;
 namespace GameMain
 {
     [StructLayout(LayoutKind.Auto)]
-    public struct ImpactData
+    public struct BattleData
     {
         private readonly CampType m_Camp;
         private readonly int m_HP;
-        private readonly int m_Attack;
+       
         private readonly int m_Defense;
 
-        public ImpactData(CampType camp, int hp, int attack, int defense)
+        public BattleData(CampType camp, int hp, int defense)
         {
             m_Camp = camp;
             m_HP = hp;
-            m_Attack = attack;
             m_Defense = defense;
         }
 
+
+        
         public CampType Camp
         {
             get
@@ -41,13 +42,7 @@ namespace GameMain
             }
         }
 
-        public int Attack
-        {
-            get
-            {
-                return m_Attack;
-            }
-        }
+       
 
         public int Defense
         {

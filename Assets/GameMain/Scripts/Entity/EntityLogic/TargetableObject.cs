@@ -13,8 +13,10 @@ namespace GameMain
     /// <summary>
     /// 可作为目标的实体类。
     /// </summary>
-    public abstract class TargetableObject : Entity
+    public class TargetableObject : Entity
     {
+
+        private bool died;
         [SerializeField]
         private TargetableObjectData m_TargetableObjectData = null;
 
@@ -26,21 +28,36 @@ namespace GameMain
             }
         }
 
-        public abstract ImpactData GetImpactData();
-
-        public virtual void ApplyDamage(Entity attacker, int damageHP)
+        public bool IsValid()
         {
+            return Visible && !IsDead;
+        }
+
+        public virtual BattleData GetImpactData()
+        {
+            return new BattleData(m_TargetableObjectData.Camp, m_TargetableObjectData.HP,0);
+        }
+
+        public virtual void ApplyDamage(BattleUnit attacker, int damageHP)
+        {
+            if(died)
+                return;
+            
+            attacker.OnBeforeDamageVictim(this, damageHP);
+            
             float fromHPRatio = m_TargetableObjectData.HPRatio;
             m_TargetableObjectData.HP -= damageHP;
             float toHPRatio = m_TargetableObjectData.HPRatio;
             
+            attacker.OnAfterDamageVictim(this, damageHP);
             
             //Log.Debug(this.gameObject.name+"显示HPBarItem，血量:"+toHPRatio);
             GameEntry.EntityUi.ShowEntityUi (new ShowHpBarItemInfo(GameEntry.EntityUi.GenerateSerialId(), this, 1, toHPRatio));
             
 
-            if (m_TargetableObjectData.HP <= 0)
+            if (m_TargetableObjectData.HP <= 0 && !died)
             {
+                died = true;
                 OnDead(attacker);
             }
         }
@@ -75,22 +92,5 @@ namespace GameMain
         {
             GameEntry.Entity.HideEntity(this);
         }
-
-        // private void OnTriggerEnter(Collider other)
-        // {
-        //     Entity entity = other.gameObject.GetComponent<Entity>();
-        //     if (entity == null)
-        //     {
-        //         return;
-        //     }
-        //
-        //     if (entity is TargetableObject && entity.Id >= Id)
-        //     {
-        //         // 碰撞事件由 Id 小的一方处理，避免重复处理
-        //         return;
-        //     }
-        //
-        //     AIUtility.PerformCollision(this, entity);
-        // }
     }
 }

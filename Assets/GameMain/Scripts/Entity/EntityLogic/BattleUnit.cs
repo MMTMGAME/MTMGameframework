@@ -17,7 +17,27 @@ public class BattleUnit : TargetableObject
     [SerializeField] protected List<Armor> m_Armors = new List<Armor>();
 
 
-    public Weapon CurrentWeapon;
+    public BattleUnitData GetBattleUnitData()
+    {
+        return BattleUnitData;
+    }
+
+    
+
+    public Weapon GetWeaponByIndex(int index)
+    {
+        return m_Weapons[index];
+    }
+
+    public void OnBeforeDamageVictim(TargetableObject victim, int damageHp)
+    {
+        //暂不实现，接入技能，Buff,天赋等系统
+    }
+    
+    public void OnAfterDamageVictim(TargetableObject victim, int damageHp)
+    {
+        //暂不实现
+    }
 
 #if UNITY_2017_3_OR_NEWER
     protected override void OnShow(object userData)
@@ -125,12 +145,16 @@ public class BattleUnit : TargetableObject
 
         return attack;
     }
+
+    public CampType GetCamp()
+    {
+        return BattleUnitData.Camp;
+    }
     
-    
-    public override ImpactData GetImpactData()
+    public override GameMain.BattleData GetImpactData()
     {
         
-        return new ImpactData(BattleUnitData.Camp, BattleUnitData.HP,GetWeaponAttack(), BattleUnitData.Defense);
+        return new GameMain.BattleData(BattleUnitData.Camp, BattleUnitData.HP, BattleUnitData.Defense);
     }
 
     protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -138,15 +162,22 @@ public class BattleUnit : TargetableObject
         base.OnUpdate(elapseSeconds, realElapseSeconds);
         
         
-        TryAttack();
+        //TryAttack();
+        //不再用tryAttack了，用状态机进行攻击逻辑控制
     }
 
-    protected virtual void TryAttack()
+    // protected virtual void TryAttack()
+    // {
+    //     //举例攻击，因此用简单的写法
+    //     for (int i = 0; i < m_Weapons.Count; i++)
+    //     {
+    //         m_Weapons[i].TryAttack();//因为是举例，武器直接大范围攻击
+    //     }
+    // }
+    
+    //动画事件
+    public void Hit(int weaponIndex)
     {
-        //举例攻击，因此用简单的写法
-        for (int i = 0; i < m_Weapons.Count; i++)
-        {
-            m_Weapons[i].TryAttack();//因为是举例，武器直接大范围攻击
-        }
+        GetWeaponByIndex(weaponIndex).Hit();   
     }
 }

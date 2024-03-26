@@ -5,31 +5,35 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+
 namespace GameMain
 {
     /// <summary>
     /// 关系类型。
     /// </summary>
+    [Flags]
     public enum RelationType : byte
     {
         /// <summary>
-        /// 未知的。
+        /// 没有任何关系。
         /// </summary>
-        Unknown,
+        None = 0,
 
         /// <summary>
         /// 友好的。
         /// </summary>
-        Friendly,
+        Friendly = 1 << 0, // 1
 
         /// <summary>
         /// 中立的。
         /// </summary>
-        Neutral,
+        Neutral = 1 << 1, // 2
 
         /// <summary>
         /// 敌对的。
         /// </summary>
-        Hostile
+        Hostile = 1 << 2, // 4
     }
+
 }

@@ -6,13 +6,26 @@
 //------------------------------------------------------------
 
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameMain
 {
+    
+    [IncludeInSettings(true)]
+    public class AIData
+    {
+        public string AssetName { get; set; }
+        public float Radius { get; set; }
+        public float AttackDistance { get; set; }
+    }
+    
     [System.Serializable]
     public abstract class EntityData
     {
+        
+        public AIData AIData { get; set; }
+
         [SerializeField]
         private int m_Id = 0;
 
@@ -29,6 +42,19 @@ namespace GameMain
         {
             m_Id = entityId;
             m_TypeId = typeId;
+            
+            //获取AI数据
+            var aiTable = GameEntry.DataTable.GetDataTable<DRAI>();
+            var drAi = aiTable.GetDataRow(TypeId);
+            if (drAi != null)
+            {
+                AIData = new AIData()
+                {
+                    Radius = drAi.Radius,
+                    AssetName = drAi.AssetName,
+                    AttackDistance = drAi.AttackDistance,
+                };
+            }
         }
 
         /// <summary>

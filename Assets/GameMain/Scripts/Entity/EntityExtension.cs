@@ -96,7 +96,7 @@ namespace GameMain
             entityComponent.ShowEntity(typeof(Effect), "Effect", Constant.AssetPriority.EffectAsset, data);
         }
 
-        public static void ShowBattleUnit(this EntityComponent entityComponent, BattleUnitData data)
+        public static void ShowBattleUnit(this EntityComponent entityComponent, global::BattleUnitData data)
         {
             entityComponent.ShowEntity(typeof(BattleUnit), "BattleUnit", Constant.AssetPriority.BattleUnitAsset, data);
         }

@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Buffers;
 using GameFramework;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -17,7 +18,21 @@ namespace GameMain
     /// </summary>
     public class Weapon : Entity
     {
-        
+
+        private Entity ownerEntity;
+        public Entity OwnerEntity
+        {
+            get
+            {
+                if (ownerEntity == null)
+                {
+                    ownerEntity=GameEntry.Entity.GetEntity(m_WeaponData.OwnerId).Logic as Entity;
+                }
+
+                return ownerEntity;
+            }
+            
+        }
 
         [SerializeField]
         public WeaponData m_WeaponData = null;
@@ -50,7 +65,16 @@ namespace GameMain
                 return;
             }
 
-            GameEntry.Entity.AttachEntity(Entity, m_WeaponData.OwnerId, m_WeaponData.Path);
+            var ownerEntity = GameEntry.Entity.GetEntity(m_WeaponData.OwnerId);
+            if (ownerEntity == null)
+            {
+                Log.Fatal("武器组件附加失败，因为OwnerEntity不存在");
+                return;
+            }
+
+
+            var battleUnit = ownerEntity.Logic as BattleUnit;
+            GameEntry.Entity.AttachEntity(Entity, m_WeaponData.OwnerId, battleUnit.GetBattleUnitData().GetWeaponPath(m_WeaponData.SlotIndex));
             
             AddAttackLogicComponent(m_WeaponData.AttackLogicComponent);
         }
@@ -84,18 +108,32 @@ namespace GameMain
             CachedTransform.localRotation=Quaternion.identity;
         }
 
-        public void TryAttack()
+        // public void TryAttack()
+        // {
+        //     if (Time.time < m_NextAttackTime)
+        //     {
+        //         return;
+        //     }
+        //
+        //     m_NextAttackTime = Time.time + m_WeaponData.AttackInterval;
+        //
+        //     WeaponAttack.Attack();
+        // }
+
+        public void Hit()
         {
-            if (Time.time < m_NextAttackTime)
+            var entities = AIUtility.FindBattleUnits((BattleUnit)OwnerEntity, RelationType.Hostile | RelationType.Neutral,
+                transform.position, 3);
+            foreach (var entity in entities)
             {
-                return;
+                Attack(entity);
+
             }
-
-            m_NextAttackTime = Time.time + m_WeaponData.AttackInterval;
-
-            WeaponAttack.Attack();
         }
 
-       
+        public virtual void Attack(TargetableObject victim)
+        {
+            AIUtility.Attack((BattleUnit)OwnerEntity,this,victim);
+        }
     }
 }

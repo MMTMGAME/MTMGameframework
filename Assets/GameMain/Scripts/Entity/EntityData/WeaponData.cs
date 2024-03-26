@@ -30,12 +30,14 @@ namespace GameMain
         [SerializeField]
         private int m_BulletSoundId = 0;
 
-        private string path;
+        
 
         private string attackLogicComponent;
         [FormerlySerializedAs("shootPoint")] public string shootPointPath;
 
-        public WeaponData(int entityId, int typeId, int ownerId, CampType ownerCamp)
+        //所处玩家槽位
+        private int slotIndex;
+        public WeaponData(int entityId, int typeId, int ownerId, CampType ownerCamp,int slotIndex)
             : base(entityId, typeId, ownerId, ownerCamp)
         {
             IDataTable<DRWeapon> dtWeapon = GameEntry.DataTable.GetDataTable<DRWeapon>();
@@ -45,12 +47,13 @@ namespace GameMain
                 return;
             }
 
+            this.slotIndex = slotIndex;
             m_Attack = drWeapon.Attack;
             m_AttackInterval = drWeapon.AttackInterval;
             m_BulletId = drWeapon.BulletId;
             m_BulletSpeed = drWeapon.BulletSpeed;
             m_BulletSoundId = drWeapon.BulletSoundId;
-            path = drWeapon.Path;
+            
             attackLogicComponent = drWeapon.AttackLogicComponent;
             shootPointPath = drWeapon.ShootPoint;
         }
@@ -110,11 +113,11 @@ namespace GameMain
             }
         }
 
-        public string Path
+        public int SlotIndex
         {
             get
             {
-                return path;
+                return slotIndex;
             }
         }
 

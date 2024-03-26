@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-03-21 15:11:47.585
+// 生成时间：2024-03-26 17:34:40.687
 //------------------------------------------------------------
 
 using GameFramework;
@@ -37,7 +37,7 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取武器编号0。
+        /// 获取右手武器。
         /// </summary>
         public int WeaponId0
         {
@@ -46,7 +46,7 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取武器编号1。
+        /// 获取左手武器。
         /// </summary>
         public int WeaponId1
         {
@@ -55,7 +55,7 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取武器编号2。
+        /// 获取特殊武器。
         /// </summary>
         public int WeaponId2
         {
@@ -108,6 +108,33 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取右手武器位置。
+        /// </summary>
+        public string WeaponPath0
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取左手武器位置。
+        /// </summary>
+        public string WeaponPath1
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取特殊武器位置。
+        /// </summary>
+        public string WeaponPath2
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -128,6 +155,9 @@ namespace GameMain
             ArmorId2 = int.Parse(columnStrings[index++]);
             DeadEffectId = int.Parse(columnStrings[index++]);
             DeadSoundId = int.Parse(columnStrings[index++]);
+            WeaponPath0 = columnStrings[index++];
+            WeaponPath1 = columnStrings[index++];
+            WeaponPath2 = columnStrings[index++];
 
             GeneratePropertyArray();
             return true;
@@ -148,6 +178,9 @@ namespace GameMain
                     ArmorId2 = binaryReader.Read7BitEncodedInt32();
                     DeadEffectId = binaryReader.Read7BitEncodedInt32();
                     DeadSoundId = binaryReader.Read7BitEncodedInt32();
+                    WeaponPath0 = binaryReader.ReadString();
+                    WeaponPath1 = binaryReader.ReadString();
+                    WeaponPath2 = binaryReader.ReadString();
                 }
             }
 
@@ -221,6 +254,39 @@ namespace GameMain
             return m_ArmorId[index].Value;
         }
 
+        private KeyValuePair<int, string>[] m_WeaponPath = null;
+
+        public int WeaponPathCount
+        {
+            get
+            {
+                return m_WeaponPath.Length;
+            }
+        }
+
+        public string GetWeaponPath(int id)
+        {
+            foreach (KeyValuePair<int, string> i in m_WeaponPath)
+            {
+                if (i.Key == id)
+                {
+                    return i.Value;
+                }
+            }
+
+            throw new GameFrameworkException(Utility.Text.Format("GetWeaponPath with invalid id '{0}'.", id));
+        }
+
+        public string GetWeaponPathAt(int index)
+        {
+            if (index < 0 || index >= m_WeaponPath.Length)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("GetWeaponPathAt with invalid index '{0}'.", index));
+            }
+
+            return m_WeaponPath[index].Value;
+        }
+
         private void GeneratePropertyArray()
         {
             m_WeaponId = new KeyValuePair<int, int>[]
@@ -235,6 +301,13 @@ namespace GameMain
                 new KeyValuePair<int, int>(0, ArmorId0),
                 new KeyValuePair<int, int>(1, ArmorId1),
                 new KeyValuePair<int, int>(2, ArmorId2),
+            };
+
+            m_WeaponPath = new KeyValuePair<int, string>[]
+            {
+                new KeyValuePair<int, string>(0, WeaponPath0),
+                new KeyValuePair<int, string>(1, WeaponPath1),
+                new KeyValuePair<int, string>(2, WeaponPath2),
             };
         }
     }

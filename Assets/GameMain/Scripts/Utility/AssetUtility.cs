@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework;
+using Unity.VisualScripting;
 
 namespace GameMain
 {
@@ -49,6 +50,11 @@ namespace GameMain
         public static string GetEntityAsset(string assetName)
         {
             return Utility.Text.Format("Assets/GameMain/Entities/{0}.prefab", assetName);
+        }
+
+        public static string GetStateGraphAsset(string assetName)
+        {
+            return Utility.Text.Format("Assets/GameMain/StateGraphs/{0}.asset", assetName);
         }
 
         public static string GetUIFormAsset(string assetName)

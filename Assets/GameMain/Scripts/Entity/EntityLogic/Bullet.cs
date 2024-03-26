@@ -20,9 +20,9 @@ namespace GameMain
         public BulletData m_BulletData = null;
 
         public BulletStrategy bulletStrategy;
-        public ImpactData GetImpactData()
+        public BattleData GetImpactData()
         {
-            return new ImpactData(m_BulletData.OwnerCamp, 0, m_BulletData.Attack, 0);
+            return new BattleData(m_BulletData.OwnerCamp, 0,  0);
         }
 
 #if UNITY_2017_3_OR_NEWER

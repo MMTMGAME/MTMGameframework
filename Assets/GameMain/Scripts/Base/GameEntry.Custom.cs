@@ -25,11 +25,18 @@ namespace GameMain
             get;
             private set;
         }
+        
+        public static AIComponent AI
+        {
+            get;
+            private set;
+        }
 
         private static void InitCustomComponents()
         {
             BuiltinData = UnityGameFramework.Runtime.GameEntry.GetComponent<BuiltinDataComponent>();
             EntityUi = UnityGameFramework.Runtime.GameEntry.GetComponent<EntityUiComponent>();
+            AI=UnityGameFramework.Runtime.GameEntry.GetComponent<AIComponent>();
             
         }
     }

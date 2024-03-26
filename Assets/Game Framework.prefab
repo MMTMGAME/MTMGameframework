@@ -335,6 +335,10 @@ PrefabInstance:
       propertyPath: m_AvailableProcedureTypeNames.Array.data[14]
       value: ProcedureRetry
       objectReference: {fileID: 0}
+    - target: {fileID: 11413340, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
+      propertyPath: m_SoundGroups.Array.data[1].m_AgentHelperCount
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 11494652, guid: 23a136c1b993fd1448752b84266d7d34, type: 3}
       propertyPath: m_EntityGroups.Array.size
       value: 8

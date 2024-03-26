@@ -42,7 +42,7 @@ public abstract class BulletStrategy : MonoBehaviour
             if(entity.Id==bulletData.OwnerId)
                 return;
             var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
-            AIUtility.BulletAttack((Entity)owner.Logic,bullet,bullet.GetImpactData(), targetAbleObject);
+            AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, targetAbleObject);
         }
     }
 
@@ -60,7 +60,7 @@ public abstract class BulletStrategy : MonoBehaviour
                 return;
             var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
                 
-            AIUtility.BulletAttack((Entity)owner.Logic,bullet,bullet.GetImpactData(), targetAbleObject);
+            AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, targetAbleObject);
         }
     }
 }
