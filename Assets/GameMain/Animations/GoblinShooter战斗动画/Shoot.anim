@@ -502,8 +502,8 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.18333334
-    functionName: Shoot
-    data: 
+    functionName: TriggerAnimationEvent
+    data: Shoot
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

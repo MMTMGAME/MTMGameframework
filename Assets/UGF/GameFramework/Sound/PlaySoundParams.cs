@@ -5,6 +5,8 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using UnityEngine;
+
 namespace GameFramework.Sound
 {
     /// <summary>
@@ -22,6 +24,8 @@ namespace GameFramework.Sound
         private float m_Pitch;
         private float m_PanStereo;
         private float m_SpatialBlend;
+        private AudioRolloffMode audioRolloffMode;
+        private float minDistance;
         private float m_MaxDistance;
         private float m_DopplerLevel;
 
@@ -40,6 +44,8 @@ namespace GameFramework.Sound
             m_Pitch = Constant.DefaultPitch;
             m_PanStereo = Constant.DefaultPanStereo;
             m_SpatialBlend = Constant.DefaultSpatialBlend;
+            audioRolloffMode = Constant.DefaultAudioRolloffMode;
+            minDistance = Constant.DefaultMinDistance;
             m_MaxDistance = Constant.DefaultMaxDistance;
             m_DopplerLevel = Constant.DefaultDopplerLevel;
         }
@@ -176,6 +182,30 @@ namespace GameFramework.Sound
             set
             {
                 m_SpatialBlend = value;
+            }
+        }
+
+        public AudioRolloffMode AudioRolloffMode
+        {
+            get
+            {
+                return audioRolloffMode;
+            }
+            set
+            {
+                audioRolloffMode = value;
+            }
+        }
+        
+        public float MinDistance
+        {
+            get
+            {
+                return minDistance;
+            }
+            set
+            {
+                m_MaxDistance = value;
             }
         }
 

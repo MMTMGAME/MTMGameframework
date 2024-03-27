@@ -105,6 +105,8 @@ namespace UnityGameFramework.Runtime
             set;
         }
 
+        public abstract AudioRolloffMode AudioRolloffMode { get; set; }
+
         /// <summary>
         /// 获取或设置声音最大距离。
         /// </summary>
@@ -113,6 +115,8 @@ namespace UnityGameFramework.Runtime
             get;
             set;
         }
+
+        public abstract float MinDistance { get; set; }
 
         /// <summary>
         /// 获取或设置声音多普勒等级。

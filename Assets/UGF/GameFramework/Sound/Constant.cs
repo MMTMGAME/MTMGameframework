@@ -5,6 +5,8 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using UnityEngine;
+
 namespace GameFramework.Sound
 {
     /// <summary>
@@ -22,7 +24,12 @@ namespace GameFramework.Sound
         internal const float DefaultPitch = 1f;
         internal const float DefaultPanStereo = 0f;
         internal const float DefaultSpatialBlend = 0f;
+        
+        internal const AudioRolloffMode DefaultAudioRolloffMode = AudioRolloffMode.Logarithmic;
+        
+        internal const float DefaultMinDistance = 3f;
         internal const float DefaultMaxDistance = 100f;
-        internal const float DefaultDopplerLevel = 1f;
+        
+        internal const float DefaultDopplerLevel = 0f;
     }
 }

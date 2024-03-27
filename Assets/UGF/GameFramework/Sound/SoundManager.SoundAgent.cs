@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using UnityEngine;
 
 namespace GameFramework.Sound
 {
@@ -249,6 +250,30 @@ namespace GameFramework.Sound
                 }
             }
 
+            public AudioRolloffMode AudioRolloffMode
+            {
+                get
+                {
+                    return m_SoundAgentHelper.AudioRolloffMode;
+                }
+                set
+                {
+                    m_SoundAgentHelper.AudioRolloffMode = value;
+                }
+            }
+
+            public float MinDistance
+            {
+                get
+                {
+                    return m_SoundAgentHelper.MinDistance;
+                }
+                set
+                {
+                    m_SoundAgentHelper.MinDistance = value;
+                }
+            }
+            
             /// <summary>
             /// 获取或设置声音最大距离。
             /// </summary>
@@ -389,6 +414,9 @@ namespace GameFramework.Sound
                 Pitch = Constant.DefaultPitch;
                 PanStereo = Constant.DefaultPanStereo;
                 SpatialBlend = Constant.DefaultSpatialBlend;
+                
+                AudioRolloffMode = Constant.DefaultAudioRolloffMode;
+                MinDistance = Constant.DefaultMinDistance;
                 MaxDistance = Constant.DefaultMaxDistance;
                 DopplerLevel = Constant.DefaultDopplerLevel;
                 m_SoundAgentHelper.Reset();

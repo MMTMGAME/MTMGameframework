@@ -168,6 +168,30 @@ namespace UnityGameFramework.Runtime
             }
         }
 
+        public override AudioRolloffMode AudioRolloffMode
+        {
+            get
+            {
+                return m_AudioSource.rolloffMode;
+            }
+            set
+            {
+                m_AudioSource.rolloffMode = value;
+            }
+        }
+
+        public override float MinDistance
+        {
+            get
+            {
+                return m_AudioSource.minDistance;
+            }
+            set
+            {
+                m_AudioSource.minDistance = value;
+            }
+        }
+
         /// <summary>
         /// 获取或设置声音最大距离。
         /// </summary>

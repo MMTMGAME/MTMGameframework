@@ -198,6 +198,8 @@ namespace GameFramework.Sound
                 candidateAgent.Pitch = playSoundParams.Pitch;
                 candidateAgent.PanStereo = playSoundParams.PanStereo;
                 candidateAgent.SpatialBlend = playSoundParams.SpatialBlend;
+                candidateAgent.AudioRolloffMode = playSoundParams.AudioRolloffMode;
+                candidateAgent.MinDistance = playSoundParams.MinDistance;
                 candidateAgent.MaxDistance = playSoundParams.MaxDistance;
                 candidateAgent.DopplerLevel = playSoundParams.DopplerLevel;
                 candidateAgent.Play(playSoundParams.FadeInSeconds);

@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using UnityEngine;
 
 namespace GameFramework.Sound
 {
@@ -102,10 +103,22 @@ namespace GameFramework.Sound
             set;
         }
 
+        AudioRolloffMode AudioRolloffMode
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// 获取或设置声音最大距离。
         /// </summary>
         float MaxDistance
+        {
+            get;
+            set;
+        }
+
+        float MinDistance
         {
             get;
             set;
