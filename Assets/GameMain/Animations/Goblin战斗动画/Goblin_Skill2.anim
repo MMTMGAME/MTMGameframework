@@ -572,14 +572,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.11666667
-    functionName: Hit
+    functionName: HitLeft
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
     messageOptions: 0
   - time: 0.5
-    functionName: Hit
+    functionName: HitRight
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

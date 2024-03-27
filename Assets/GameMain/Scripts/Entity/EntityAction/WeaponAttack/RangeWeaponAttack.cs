@@ -10,7 +10,7 @@ public class RangeWeaponAttack : WeaponAttack
     public override void Init(Weapon weapon)
     {
         base.Init(weapon);
-        shootPoint = transform.FindDeep(weapon.m_WeaponData.shootPointPath);
+        shootPoint = transform.Find(weapon.m_WeaponData.shootPointPath);
         if (shootPoint == null)
             shootPoint = transform;
     }

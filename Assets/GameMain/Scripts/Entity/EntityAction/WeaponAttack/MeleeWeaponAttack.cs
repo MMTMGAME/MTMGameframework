@@ -26,6 +26,6 @@ public class MeleeWeaponAttack : WeaponAttack
         if(ownerBattleUnit==null)
             return;
         
-        ownerBattleUnit?.CachedAnimator.SetTrigger("Attack");
+        //ownerBattleUnit?.CachedAnimator.SetTrigger("Attack");
     }
 }

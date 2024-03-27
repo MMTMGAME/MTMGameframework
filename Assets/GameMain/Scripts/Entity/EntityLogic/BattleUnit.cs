@@ -23,7 +23,7 @@ public class BattleUnit : TargetableObject
     }
 
     
-
+    
     public Weapon GetWeaponByIndex(int index)
     {
         return m_Weapons[index];
@@ -68,6 +68,9 @@ public class BattleUnit : TargetableObject
         {
             GameEntry.Entity.ShowArmor(armorDatas[i]);
         }
+
+        var animatorEvents = gameObject.AddComponent<BattleUnitAnimatorEvents>();
+        animatorEvents.Init(this);
     }
 
 #if UNITY_2017_3_OR_NEWER
@@ -134,18 +137,7 @@ public class BattleUnit : TargetableObject
         GameEntry.Sound.PlaySound(BattleUnitData.DeadSoundId);
     }
 
-
-    public int GetWeaponAttack()
-    {
-        int attack = 0;
-        foreach (var mWeapon in m_Weapons)
-        {
-            attack += mWeapon.m_WeaponData.Attack;
-        }
-
-        return attack;
-    }
-
+    
     public CampType GetCamp()
     {
         return BattleUnitData.Camp;
@@ -175,9 +167,6 @@ public class BattleUnit : TargetableObject
     //     }
     // }
     
-    //动画事件
-    public void Hit(int weaponIndex)
-    {
-        GetWeaponByIndex(weaponIndex).Hit();   
-    }
+    
+    
 }

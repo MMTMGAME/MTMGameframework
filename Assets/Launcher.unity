@@ -465,6 +465,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Framework
       objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396921253, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_SoundGroups.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396921253, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_SoundGroups.Array.data[1].m_Name
+      value: Sound2D
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396921253, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_SoundGroups.Array.data[2].m_Name
+      value: Sound3D
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396921253, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_SoundGroups.Array.data[3].m_Name
+      value: UISound
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396921253, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_SoundGroups.Array.data[3].m_Volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396921253, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_SoundGroups.Array.data[1].m_AgentHelperCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396921253, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_SoundGroups.Array.data[3].m_AgentHelperCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396921253, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_SoundGroups.Array.data[1].m_AvoidBeingReplacedBySamePriority
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
 --- !u!4 &1015098211 stripped

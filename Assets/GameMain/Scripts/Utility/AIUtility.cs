@@ -152,7 +152,7 @@ namespace GameMain
             {
                 if (((UnityGameFramework.Runtime.Entity)entity).Logic is TargetableObject targetableObject)
                 {
-                    if (entity.Handle!=null && Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
+                    if (entity!=null && entity.Handle!=null && Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
                         && (GetRelation(self.GetImpactData().Camp, targetableObject.GetImpactData().Camp) & relationTypes) != RelationType.None 
                         && targetableObject.Available && !targetableObject.IsDead)
                     {

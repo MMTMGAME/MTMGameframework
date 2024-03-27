@@ -120,14 +120,28 @@ namespace GameMain
         //     WeaponAttack.Attack();
         // }
 
-        public void Hit()
+        public virtual void Hit(float radius)
         {
+            if (radius == 0)
+            {
+                Log.Error($"武器{transform.name}的攻击范围不应该是0,请设置帧事件的float属性");
+                radius = 1;
+            }
+            
             var entities = AIUtility.FindBattleUnits((BattleUnit)OwnerEntity, RelationType.Hostile | RelationType.Neutral,
-                transform.position, 3);
+                transform.position, radius);
             foreach (var entity in entities)
             {
                 Attack(entity);
 
+            }
+        }
+
+        public virtual void Shoot()
+        {
+            if (WeaponAttack is RangeWeaponAttack rangeWeaponAttack)
+            {
+                rangeWeaponAttack.Attack();
             }
         }
 
