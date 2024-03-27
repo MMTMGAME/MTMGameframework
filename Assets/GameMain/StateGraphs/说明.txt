@@ -1,0 +1,1 @@
+动画帧事件名称填写TiggerAnimationEvent,其中string表示帧事件名称

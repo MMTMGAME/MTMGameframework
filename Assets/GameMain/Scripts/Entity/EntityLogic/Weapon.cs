@@ -37,7 +37,7 @@ namespace GameMain
         [SerializeField]
         public WeaponData m_WeaponData = null;
 
-        private float m_NextAttackTime = 0f;
+        //private float m_NextAttackTime = 0f;
         
         private WeaponAttack WeaponAttack { get; set; }
 
@@ -108,46 +108,17 @@ namespace GameMain
             CachedTransform.localRotation=Quaternion.identity;
         }
 
-        // public void TryAttack()
-        // {
-        //     if (Time.time < m_NextAttackTime)
-        //     {
-        //         return;
-        //     }
-        //
-        //     m_NextAttackTime = Time.time + m_WeaponData.AttackInterval;
-        //
-        //     WeaponAttack.Attack();
-        // }
+        
 
-        public virtual void Hit(float radius)
+        public virtual void HandleAnimEvent(string eventName,float radius)
         {
-            if (radius == 0)
-            {
-                Log.Error($"武器{transform.name}的攻击范围不应该是0,请设置帧事件的float属性");
-                radius = 1;
-            }
-            
-            var entities = AIUtility.FindBattleUnits((BattleUnit)OwnerEntity, RelationType.Hostile | RelationType.Neutral,
-                transform.position, radius);
-            foreach (var entity in entities)
-            {
-                Attack(entity);
-
-            }
+            WeaponAttack.HandleAnimeEvent(eventName,radius);
         }
 
-        public virtual void Shoot()
-        {
-            if (WeaponAttack is RangeWeaponAttack rangeWeaponAttack)
-            {
-                rangeWeaponAttack.Attack();
-            }
-        }
+       
 
-        public virtual void Attack(TargetableObject victim)
-        {
-            AIUtility.Attack((BattleUnit)OwnerEntity,this,victim);
-        }
+        
+
+        
     }
 }

@@ -15,14 +15,19 @@ public class RangeWeaponAttack : WeaponAttack
             shootPoint = transform;
     }
 
-    public override void Attack()
+    public override void HandleAnimeEvent(string eventName, float radius)
     {
-        var m_WeaponData = Weapon.m_WeaponData;
-        GameEntry.Entity.ShowBullet(new BulletData(GameEntry.Entity.GenerateSerialId(), m_WeaponData.BulletId, m_WeaponData.OwnerId, m_WeaponData.OwnerCamp, m_WeaponData.Attack, m_WeaponData.BulletSpeed,5)
+        if (eventName == "Shoot")
         {
-            Position = shootPoint.position,
-            Rotation = shootPoint.rotation,
-        });
-        GameEntry.Sound.PlaySound(m_WeaponData.BulletSoundId,transform.position);
+            var m_WeaponData = Weapon.m_WeaponData;
+            GameEntry.Entity.ShowBullet(new BulletData(GameEntry.Entity.GenerateSerialId(), m_WeaponData.BulletId, m_WeaponData.OwnerId, m_WeaponData.OwnerCamp, m_WeaponData.Attack, m_WeaponData.BulletSpeed,5)
+            {
+                Position = shootPoint.position,
+                Rotation = shootPoint.rotation,
+            });
+            GameEntry.Sound.PlaySound(m_WeaponData.BulletSoundId,transform.position);
+        }
     }
+
+   
 }

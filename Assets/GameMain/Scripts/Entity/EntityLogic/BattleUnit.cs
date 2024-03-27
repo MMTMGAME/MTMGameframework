@@ -69,8 +69,7 @@ public class BattleUnit : TargetableObject
             GameEntry.Entity.ShowArmor(armorDatas[i]);
         }
 
-        var animatorEvents = gameObject.AddComponent<BattleUnitAnimatorEvents>();
-        animatorEvents.Init(this);
+        
     }
 
 #if UNITY_2017_3_OR_NEWER

@@ -14,5 +14,12 @@ public abstract class WeaponAttack : MonoBehaviour
     {
         Weapon = weapon;
     }
-    public abstract void Attack();
+    
+    public virtual void Attack(TargetableObject victim)
+    {
+        AIUtility.Attack((BattleUnit)Weapon.OwnerEntity,Weapon,victim);
+    }
+    
+
+    public abstract void HandleAnimeEvent(string eventName, float radius);
 }
