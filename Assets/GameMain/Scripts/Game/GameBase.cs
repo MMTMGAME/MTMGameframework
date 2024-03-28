@@ -98,6 +98,10 @@ namespace GameMain
 
             Debug.Log(this.GetType()+" loadCount:"+loadCount);
             loadCount++;
+            
+            //定时器例子
+            GameEntry.Timer.AddOnceTimer(3,()=>{Debug.Log("3秒Timer定时器");});
+            GameEntry.TimingWheel.AddTask(3000,(success)=>{Debug.Log("3秒TimingWheel定时器");});
         }
         
         

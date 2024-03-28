@@ -5,6 +5,9 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Timers;
+using UGFExtensions;
+using UGFExtensions.Timer;
 using UnityEngine;
 
 namespace GameMain
@@ -32,12 +35,25 @@ namespace GameMain
             private set;
         }
 
+        public static TimerComponent Timer
+        {
+            get;
+            private set;
+        }
+
+        public static TimingWheelComponent TimingWheel
+        {
+            get;
+            private set;
+        }
+
         private static void InitCustomComponents()
         {
             BuiltinData = UnityGameFramework.Runtime.GameEntry.GetComponent<BuiltinDataComponent>();
             EntityUi = UnityGameFramework.Runtime.GameEntry.GetComponent<EntityUiComponent>();
             AI=UnityGameFramework.Runtime.GameEntry.GetComponent<AIComponent>();
-            
+            Timer=UnityGameFramework.Runtime.GameEntry.GetComponent<TimerComponent>();
+            TimingWheel=UnityGameFramework.Runtime.GameEntry.GetComponent<TimingWheelComponent>();
         }
     }
 }
