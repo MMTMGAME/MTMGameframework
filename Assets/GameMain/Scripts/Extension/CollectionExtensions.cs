@@ -10,14 +10,16 @@ public static class CollectionExtensions
     {
         if (source == null) throw new ArgumentNullException(nameof(source));
 
-        var nonEmptyElements = source.Where(e => !EqualityComparer<T>.Default.Equals(e, default(T))).ToList();
+        // 使用 Where 语句排除 null 值。对于非空引用类型和所有值类型，这将保留元素。
+        var nonNullElements = source.Where(e => e != null || !typeof(T).IsValueType).ToList();
 
-        if (nonEmptyElements.Count == 0)
+        if (nonNullElements.Count == 0)
         {
             throw new InvalidOperationException("Cannot select a random element from an empty collection.");
         }
 
-        int index = random.Next(nonEmptyElements.Count);
-        return nonEmptyElements[index];
+        int index = random.Next(nonNullElements.Count);
+        return nonNullElements[index];
     }
+
 }

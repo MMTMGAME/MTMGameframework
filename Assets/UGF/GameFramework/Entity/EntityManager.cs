@@ -9,6 +9,7 @@ using GameFramework.ObjectPool;
 using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameFramework.Entity
 {
@@ -671,6 +672,7 @@ namespace GameFramework.Entity
         /// <param name="userData">用户自定义数据。</param>
         public void HideEntity(int entityId, object userData)
         {
+            Debug.Log("HideEntity" + entityId+"当前帧："+Time.frameCount);
             if (IsLoadingEntity(entityId))
             {
                 m_EntitiesToReleaseOnLoad.Add(m_EntitiesBeingLoaded[entityId]);

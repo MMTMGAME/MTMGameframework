@@ -27,8 +27,8 @@ namespace GameMain
         [SerializeField]
         private float m_BulletSpeed = 0f;
 
-        [SerializeField]
-        private int m_BulletSoundId = 0;
+        [FormerlySerializedAs("m_BulletSoundId")] [SerializeField]
+        private int m_ShootSoundId = 0;
 
         
 
@@ -52,7 +52,7 @@ namespace GameMain
             m_AttackInterval = drWeapon.AttackInterval;
             m_BulletId = drWeapon.BulletId;
             m_BulletSpeed = drWeapon.BulletSpeed;
-            m_BulletSoundId = drWeapon.BulletSoundId;
+            m_ShootSoundId = drWeapon.ShootSoundId;
             
             attackLogicComponent = drWeapon.AttackLogicComponent;
             shootPointPath = drWeapon.ShootPoint;
@@ -105,11 +105,11 @@ namespace GameMain
         /// <summary>
         /// 子弹声音编号。
         /// </summary>
-        public int BulletSoundId
+        public int ShootSoundId
         {
             get
             {
-                return m_BulletSoundId;
+                return m_ShootSoundId;
             }
         }
 

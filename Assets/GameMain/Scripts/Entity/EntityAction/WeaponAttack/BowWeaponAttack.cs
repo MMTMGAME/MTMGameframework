@@ -18,12 +18,12 @@ public class BowWeaponAttack : RangeWeaponAttack
             {
                 GameEntry.Entity.ShowBullet(new BulletData(GameEntry.Entity.GenerateSerialId(), m_WeaponData.BulletId, m_WeaponData.OwnerId, m_WeaponData.OwnerCamp, m_WeaponData.Attack, m_WeaponData.BulletSpeed,5)
                 {
-                    Position = shootPoint.position+shootPoint.TransformPoint(i*0.6f,0,0),
+                    Position = shootPoint.TransformPoint(i*0.6f,0,0),
                     Rotation = shootPoint.rotation,
                 });
             }
             
-            GameEntry.Sound.PlaySound(m_WeaponData.BulletSoundId,transform.position);
+            GameEntry.Sound.PlaySound(m_WeaponData.ShootSoundId,transform.position);
         }
     }
     

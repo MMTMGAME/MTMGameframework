@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-03-26 17:34:40.688
+// 生成时间：2024-03-28 18:31:13.829
 //------------------------------------------------------------
 
 using GameFramework;
@@ -37,15 +37,6 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取死亡音效数组(不可置空，可设置为0表示为无。
-        /// </summary>
-        public string DeadSoundIdArrStr
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 获取隐藏时声音Id。
         /// </summary>
         public string HideSoundIdArrStr
@@ -58,15 +49,6 @@ namespace GameMain
         /// 获取发射时声音Id。
         /// </summary>
         public int FireSoundId
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取死亡特效Id。
-        /// </summary>
-        public int DeadEffectId
         {
             get;
             private set;
@@ -138,10 +120,8 @@ namespace GameMain
             index++;
             m_Id = int.Parse(columnStrings[index++]);
             index++;
-            DeadSoundIdArrStr = columnStrings[index++];
             HideSoundIdArrStr = columnStrings[index++];
             FireSoundId = int.Parse(columnStrings[index++]);
-            DeadEffectId = int.Parse(columnStrings[index++]);
             HideEffectId = int.Parse(columnStrings[index++]);
             FireEffectId = int.Parse(columnStrings[index++]);
             StrategyComponent = columnStrings[index++];
@@ -160,10 +140,8 @@ namespace GameMain
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
-                    DeadSoundIdArrStr = binaryReader.ReadString();
                     HideSoundIdArrStr = binaryReader.ReadString();
                     FireSoundId = binaryReader.Read7BitEncodedInt32();
-                    DeadEffectId = binaryReader.Read7BitEncodedInt32();
                     HideEffectId = binaryReader.Read7BitEncodedInt32();
                     FireEffectId = binaryReader.Read7BitEncodedInt32();
                     StrategyComponent = binaryReader.ReadString();

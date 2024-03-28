@@ -5,6 +5,8 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using GameFramework;
 using GameFramework.DataTable;
 using GameFramework.Sound;
@@ -19,6 +21,9 @@ namespace GameMain
     {
         private const float FadeVolumeDuration = 1f;
         private static int? s_MusicSerialId = null;
+        
+        //将音效击中表进行映射
+        private static Dictionary<string, Func<DRBulletImpactSound, int>> materialToSoundIdMap;
 
         public static int? PlayMusic(this SoundComponent soundComponent, int musicId, object userData = null)
         {
@@ -70,6 +75,66 @@ namespace GameMain
             playSoundParams.SpatialBlend = drSound.SpatialBlend;
             return soundComponent.PlaySound(AssetUtility.GetSoundAsset(drSound.AssetName), "Sound", Constant.AssetPriority.SoundAsset, playSoundParams, bindingEntity != null ? bindingEntity.Entity : null, userData);
         }
+
+
+        #region 音效击中表
+
+        private static int GetSoundIdFromMaterial(string materialName, DRBulletImpactSound dr)
+        {
+            // 确保字典已经初始化
+            if (materialToSoundIdMap == null)
+            {
+                InitializeMaterialToSoundIdMap();
+            }
+
+            // 使用字典查询对应的函数并调用
+            if (materialToSoundIdMap.TryGetValue(materialName, out var getSoundIdFunc))
+            {
+                return getSoundIdFunc(dr);
+            }
+
+            // 如果没有找到对应的材质名称，返回一个错误代码或默认值
+            return 0; // 或者根据实际情况选择合适的返回值
+        }
+
+        private static void InitializeMaterialToSoundIdMap()
+        {
+            materialToSoundIdMap = new Dictionary<string, Func<DRBulletImpactSound, int>>
+            {
+                {"Default",dr=>dr.Default},
+                {"Concrete", dr => dr.Concrete},
+                {"Wood", dr => dr.Wood},
+                {"Stone", dr => dr.Stone},
+                {"Metal", dr => dr.Metal},
+                {"Dirt", dr => dr.Dirt},
+                {"Sand", dr => dr.Sand},
+                {"Grass", dr => dr.Grass},
+                {"Glass", dr => dr.Glass},
+                {"Water", dr => dr.Water},
+                {"Fabric", dr => dr.Fabric},
+                {"Rubber", dr => dr.Rubber},
+                {"Plastic", dr => dr.Plastic},
+                {"Ice", dr => dr.Ice},
+                {"Snow", dr => dr.Snow}
+            };
+
+        }
+        
+        public static int? PlayBulletImpactSound(this SoundComponent soundComponent, int bulletId,string physicalMatName,
+            Vector3 pos,Entity bindingEntity = null, object userData = null)
+        {
+            IDataTable<DRBulletImpactSound> dtSound = GameEntry.DataTable.GetDataTable<DRBulletImpactSound>();
+            DRBulletImpactSound dr = dtSound.GetDataRow(bulletId);
+            var soundId = GetSoundIdFromMaterial(physicalMatName, dr);
+            return soundComponent.PlaySound(soundId, pos);
+            
+        }
+
+        #endregion
+        
+        
+        
+
         
         public static int? PlaySound(this SoundComponent soundComponent, int soundId, Vector3 pos)
         {

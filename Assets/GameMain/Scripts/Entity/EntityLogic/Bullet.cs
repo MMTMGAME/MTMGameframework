@@ -20,6 +20,7 @@ namespace GameMain
         public BulletData m_BulletData = null;
 
         public BulletStrategy bulletStrategy;
+        
         public BattleData GetImpactData()
         {
             return new BattleData(m_BulletData.OwnerCamp, 0,  0);
@@ -48,11 +49,36 @@ namespace GameMain
                 Log.Error("Bullet data is invalid.");
                 return;
             }
-            gameObject.SetActive(true);
-            timer = 0;
-
-            AddBulletStrategyComponent(m_BulletData.bulletStrategyComp);
             
+            
+
+            if (bulletStrategy == null)//避免对象池重复添加
+            {
+                AddBulletStrategyComponent(m_BulletData.bulletStrategyComp);
+            }
+            else
+            {
+                bulletStrategy.Init(this);
+            }
+            
+            
+            var fireSoundId = m_BulletData.fireSoundId;
+            if (fireSoundId > 0)
+            {
+                Debug.Log("hideSoundId");
+                GameEntry.Sound.PlaySound(fireSoundId,transform.position);
+            }
+
+            var fireEffectId = m_BulletData.fireEffectId;
+            if (fireEffectId > 0)
+            {
+                GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(),fireEffectId)
+                {
+                    Position = transform.position,
+                    Rotation = transform.rotation,
+                });
+            }
+
         }
 
         private void AddBulletStrategyComponent(string className)
@@ -75,16 +101,31 @@ namespace GameMain
             }
         }
 
+        public void PlaySoundAndFxByPhysMat(Collider col)
+        {
+            Debug.Log("PlaySoundAndFxByPhysMat");
+            var physicsMaterial = col.material;
+            string matName = "Default";
+            if (physicsMaterial != null)
+                matName = physicsMaterial.name;
+            if (matName == "")
+                matName = "Default";
+            matName = matName.Replace(" (Instance)", "");
+            GameEntry.Sound.PlayBulletImpactSound(m_BulletData.TypeId, matName,transform.position);
+            GameEntry.Entity.ShowBulletImpactEffect(m_BulletData.TypeId,matName,transform.position,transform.rotation);
+        }
+        
         private void OnTriggerEnter(Collider other)
         {
             bulletStrategy.PerformTrigger(other);
-            
-           
         }
 
+       
         private void OnCollisionEnter(Collision collision)
         {
+            Debug.Log(gameObject.name+"碰撞到"+collision.gameObject.name);
             bulletStrategy.PerformCollision(collision);
+            PlaySoundAndFxByPhysMat(collision.collider);
         }
 
 
@@ -99,13 +140,45 @@ namespace GameMain
 
             timer += elapseSeconds;
             
-            bulletStrategy.Update();
+            
             
             if (timer >= m_BulletData.KeepTime)
             {
                
                 GameEntry.Entity.HideEntity(this.Entity);
             }
+        }
+
+        protected override void OnHide(bool isShutdown, object userData)
+        {
+            var hideSoundId = m_BulletData.hideSoundIds.RandomNonEmptyElement();
+            if (hideSoundId > 0)
+            {
+                Debug.Log("hideSoundId");
+                GameEntry.Sound.PlaySound(hideSoundId,transform.position);
+            }
+            
+            var hideEffectId = m_BulletData.hideEffectId;
+            if (hideEffectId > 0)
+            {
+                GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(),hideEffectId)
+                {
+                    Position = transform.position,
+                    Rotation = transform.rotation
+                });
+            }
+            
+          
+            
+            
+            base.OnHide(isShutdown, userData);
+            
+        }
+
+        protected override void OnRecycle()
+        {
+            base.OnRecycle();
+            timer = 0;
         }
     }
 }

@@ -35,6 +35,8 @@ namespace GameMain
             "Bullet",
             "EntityUi",
             "AI",
+            "BulletImpactSound",
+            "BulletImpactEffect",
         };
 
         private Dictionary<string, bool> m_LoadedFlag = new Dictionary<string, bool>();

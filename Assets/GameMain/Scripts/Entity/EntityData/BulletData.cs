@@ -31,11 +31,11 @@ namespace GameMain
         private float m_keepTime = 1f;
 
         public int fireSoundId;
-        public int[] deadSoundIds;
+        
         public int[] hideSoundIds;
        
         public int fireEffectId;
-        public int deadEffectId;
+       
         public int hideEffectId;
 
         public bool useGravity;
@@ -60,14 +60,14 @@ namespace GameMain
             }
 
             fireSoundId = element.FireSoundId;
-            string[] deadSoundIdsArr = element.DeadSoundIdArrStr.Split(',');
-            deadSoundIds = Array.ConvertAll(deadSoundIdsArr, int.Parse);
+            
+            
             string[] hideSoundIdsArr = element.HideSoundIdArrStr.Split(',');
             hideSoundIds = Array.ConvertAll(hideSoundIdsArr, int.Parse);
 
 
             fireEffectId = element.FireEffectId;
-            deadEffectId = element.DeadEffectId;
+           
             hideEffectId = element.FireSoundId;
 
             bulletStrategyComp = element.StrategyComponent;

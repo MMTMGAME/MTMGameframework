@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-03-26 17:34:40.685
+// 生成时间：2024-03-28 18:31:13.825
 //------------------------------------------------------------
 
 using GameFramework;
@@ -73,9 +73,9 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取子弹声音编号。
+        /// 获取开火音效。
         /// </summary>
-        public int BulletSoundId
+        public int ShootSoundId
         {
             get;
             private set;
@@ -115,7 +115,7 @@ namespace GameMain
             AttackInterval = float.Parse(columnStrings[index++]);
             BulletId = int.Parse(columnStrings[index++]);
             BulletSpeed = float.Parse(columnStrings[index++]);
-            BulletSoundId = int.Parse(columnStrings[index++]);
+            ShootSoundId = int.Parse(columnStrings[index++]);
             AttackLogicComponent = columnStrings[index++];
             ShootPoint = columnStrings[index++];
 
@@ -134,7 +134,7 @@ namespace GameMain
                     AttackInterval = binaryReader.ReadSingle();
                     BulletId = binaryReader.Read7BitEncodedInt32();
                     BulletSpeed = binaryReader.ReadSingle();
-                    BulletSoundId = binaryReader.Read7BitEncodedInt32();
+                    ShootSoundId = binaryReader.Read7BitEncodedInt32();
                     AttackLogicComponent = binaryReader.ReadString();
                     ShootPoint = binaryReader.ReadString();
                 }

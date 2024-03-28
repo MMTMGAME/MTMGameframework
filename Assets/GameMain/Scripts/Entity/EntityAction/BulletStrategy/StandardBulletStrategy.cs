@@ -8,6 +8,6 @@ public class StandardBulletStrategy : BulletStrategy
     public override void Init(Bullet bullet)
     {
         base.Init(bullet);
-        rigidBody.velocity = transform.forward * bulletData.Speed;
+        rb.velocity = transform.forward * bulletData.Speed;
     }
 }
