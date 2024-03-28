@@ -150,9 +150,16 @@ namespace GameMain
     
             foreach (var entity in cachedEntities)
             {
-                if (((UnityGameFramework.Runtime.Entity)entity).Logic is TargetableObject targetableObject)
+                if (entity == null || entity.IsUnityNull())
                 {
-                    if (entity!=null && entity.Handle!=null && Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
+                    continue;
+                }
+                var entityLogic = ((UnityGameFramework.Runtime.Entity)entity).Logic;
+                if(entityLogic==null || entityLogic==self)
+                    continue;
+                if (entityLogic is TargetableObject targetableObject)
+                {
+                    if ( Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
                         && (GetRelation(self.GetImpactData().Camp, targetableObject.GetImpactData().Camp) & relationTypes) != RelationType.None 
                         && targetableObject.Available && !targetableObject.IsDead)
                     {

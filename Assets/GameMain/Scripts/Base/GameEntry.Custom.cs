@@ -47,6 +47,12 @@ namespace GameMain
             private set;
         }
 
+        public static CameraShakeComponent CameraShake
+        {
+            get;
+            private set;
+        }
+
         private static void InitCustomComponents()
         {
             BuiltinData = UnityGameFramework.Runtime.GameEntry.GetComponent<BuiltinDataComponent>();
@@ -54,6 +60,7 @@ namespace GameMain
             AI=UnityGameFramework.Runtime.GameEntry.GetComponent<AIComponent>();
             Timer=UnityGameFramework.Runtime.GameEntry.GetComponent<TimerComponent>();
             TimingWheel=UnityGameFramework.Runtime.GameEntry.GetComponent<TimingWheelComponent>();
+            CameraShake = UnityGameFramework.Runtime.GameEntry.GetComponent<CameraShakeComponent>();
         }
     }
 }

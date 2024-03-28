@@ -4,6 +4,7 @@ using GameFramework;
 using GameMain;
 using UnityEngine;
 using UnityGameFramework.Runtime;
+using GameEntry = GameMain.GameEntry;
 
 public class Player : BattleUnit
 {
@@ -33,5 +34,11 @@ public class Player : BattleUnit
         
         transform.Rotate(Vector3.up,30*Time.deltaTime*horizontal *(vertical>=0?1:-1) );
         transform.Translate(Vector3.forward * (2 * (Time.deltaTime * vertical)),Space.Self);
+    }
+
+    public override void ApplyDamage(BattleUnit attacker, int damageHP)
+    {
+        base.ApplyDamage(attacker, damageHP);
+        GameEntry.CameraShake.ShakeCamera(0.3f,0.5f,0.3f);
     }
 }
