@@ -648,16 +648,16 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.15
-    functionName: HitRight
-    data: 
+    functionName: TriggerAnimationEvent
+    data: Hit
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
+    floatParameter: 2
     intParameter: 0
     messageOptions: 0
   - time: 0.15
-    functionName: HitLeft
-    data: 
+    functionName: TriggerAnimationEvent
+    data: Hit
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
+    floatParameter: 2
     intParameter: 1
     messageOptions: 0

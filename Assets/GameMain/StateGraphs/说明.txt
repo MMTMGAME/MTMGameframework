@@ -1,1 +1,6 @@
-动画帧事件名称填写TiggerAnimationEvent,其中string表示帧事件名称
+因为动画事件在状态机中处理，所以动画帧事件名称填写TriggerAnimationEvent,
+然后在参数列表中用string表示要触发动画事件名称,int表示使用的武器序号，float表示攻击范围。
+如编写右手攻击动画，在动画中添加帧事件。
+    帧事件名称固定TriggerAnimationEvent，之后在string参数填写Hit，int参数填写0表示右手，1表示左手,float表示此次攻击范围。
+    之后状态机中新建一个AnyState，然后创建过渡条件，在过渡条件中创建AnimationEvent节点，通过序号获取武器进行动画事件处理。
+    例子可见goblin状态机

@@ -31,36 +31,38 @@ public abstract class BulletStrategy : MonoBehaviour
 
     public virtual void PerformCollision(Collision collision)
     {
-        Entity entity = collision.gameObject.GetComponentInParent<Entity>();
-        if (entity == null)
+        TargetableObject victim = collision.gameObject.GetComponentInParent<TargetableObject>();
+        if (victim == null)
         {
             return;
         }
 
-        if (entity is TargetableObject targetAbleObject)
+        
+        if(victim.Id==bulletData.OwnerId)
+            return;
+        var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
+        if (owner != null)
         {
-            if(entity.Id==bulletData.OwnerId)
-                return;
-            var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
-            AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, targetAbleObject);
+            AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, victim);
         }
+        
+        
     }
 
     public virtual void PerformTrigger(Collider other)
     {
-        Entity entity = other.gameObject.GetComponentInParent<Entity>();
-        if (entity == null)
+        TargetableObject victim = other.gameObject.GetComponentInParent<TargetableObject>();
+        if (victim == null)
         {
             return;
         }
         
-        if (entity is TargetableObject targetAbleObject)
-        {
-            if(entity.Id==bulletData.OwnerId)
-                return;
-            var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
-                
-            AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, targetAbleObject);
-        }
+        
+        if(victim.Id==bulletData.OwnerId)
+            return;
+        var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
+            
+        AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, victim);
+        
     }
 }
