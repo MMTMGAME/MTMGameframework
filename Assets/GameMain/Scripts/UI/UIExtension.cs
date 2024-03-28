@@ -22,13 +22,18 @@ namespace GameMain
             float originalAlpha = canvasGroup.alpha;
             while (time < duration)
             {
-                time += Time.deltaTime;
+                // 使用Time.unscaledDeltaTime以确保在游戏暂停时仍能更新
+                time += Time.unscaledDeltaTime;
                 canvasGroup.alpha = Mathf.Lerp(originalAlpha, alpha, time / duration);
+
+                // 等待直到下一帧，即使在游戏暂停时
                 yield return new WaitForEndOfFrame();
             }
 
+            // 确保动画完成后设置确切的目标透明度
             canvasGroup.alpha = alpha;
         }
+
 
         public static IEnumerator SmoothValue(this Slider slider, float value, float duration)
         {
@@ -36,13 +41,15 @@ namespace GameMain
             float originalValue = slider.value;
             while (time < duration)
             {
-                time += Time.deltaTime;
+                // 使用 Time.unscaledDeltaTime 而不是 Time.deltaTime
+                time += Time.unscaledDeltaTime;
                 slider.value = Mathf.Lerp(originalValue, value, time / duration);
                 yield return new WaitForEndOfFrame();
             }
 
             slider.value = value;
         }
+
 
         public static bool HasUIForm(this UIComponent uiComponent, UIFormId uiFormId, string uiGroupName = null)
         {
