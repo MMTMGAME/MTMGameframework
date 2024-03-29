@@ -49,6 +49,9 @@ namespace GameMain
             m_TargetableObjectData.HP -= damageHP;
             float toHPRatio = m_TargetableObjectData.HPRatio;
             
+            GameEntry.FlyText.FlyText(transform.position+Vector3.up,(damageHP>0?-1:1)*damageHP+"",(damageHP>0?new Color(1,0.4f,0): Color.green),1.5f,
+                0.5f);
+            
             attacker.OnAfterDamageVictim(this, damageHP);
             
             //Log.Debug(this.gameObject.name+"显示HPBarItem，血量:"+toHPRatio);

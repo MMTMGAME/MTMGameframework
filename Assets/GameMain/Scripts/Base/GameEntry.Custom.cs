@@ -53,6 +53,12 @@ namespace GameMain
             private set;
         }
 
+        public static FlyTextComponent FlyText
+        {
+            get;
+            private set;
+        }
+
         private static void InitCustomComponents()
         {
             BuiltinData = UnityGameFramework.Runtime.GameEntry.GetComponent<BuiltinDataComponent>();
@@ -61,6 +67,7 @@ namespace GameMain
             Timer=UnityGameFramework.Runtime.GameEntry.GetComponent<TimerComponent>();
             TimingWheel=UnityGameFramework.Runtime.GameEntry.GetComponent<TimingWheelComponent>();
             CameraShake = UnityGameFramework.Runtime.GameEntry.GetComponent<CameraShakeComponent>();
+            FlyText = UnityGameFramework.Runtime.GameEntry.GetComponent<FlyTextComponent>();
         }
     }
 }

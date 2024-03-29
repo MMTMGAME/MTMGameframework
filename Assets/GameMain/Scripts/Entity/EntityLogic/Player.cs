@@ -34,11 +34,32 @@ public class Player : BattleUnit
         
         transform.Rotate(Vector3.up,30*Time.deltaTime*horizontal *(vertical>=0?1:-1) );
         transform.Translate(Vector3.forward * (2 * (Time.deltaTime * vertical)),Space.Self);
+        
+        //攻击
+        if (Input.GetMouseButtonDown(0))
+        {
+            var weapon = GetWeaponByIndex(0);
+            if (weapon != null)
+            {
+                weapon.HandleAnimEvent("Shoot",1f);
+            }
+        }
+        
+        if (Input.GetMouseButtonDown(1))
+        {
+            var weapon = GetWeaponByIndex(1);
+            if (weapon != null)
+            {
+                weapon.HandleAnimEvent("Shoot",1f);
+            }
+        }
     }
 
     public override void ApplyDamage(BattleUnit attacker, int damageHP)
     {
         base.ApplyDamage(attacker, damageHP);
         GameEntry.CameraShake.ShakeCamera(0.3f,0.5f,0.3f);
+
+        GameEntry.Sound.PlaySound(20000,transform.position);
     }
 }
