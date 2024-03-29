@@ -126,7 +126,8 @@ namespace GameMain
 
             if (currentGame.GameOver)
             {
-                GameEntry.UI.OpenDialog(new DialogParams()
+                //GameEntry.UI.OpenGameEndDialog();
+                GameEntry.UI.OpenGameEndDialog(new DialogParams()
                 {
                     Mode = 2,
                     Title = GameEntry.Localization.GetString("GameOver.Title"),

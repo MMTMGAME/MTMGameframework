@@ -66,6 +66,7 @@ namespace GameMain
         public void OnConfirmButtonClick()
         {
             Close();
+           
 
             if (m_OnClickConfirm != null)
             {
