@@ -229,13 +229,13 @@ namespace GameMain
             
         }
 
-        public static void BulletAttack(BattleUnit bulletOwner,Bullet bullet, TargetableObject victim)
+        public static bool BulletAttack(BattleUnit bulletOwner,Bullet bullet, TargetableObject victim)
         {
             BattleData victimBattleData = victim.GetImpactData();
             BattleData bulletBattleData = bullet.GetImpactData();
             if (GetRelation(bulletBattleData.Camp, victimBattleData.Camp) == RelationType.Friendly)
             {
-                return;
+                return false;
             }
 
             var bulletData = bullet.m_BulletData;
@@ -250,6 +250,8 @@ namespace GameMain
             victim.ApplyDamage(bulletOwner,damageHp);
             
             GameEntry.Entity.HideEntity(bullet);
+
+            return true;
         }
         
        

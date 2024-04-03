@@ -78,10 +78,12 @@ public abstract class BulletStrategy : MonoBehaviour
             
             if(hited)
                 return;
-            AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, victim);
+            bool attacked=AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, victim);
 
             bullet.PlaySoundAndFxByPhysMat(other);
-            hited = true;
+            
+            if(attacked) 
+                hited = true;
         }
             
     }
