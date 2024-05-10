@@ -8,12 +8,38 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using GameFramework;
 using GameFramework.Event;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityGameFramework.Runtime;
 using Object = UnityEngine.Object;
+
+public class ScoreChangeEventArgs : GameEventArgs
+{
+    
+    public static readonly int EventId = typeof(ScoreChangeEventArgs).GetHashCode();
+    
+    public float newValue;
+    public float delta;
+    
+    public override void Clear()
+    {
+        newValue = 0;
+        delta = 0;
+    }
+
+    public static ScoreChangeEventArgs Create(float newValue, float delta)
+    {
+        ScoreChangeEventArgs scoreChangeEventArgs=ReferencePool.Acquire<ScoreChangeEventArgs>();
+        scoreChangeEventArgs.delta = delta;
+        scoreChangeEventArgs.newValue = newValue;
+        return scoreChangeEventArgs;
+    }
+
+    public override int Id => EventId;
+}
 
 namespace GameMain
 {
@@ -23,6 +49,34 @@ namespace GameMain
         /// 记录这个GameBase加载了几次，没啥用，只是用来提醒Gamebase这个示例会被多次加载，所以需要注意在初始化的时候重置相关变量
         /// </summary>
         public int loadCount = 0;
+
+        #region 游戏数据
+
+        private float m_Score;
+        public float Score
+        {
+            get { return m_Score;}
+            set
+            {
+                var delta = value - m_Score;
+                m_Score = value;
+                GameEntry.Event.Fire(this,ScoreChangeEventArgs.Create(m_Score,delta));
+            }
+        }
+
+        private float m_ElapsedTime;//这个持续变化不需要事件
+        public float ElapsedTime
+        {
+            get
+            {
+                return m_ElapsedTime;
+            }
+            set { m_ElapsedTime = value; }
+        }
+        
+
+        #endregion
+        
         public Player Player
         {
             get;
@@ -48,10 +102,17 @@ namespace GameMain
         private PlayerInputActions playerInputActions;
         public virtual void Initialize()
         {
+            
+            //DataNode
+            GameEntry.DataNode.SetData<VarObject>("GameBase",new VarObject(){Value = this});
+            
+            
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Subscribe(ShowEntityFailureEventArgs.EventId, OnShowEntityFailure);
             GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
             GameEntry.Event.Subscribe(OpenUIFormFailureEventArgs.EventId, OnOpenUIFormFailure);
+            
+            GameEntry.Event.Subscribe(BattleUnitDieEventArgs.EventId,OnBattleUnitDie);
             
 
             #region MyRegion
@@ -94,6 +155,9 @@ namespace GameMain
             GameOver = false;
             GameWin = false;
 
+            ElapsedTime = 0;
+            Score = 0;
+
             GameEntry.Base.StartCoroutine(InitDisplayUi());
 
             Debug.Log(this.GetType()+" loadCount:"+loadCount);
@@ -107,8 +171,10 @@ namespace GameMain
         
         protected virtual void OpenPauseForm(InputAction.CallbackContext callbackContext)
         {
-            GameEntry.UI.OpenUIForm(103);
+            if(!GameOver && !GameWin)
+                GameEntry.UI.OpenUIForm(103);
         }
+
 
         IEnumerator InitDisplayUi()
         {
@@ -154,13 +220,15 @@ namespace GameMain
         /// </summary>
         public virtual void Shutdown()
         {
-            if(LevelDisplayForm)
+            if(LevelDisplayForm.Visible)
                 LevelDisplayForm.Close(true);
             
             GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Unsubscribe(ShowEntityFailureEventArgs.EventId, OnShowEntityFailure);
             GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
             GameEntry.Event.Unsubscribe(OpenUIFormFailureEventArgs.EventId, OnOpenUIFormFailure);
+            
+            GameEntry.Event.Unsubscribe(BattleUnitDieEventArgs.EventId,OnBattleUnitDie);
             
             playerInputActions.Player.Esc.performed -= OpenPauseForm;
             playerInputActions.Disable();
@@ -183,12 +251,24 @@ namespace GameMain
         }
         public void Update(float elapseSeconds, float realElapseSeconds)
         {
+            ElapsedTime += elapseSeconds;
             if(GameOver || GameWin)
                 return;
            
+           
             CheckGameOverOrWin();
+            
         }
 
+        protected virtual void OnBattleUnitDie(object sender, GameEventArgs e)
+        {
+            BattleUnitDieEventArgs ne = (BattleUnitDieEventArgs)e;
+            if (ne != null)
+            {
+                var dieScore = ne.battleUnit.GetBattleUnitData().DieScore;
+                Score += dieScore +  (dieScore==0?0:UnityEngine.Random.Range(-10,10));//加随机数以创建排行榜
+            }
+        }
         
         protected virtual void OnShowEntitySuccess(object sender, GameEventArgs e)
         {

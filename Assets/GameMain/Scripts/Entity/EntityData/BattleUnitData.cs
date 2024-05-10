@@ -35,7 +35,8 @@ public class BattleUnitData : TargetableObjectData
     private string weaponPath0;
     private string weaponPath1;
     private string weaponPath2;
-    
+
+    public int DieScore;
     public string GetWeaponPath(int index)
     {
         switch (index)
@@ -65,6 +66,8 @@ public class BattleUnitData : TargetableObjectData
         weaponPath0 = drBattleUnit.WeaponPath0;
         weaponPath1 = drBattleUnit.WeaponPath1;
         weaponPath2 = drBattleUnit.WeaponPath2;
+
+        DieScore = drBattleUnit.DieScore;
         
         for (int index = 0, weaponId = 0; (weaponId = drBattleUnit.GetWeaponIdAt(index)) > 0; index++)
         {

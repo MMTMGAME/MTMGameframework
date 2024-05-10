@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-03-28 18:31:13.826
+// 生成时间：2024-05-10 15:20:47.410
 //------------------------------------------------------------
 
 using GameFramework;
@@ -37,7 +37,7 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取右手武器。
+        /// 获取主武器。
         /// </summary>
         public int WeaponId0
         {
@@ -46,7 +46,7 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取左手武器。
+        /// 获取副武器。
         /// </summary>
         public int WeaponId1
         {
@@ -135,6 +135,15 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取死亡分数。
+        /// </summary>
+        public int DieScore
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -158,6 +167,7 @@ namespace GameMain
             WeaponPath0 = columnStrings[index++];
             WeaponPath1 = columnStrings[index++];
             WeaponPath2 = columnStrings[index++];
+            DieScore = int.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -181,6 +191,7 @@ namespace GameMain
                     WeaponPath0 = binaryReader.ReadString();
                     WeaponPath1 = binaryReader.ReadString();
                     WeaponPath2 = binaryReader.ReadString();
+                    DieScore = binaryReader.Read7BitEncodedInt32();
                 }
             }
 

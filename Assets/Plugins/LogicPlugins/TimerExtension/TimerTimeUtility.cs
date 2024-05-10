@@ -13,5 +13,8 @@ namespace UGFExtensions.Timer
         {
             return (DateTime.UtcNow.Ticks - Epoch) / 10000;
         }
+        
+        
+
     }
 }

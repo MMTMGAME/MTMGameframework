@@ -11,27 +11,31 @@ public class MeleeWeaponAttack : WeaponAttack
     private Animator animator;
 
 
-    private BattleUnit ownerBattleUnit;
+    
 
    
-    public override void HandleAnimeEvent(string eventName, float radius)
+    public override void HandleAnimeEvent(string eventName)
     {
         if (eventName == "Hit")
         {
-            Hit(radius);
+            Hit();
         }
     }
 
-    public void Hit(float radius)
+    public void Hit()
     {
-        if (radius == 0)
+
+        if (OwnerBattleUnit == null)
         {
-            Log.Error($"武器{transform.name}的攻击范围不应该是0,请设置帧事件的float属性");
-            radius = 1;
+            Debug.LogWarning("OwnerBattleUnit为空了，不对劲");
+            return;
         }
+           
+        var data = OwnerBattleUnit.GetBattleUnitData();
+        var aiData = data.AIData;
             
         var entities = AIUtility.FindBattleUnits((BattleUnit)Weapon.OwnerEntity, RelationType.Hostile | RelationType.Neutral,
-            transform.position, radius);
+            transform.position, aiData.AttackDistance);
         foreach (var entity in entities)
         {
             Attack(entity);

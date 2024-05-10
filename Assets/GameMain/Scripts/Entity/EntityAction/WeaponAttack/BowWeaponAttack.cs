@@ -7,9 +7,9 @@ public class BowWeaponAttack : RangeWeaponAttack
 {
     
 
-    public override void HandleAnimeEvent(string eventName, float radius)
+    public override void HandleAnimeEvent(string eventName)
     {
-        base.HandleAnimeEvent(eventName,radius);
+        base.HandleAnimeEvent(eventName);
         
         if (eventName == "Skill0")
         {

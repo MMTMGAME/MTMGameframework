@@ -573,28 +573,28 @@ AnimationClip:
   m_Events:
   - time: 0.11666667
     functionName: TriggerAnimationEvent
-    data: Hit
+    data: Hit,0
     objectReferenceParameter: {fileID: 0}
     floatParameter: 2
     intParameter: 1
     messageOptions: 0
   - time: 0.5
     functionName: TriggerAnimationEvent
-    data: Hit
+    data: Hit,1
     objectReferenceParameter: {fileID: 0}
     floatParameter: 2
     intParameter: 1
     messageOptions: 0
   - time: 0.7
     functionName: TriggerAnimationEvent
-    data: Hit
+    data: Hit,0
     objectReferenceParameter: {fileID: 0}
     floatParameter: 2
     intParameter: 0
     messageOptions: 0
   - time: 0.93333334
     functionName: TriggerAnimationEvent
-    data: Hit
+    data: Hit,1
     objectReferenceParameter: {fileID: 0}
     floatParameter: 2
     intParameter: 1

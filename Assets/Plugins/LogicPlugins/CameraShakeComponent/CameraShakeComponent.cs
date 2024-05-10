@@ -1,20 +1,19 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using DG.Tweening;
 using UnityGameFramework.Runtime;
 
 public class CameraShakeComponent : GameFrameworkComponent
 {
-    
-    public Cinemachine.NoiseSettings noiseProfile; // 在 Inspector 中分配你的 Noise Settings
+    public List<Cinemachine.NoiseSettings> noiseProfiles; // List of Noise Profiles
 
     private CinemachineBrain cinemachineBrain;
+    private Coroutine fadeoutCoroutine;
 
-    
-
-    public void ShakeCamera(float amplitude, float frequency, float duration)
+    public void ShakeCamera(float amplitude, float frequency, float duration, int noiseIndex = 0)
     {
-        
         if (cinemachineBrain == null)
         {
             cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
@@ -33,27 +32,33 @@ public class CameraShakeComponent : GameFrameworkComponent
                 noise = activeVirtualCamera.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
             }
 
-            // 应用选择的 Noise Profile
-            noise.m_NoiseProfile = noiseProfile;
+            // Apply the selected Noise Profile from the list based on the index
+            if (noiseProfiles != null && noiseProfiles.Count > noiseIndex)
+            {
+                noise.m_NoiseProfile = noiseProfiles[noiseIndex];
+            }
 
-            // 设置震动参数
+            // Set shake parameters
             noise.m_AmplitudeGain = amplitude;
             noise.m_FrequencyGain = frequency;
 
-            // 开始协程来处理震动持续时间并重置
-            StartCoroutine(ResetShake(duration, noise));
+            // Start coroutine to handle shake duration and reset
+            if (fadeoutCoroutine != null)
+                StopCoroutine(fadeoutCoroutine);
+            fadeoutCoroutine = StartCoroutine(ResetShake(duration, noise));
         }
     }
 
     private IEnumerator ResetShake(float duration, CinemachineBasicMultiChannelPerlin noise)
     {
+        DOTween.To(() => noise.m_AmplitudeGain, x => noise.m_AmplitudeGain = x, 0, duration);
         yield return new WaitForSeconds(duration);
 
-        // 震动结束后重置参数
+        // Reset parameters after shake ends
         noise.m_AmplitudeGain = 0;
         noise.m_FrequencyGain = 0;
 
-        // 也可以选择重置 Noise Profile
+        // Optionally reset Noise Profile to null or to a default state
         // noise.m_NoiseProfile = null;
     }
 }

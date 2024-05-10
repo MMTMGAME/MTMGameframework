@@ -70,7 +70,7 @@ public class FlyTextComponent : GameFrameworkComponent
         flyTextUI.name += --serialId;
 
         // 调用UI的Init方法，ui会在对应世界坐标生成，并执行上升动画
-        flyTextUI.Init(worldPos, msg, color,canvas, jumpHeight, duration);
+        flyTextUI.Init(worldPos, msg, color,canvas, jumpHeight, duration,MainCam);
     }
 
     private FlyTextUI GetFlyTextUi()

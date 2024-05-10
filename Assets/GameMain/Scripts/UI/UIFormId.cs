@@ -42,5 +42,6 @@ namespace GameMain
         /// 游戏结算
         /// </summary>
         GameEndForm=106,
+        LeaderboardForm=107,
     }
 }

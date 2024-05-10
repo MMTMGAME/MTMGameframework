@@ -14,12 +14,49 @@ public abstract class WeaponAttack : MonoBehaviour
     {
         Weapon = weapon;
     }
+
+    private BattleUnit m_ownerBattleUnit;
+    public BattleUnit OwnerBattleUnit
+    {
+        get
+        {
+            if (m_ownerBattleUnit == null)
+            {
+                m_ownerBattleUnit=Weapon.OwnerEntity as BattleUnit;
+            }
+
+            return m_ownerBattleUnit;
+        }
+    }
+    
+    protected float lastAttackTime;
+    private static readonly int Fire = Animator.StringToHash("Fire");
     
     public virtual void Attack(TargetableObject victim)
     {
         AIUtility.Attack((BattleUnit)Weapon.OwnerEntity,Weapon,victim);
     }
     
+    public virtual void StartFire()
+    {
+        TryAttack();
+    }
 
-    public abstract void HandleAnimeEvent(string eventName, float radius);
+    public virtual void CancelFire()
+    {
+       
+            
+    }
+    
+    public virtual void TryAttack()
+    {
+        if (Time.time > lastAttackTime + Weapon.m_WeaponData.AttackInterval)
+        {
+            Weapon.OwnerEntity.CachedAnimator.SetTrigger(Fire);
+            lastAttackTime = Time.time;
+        }
+       
+    }
+
+    public abstract void HandleAnimeEvent(string eventName);
 }

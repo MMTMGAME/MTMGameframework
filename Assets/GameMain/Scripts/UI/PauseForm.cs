@@ -13,13 +13,23 @@ namespace GameMain
 
         private ProcedureBase procedureOwner;
 
+
+        protected override void OnOpen(object userData)
+        {
+            base.OnOpen(userData);
+            #if PLATFORM_STANDALONE
+                GameEntry.Base.GameSpeed = 0f;
+            #endif
+        }
+
         public void GoToMainMenu()
         {
+            GameEntry.Base.ResetNormalGameSpeed();
             var procedureCurrent = GameEntry.Procedure.CurrentProcedure;
             if (procedureCurrent is ProcedureLevel procedureMain)
             {
                 Close(true);
-                Invoke(nameof(ChangeScene), 0.1f);
+                Invoke(nameof(ChangeScene), 0.001f);
             }
         }
 
@@ -60,8 +70,9 @@ namespace GameMain
         protected override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
-            GameEntry.Base.ResetNormalGameSpeed();
-            
+            #if PLATFORM_STANDALONE
+                GameEntry.Base.ResetNormalGameSpeed();
+            #endif
         }
     }
 }

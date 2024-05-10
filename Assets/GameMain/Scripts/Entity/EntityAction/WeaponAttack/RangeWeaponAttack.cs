@@ -15,7 +15,7 @@ public class RangeWeaponAttack : WeaponAttack
             shootPoint = transform;
     }
 
-    public override void HandleAnimeEvent(string eventName, float radius)
+    public override void HandleAnimeEvent(string eventName)
     {
         if (eventName == "Shoot")
         {

@@ -115,7 +115,7 @@ namespace GameMain
             }
 
             // 如果没有找到对应的材质名称，返回一个错误代码或默认值
-            return 0; // 或者根据实际情况选择合适的返回值
+            return dr.Default; // 或者根据实际情况选择合适的返回值
         }
 
         private static void InitializeMaterialToEffectIdMap()
