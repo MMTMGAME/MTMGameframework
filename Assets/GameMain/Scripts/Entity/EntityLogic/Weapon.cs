@@ -114,10 +114,19 @@ namespace GameMain
         }
 
         
-
-        public virtual void HandleAnimEvent(string eventName,float radius)
+        public virtual void StartFire()
         {
-            WeaponAttack.HandleAnimeEvent(eventName,radius);
+            WeaponAttack.StartFire();
+        }
+
+        public virtual void CancelFire()
+        {
+            WeaponAttack.CancelFire();
+        }
+
+        public virtual void HandleAnimEvent(string eventName)
+        {
+            WeaponAttack.HandleAnimeEvent(eventName);
         }
 
        

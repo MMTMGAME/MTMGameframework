@@ -88,7 +88,7 @@ namespace GameMain
                     GameEntry.AI.AttachStateGraphToEntity(new LoadStateGraphInfo(m_EntityData.Id,m_EntityData.AIData.AssetName));
             }
             
-
+            m_EntityData.OnShowCallBack?.Invoke(this);
         }
 
 #if UNITY_2017_3_OR_NEWER

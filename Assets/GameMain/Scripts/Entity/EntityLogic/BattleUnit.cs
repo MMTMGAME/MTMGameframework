@@ -1,11 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameFramework;
+using GameFramework.Event;
 using GameMain;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 using Entity = GameMain.Entity;
 using GameEntry = GameMain.GameEntry;
+
+
+public class BattleUnitDieEventArgs : GameEventArgs
+{
+    /// <summary>
+    /// 单位死亡
+    /// </summary>
+    public static readonly int EventId = typeof(BattleUnitDieEventArgs).GetHashCode();
+
+    public BattleUnit battleUnit;
+    
+
+    /// <summary>
+    /// 获取关闭界面完成事件编号。
+    /// </summary>
+    public override int Id
+    {
+        get
+        {
+            return EventId;
+        }
+    }
+    
+    
+    public static BattleUnitDieEventArgs Create(BattleUnit unit)
+    {
+        BattleUnitDieEventArgs battleUnitDieArgs = ReferencePool.Acquire<BattleUnitDieEventArgs>();
+        battleUnitDieArgs.battleUnit = unit;
+        return battleUnitDieArgs;
+    }
+
+
+    public override void Clear()
+    {
+        battleUnit = null;
+    }
+}
 
 public class BattleUnit : TargetableObject
 {
@@ -16,7 +55,7 @@ public class BattleUnit : TargetableObject
 
     [SerializeField] protected List<Armor> m_Armors = new List<Armor>();
 
-
+    private WeaponAnimEventListener weaponAnimEventListener;
     public BattleUnitData GetBattleUnitData()
     {
         return BattleUnitData;
@@ -26,6 +65,10 @@ public class BattleUnit : TargetableObject
     
     public Weapon GetWeaponByIndex(int index)
     {
+        if (m_Weapons.Count <= index)
+        {
+            return null;
+        }
         return m_Weapons[index];
     }
 
@@ -38,6 +81,8 @@ public class BattleUnit : TargetableObject
     {
         //暂不实现
     }
+
+    
 
 #if UNITY_2017_3_OR_NEWER
     protected override void OnShow(object userData)
@@ -69,7 +114,9 @@ public class BattleUnit : TargetableObject
             GameEntry.Entity.ShowArmor(armorDatas[i]);
         }
 
-        
+        weaponAnimEventListener = gameObject.AddComponent<WeaponAnimEventListener>();
+        weaponAnimEventListener.Init(this);
+
     }
 
 #if UNITY_2017_3_OR_NEWER
@@ -127,8 +174,13 @@ public class BattleUnit : TargetableObject
 
     protected override void OnDead(Entity attacker)
     {
+        GameEntry.Event.Fire(this,BattleUnitDieEventArgs.Create(this));
+        
         base.OnDead(attacker);
 
+        CustomEvent.Trigger(gameObject, "OnDead"); // "OnDead"是在Visual Scripting中定义的事件名
+        
+        
         GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(), BattleUnitData.DeadEffectId)
         {
             Position = CachedTransform.localPosition,

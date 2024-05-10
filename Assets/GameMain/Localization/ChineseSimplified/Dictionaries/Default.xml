@@ -10,6 +10,7 @@
     <String Key="Menu.StartButton" Value="开始" />
     <String Key="Menu.SettingButton" Value="设置" />
     <String Key="Menu.AboutButton" Value="关于" />
+    <String Key="Menu.LeaderboardButton" Value="排行榜" />
     <String Key="Menu.QuitButton" Value="退出" />
     <String Key="Dialog.ConfirmButton" Value="确定" />
     <String Key="Dialog.CancelButton" Value="取消" />
@@ -39,6 +40,10 @@
     <String Key="GameOver.Message" Value="莫得事，重来" />
     <String Key="GameOver.Retry" Value="重试" />
     <String Key="GameOver.MainMenu" Value="主菜单" />
+    <String Key="Leaderboard.Title" Value="排行榜" />
+    <String Key="Leaderboard.Score" Value="分数" />
+    <String Key="Leaderboard.DateTime" Value="时间" />
+    <String Key="Leaderboard.Cancel" Value="返回" />
     <String Key="GameControl.DropItemTip" Value="[F] 丢弃道具" />
     <String Key="GameControl.UseItemTip" Value="[鼠标右键] 使用道具" />
     <String Key="LevelTarget.Level1" Value="目标：拾取打火机点燃冲天炮" />

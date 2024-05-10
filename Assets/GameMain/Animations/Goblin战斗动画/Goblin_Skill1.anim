@@ -649,14 +649,14 @@ AnimationClip:
   m_Events:
   - time: 0.15
     functionName: TriggerAnimationEvent
-    data: Hit
+    data: Hit,0
     objectReferenceParameter: {fileID: 0}
     floatParameter: 2
     intParameter: 0
     messageOptions: 0
   - time: 0.15
     functionName: TriggerAnimationEvent
-    data: Hit
+    data: Hit,1
     objectReferenceParameter: {fileID: 0}
     floatParameter: 2
     intParameter: 1

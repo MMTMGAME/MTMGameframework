@@ -33,6 +33,11 @@ namespace GameMain
             GameEntry.UI.OpenUIForm(UIFormId.AboutForm);
         }
 
+        public void OnLeaderButtonClick()
+        {
+            GameEntry.UI.OpenUIForm(UIFormId.LeaderboardForm);
+        }
+
         public void OnQuitButtonClick()
         {
             GameEntry.UI.OpenDialog(new DialogParams()

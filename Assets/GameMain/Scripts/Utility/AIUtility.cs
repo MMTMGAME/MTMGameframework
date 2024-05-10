@@ -256,7 +256,15 @@ namespace GameMain
         
        
 
-        public static void ExplosionWithForce(BattleUnit attacker, Vector3 center, float radius, int power)
+        /// <summary>
+        /// 爆炸并施加力
+        /// </summary>
+        /// <param name="attacker"></param>
+        /// <param name="center"></param>
+        /// <param name="radius"></param>
+        /// <param name="power"></param>
+        /// <param name="useLineCast"></param>
+        public static void ExplosionWithForce(BattleUnit attacker, Vector3 center, float radius, int power,bool useLineCast)
         {
             HashSet<Entity> damagedEntities = new HashSet<Entity>();
             Dictionary<Rigidbody, Vector3> forceOnRigidbodies = new Dictionary<Rigidbody, Vector3>();
@@ -277,6 +285,8 @@ namespace GameMain
                         Debug.Log("和" + hitCollider.name + "之间有障碍物：" + hit.collider.name);
                     }
                 }
+                if (!useLineCast)
+                    hitSuccess = true;
 
                 if (hitSuccess)
                 {
@@ -325,8 +335,15 @@ namespace GameMain
         }
 
         
-        // 爆炸效果实现
-        public static void Explosion(BattleUnit attacker,Vector3 center, float radius,int power)
+        /// <summary>
+        /// 爆炸效果实现，useLinecast决定是否被射线遮挡，为true是被遮挡时不造成伤害
+        /// </summary>
+        /// <param name="attacker"></param>
+        /// <param name="center"></param>
+        /// <param name="radius"></param>
+        /// <param name="power">攻击力</param>
+        /// <param name="useLineCast"></param>
+        public static void Explosion(BattleUnit attacker,Vector3 center, float radius,int power,bool useLineCast)
         {
             // 记录已经受到伤害的实体，以确保同一个实体只受到一次伤害
             HashSet<Entity> damagedEntities = new HashSet<Entity>();
@@ -337,7 +354,7 @@ namespace GameMain
             {
                 bool hitSuccess = false;
                 // 射线检测以确定是否有遮挡物
-                if (Physics.Linecast(center, hitCollider.transform.position, out RaycastHit hit))
+                if (useLineCast && Physics.Linecast(center, hitCollider.transform.position, out RaycastHit hit))
                 {
                     if (hitCollider == hit.collider)
                     {
@@ -350,13 +367,16 @@ namespace GameMain
                     }
                    
                 }
+
+                if (!useLineCast)
+                    hitSuccess = true;
                 if(hitSuccess)
                 {
                     // 检测到的碰撞体就是最近的对象，没有遮挡物
 
                     // 获取实体组件
                     TargetableObject entity = hitCollider.GetComponentInParent<TargetableObject>();
-                    if (entity != null && !damagedEntities.Contains(entity))
+                    if (entity != null && !damagedEntities.Contains(entity) )
                     {
                         // 对实体造成伤害
                         var realDamage = CalcDamageHP(power,

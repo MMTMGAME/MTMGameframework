@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using GameFramework.Procedure;
 using UnityEngine;
@@ -100,8 +101,26 @@ namespace GameMain
             protected set;
         }
         
+        
         protected virtual void OnGameEnd()
         {
+            GameEntry.UI.CloseAllLoadedUIForms();
+            
+            //更新历史记录和排行榜
+            DateTime dateTime = DateTime.Now; // 获取当前时间
+            var nowTimeStr = dateTime.ToString("yyyy-MM-dd HH:mm"); // 格式化为年-月-日 时:分
+
+
+            var nowScore = GetGameBase().Score;
+
+            var leaderboardMgr = new LeaderboardManager();
+            leaderboardMgr.UpdateLeaderboard(Mathf.RoundToInt(nowScore),nowTimeStr);
+
+            var highestScore = leaderboardMgr.GetHighestScore();
+
+            var elpasedTimeStr ="时间："+ TimeUtility.FormatElapsedTime(Mathf.RoundToInt( GetGameBase().ElapsedTime));
+            var scoreInfoStr = $"分数：{nowScore}\n最高分：{highestScore}";
+            
             var currentGame = GetGameBase();
             if (currentGame.GameWin)
             {
@@ -129,12 +148,14 @@ namespace GameMain
                 //GameEntry.UI.OpenGameEndDialog();
                 GameEntry.UI.OpenGameEndDialog(new DialogParams()
                 {
-                    Mode = 2,
+                    Mode = 3,
                     Title = GameEntry.Localization.GetString("GameOver.Title"),
-                    Message = GameEntry.Localization.GetString("GameOver.Message"),
+                    Message = elpasedTimeStr+"\n"+scoreInfoStr,
                     OnClickConfirm = delegate(object userData) { Retry(); },
                     ConfirmText = GameEntry.Localization.GetString("GameOver.Retry"),
                     OnClickCancel = delegate(object userData) { GotoMenu(0.5f); },
+                    OnClickOther = delegate(object o) { GameEntry.UI.OpenUIForm(UIFormId.LeaderboardForm);},
+                    OtherText = "排行榜",
                     CancelText = GameEntry.Localization.GetString("GameOver.MainMenu"),
                 });
             }

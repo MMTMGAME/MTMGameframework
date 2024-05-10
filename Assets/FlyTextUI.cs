@@ -40,7 +40,9 @@ public class FlyTextUI : MonoBehaviour
     private float duration;
     private Canvas canvas;
 
-    public void Init(Vector3 worldPos, string msg, Color color, Canvas canvas,float jumpHeight, float duration)
+    public Camera mainCam;
+
+    public void Init(Vector3 worldPos, string msg, Color color, Canvas canvas,float jumpHeight, float duration,Camera mainCam)
     {
         textComponent.text = msg;
         textComponent.color = color;
@@ -51,13 +53,14 @@ public class FlyTextUI : MonoBehaviour
         this.canvas = canvas;
 
         gameObject.SetActive(true);
-        
+        this.mainCam = mainCam;
 
     }
 
     public bool done;
     void Update()
     {
+        
         // 计算已过时间比例
         elapsedTime += Time.deltaTime;
         float t = elapsedTime / duration;
@@ -68,8 +71,13 @@ public class FlyTextUI : MonoBehaviour
         // 更新世界位置
         Vector3 updatedWorldPos = new Vector3(worldPosition.x, worldPosition.y + currentHeight, worldPosition.z);
 
+        if (mainCam == null)
+        { 
+            done = true;
+            return;
+        }
         // 将更新后的世界坐标转换为Canvas内的坐标
-        Vector2 screenPos = Camera.main.WorldToScreenPoint(updatedWorldPos);
+        Vector2 screenPos = mainCam.WorldToScreenPoint(updatedWorldPos);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, screenPos, canvas.worldCamera, out Vector2 anchoredPos);
         transform.localPosition = anchoredPos;
 

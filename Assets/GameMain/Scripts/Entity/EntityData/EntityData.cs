@@ -94,6 +94,12 @@ namespace GameMain
                 m_Position = value;
             }
         }
+        
+        public Action<Entity> OnShowCallBack
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// 实体朝向。
