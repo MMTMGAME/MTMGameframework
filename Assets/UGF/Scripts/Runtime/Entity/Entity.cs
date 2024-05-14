@@ -184,6 +184,7 @@ namespace UnityGameFramework.Runtime
             }
             catch (Exception exception)
             {
+
                 Log.Error("Entity '[{0}]{1}' OnHide with exception '{2}'.", m_Id, m_EntityAssetName, exception);
             }
         }

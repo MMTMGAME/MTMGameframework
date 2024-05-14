@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-05-10 15:20:47.410
+// 生成时间：2024-05-13 15:43:14.734
 //------------------------------------------------------------
 
 using GameFramework;
@@ -144,6 +144,42 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取初始HP。
+        /// </summary>
+        public int BaseHP
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取初始攻击力。
+        /// </summary>
+        public int BaseAttack
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取初始防御。
+        /// </summary>
+        public int BaseDefense
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取初始MP。
+        /// </summary>
+        public int BaseMP
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -168,6 +204,10 @@ namespace GameMain
             WeaponPath1 = columnStrings[index++];
             WeaponPath2 = columnStrings[index++];
             DieScore = int.Parse(columnStrings[index++]);
+            BaseHP = int.Parse(columnStrings[index++]);
+            BaseAttack = int.Parse(columnStrings[index++]);
+            BaseDefense = int.Parse(columnStrings[index++]);
+            BaseMP = int.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -192,6 +232,10 @@ namespace GameMain
                     WeaponPath1 = binaryReader.ReadString();
                     WeaponPath2 = binaryReader.ReadString();
                     DieScore = binaryReader.Read7BitEncodedInt32();
+                    BaseHP = binaryReader.Read7BitEncodedInt32();
+                    BaseAttack = binaryReader.Read7BitEncodedInt32();
+                    BaseDefense = binaryReader.Read7BitEncodedInt32();
+                    BaseMP = binaryReader.Read7BitEncodedInt32();
                 }
             }
 

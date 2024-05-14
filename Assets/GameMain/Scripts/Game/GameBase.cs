@@ -241,7 +241,7 @@ namespace GameMain
         /// </summary>
         protected virtual void CheckGameOverOrWin()
         {
-            if (Player != null && (!Player.Available || Player.IsDead))
+            if (Player != null && (!Player.Available || Player.chaState.dead))
             {
                 GameOver = true;
                 Log.Debug("GameOver!!");

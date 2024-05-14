@@ -19,7 +19,7 @@ namespace GameMain
        
 
         [SerializeField]
-        private ArmorData m_ArmorData = null;
+        public ArmorData m_ArmorData = null;
 
 #if UNITY_2017_3_OR_NEWER
         protected override void OnInit(object userData)

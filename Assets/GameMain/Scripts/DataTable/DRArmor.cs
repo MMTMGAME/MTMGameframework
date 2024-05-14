@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-05-10 15:20:47.375
+// 生成时间：2024-05-13 15:43:14.722
 //------------------------------------------------------------
 
 using GameFramework;
@@ -37,18 +37,72 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 获取最大生命。
+        /// 获取血量加算。
         /// </summary>
-        public int MaxHP
+        public int HPAdd
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// 获取防御力。
+        /// 获取血量乘算（%）。
         /// </summary>
-        public int Defense
+        public int HPTimes
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取MP加算。
+        /// </summary>
+        public int MPAdd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取MP乘算。
+        /// </summary>
+        public int MPTimes
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取攻击加算。
+        /// </summary>
+        public int AttackAdd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取攻击乘算。
+        /// </summary>
+        public int AttackTimes
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取防御加算。
+        /// </summary>
+        public int DefenseAdd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取防御乘算。
+        /// </summary>
+        public int DefenseTimes
         {
             get;
             private set;
@@ -75,8 +129,14 @@ namespace GameMain
             index++;
             m_Id = int.Parse(columnStrings[index++]);
             index++;
-            MaxHP = int.Parse(columnStrings[index++]);
-            Defense = int.Parse(columnStrings[index++]);
+            HPAdd = int.Parse(columnStrings[index++]);
+            HPTimes = int.Parse(columnStrings[index++]);
+            MPAdd = int.Parse(columnStrings[index++]);
+            MPTimes = int.Parse(columnStrings[index++]);
+            AttackAdd = int.Parse(columnStrings[index++]);
+            AttackTimes = int.Parse(columnStrings[index++]);
+            DefenseAdd = int.Parse(columnStrings[index++]);
+            DefenseTimes = int.Parse(columnStrings[index++]);
             Path = columnStrings[index++];
 
             GeneratePropertyArray();
@@ -90,8 +150,14 @@ namespace GameMain
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
-                    MaxHP = binaryReader.Read7BitEncodedInt32();
-                    Defense = binaryReader.Read7BitEncodedInt32();
+                    HPAdd = binaryReader.Read7BitEncodedInt32();
+                    HPTimes = binaryReader.Read7BitEncodedInt32();
+                    MPAdd = binaryReader.Read7BitEncodedInt32();
+                    MPTimes = binaryReader.Read7BitEncodedInt32();
+                    AttackAdd = binaryReader.Read7BitEncodedInt32();
+                    AttackTimes = binaryReader.Read7BitEncodedInt32();
+                    DefenseAdd = binaryReader.Read7BitEncodedInt32();
+                    DefenseTimes = binaryReader.Read7BitEncodedInt32();
                     Path = binaryReader.ReadString();
                 }
             }

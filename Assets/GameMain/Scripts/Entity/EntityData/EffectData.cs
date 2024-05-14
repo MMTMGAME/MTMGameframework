@@ -28,6 +28,10 @@ namespace GameMain
             {
                 return m_KeepTime;
             }
+            set
+            {
+                m_KeepTime = value;
+            }
         }
     }
 }

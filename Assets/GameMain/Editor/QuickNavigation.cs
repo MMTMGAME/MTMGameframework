@@ -29,6 +29,14 @@ public class QuickNavigation : EditorWindow
             EditorGUIUtility.PingObject(Selection.activeObject);
         }
         
+        // 按钮用于快速导航到模型文件夹
+        if (GUILayout.Button("Launcher"))
+        {
+            // 设置Project窗口的当前选择路径
+            Selection.activeObject = AssetDatabase.LoadAssetAtPath("Assets/Launcher", typeof(Object));
+            EditorGUIUtility.PingObject(Selection.activeObject);
+        }
+        
         if (GUILayout.Button("StateGraphs"))
         {
             // 设置Project窗口的当前选择路径

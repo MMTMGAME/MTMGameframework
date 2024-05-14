@@ -134,20 +134,20 @@ namespace GameMain
         /// </summary>
         /// <param name="selfCampType"></param>
         /// <param name="relationType"></param>
-        public static TargetableObject FindBattleUnit(BattleUnit self, RelationType relationTypes, Vector3 center, float radius)
+        public static BattleUnit FindBattleUnit(BattleUnit self, RelationType relationTypes, Vector3 center, float radius)
         {
             if (Time.time > lastUpdateTime + 0.5f) // 每0.5秒更新一次，降低消耗
             {
-                var playerList = GameEntry.Entity.GetEntityGroup("Player").GetAllEntities();
-                var battleUnitList = GameEntry.Entity.GetEntityGroup("BattleUnit").GetAllEntities();
+                
+                var battleUnitList = GameEntry.Entity.GetEntityGroup("ChaObj").GetAllEntities();
         
                 cachedEntities.Clear();
-                cachedEntities.AddRange(playerList);
+                
                 cachedEntities.AddRange(battleUnitList);
         
                 lastUpdateTime = Time.time;
             }
-    
+        
             foreach (var entity in cachedEntities)
             {
                 if (entity == null || entity.IsUnityNull())
@@ -157,238 +157,188 @@ namespace GameMain
                 var entityLogic = ((UnityGameFramework.Runtime.Entity)entity).Logic;
                 if(entityLogic==null || entityLogic==self)
                     continue;
-                if (entityLogic is TargetableObject targetableObject)
+                if (entityLogic is BattleUnit targetableObject)
                 {
                     if ( Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
-                        && (GetRelation(self.GetImpactData().Camp, targetableObject.GetImpactData().Camp) & relationTypes) != RelationType.None 
-                        && targetableObject.Available && !targetableObject.IsDead)
+                        && (GetRelation(self.GetBattleUnitData().Camp, targetableObject.GetBattleUnitData().Camp) & relationTypes) != RelationType.None 
+                        && targetableObject.Available && !targetableObject.chaState.dead)
                     {
                         return targetableObject;
                     }
                 }
             }
-
+        
             return null;
         }
         
-        public static List<TargetableObject> FindBattleUnits(BattleUnit self, RelationType relationTypes, Vector3 center, float radius)
+        public static List<BattleUnit> FindBattleUnits(BattleUnit self, RelationType relationTypes, Vector3 center, float radius)
         {
-            List<TargetableObject> ret = new List<TargetableObject>(); 
+            List<BattleUnit> ret = new List<BattleUnit>(); 
             if (Time.time > lastUpdateTime + 0.5f) // 每0.5秒更新一次，降低消耗
             {
-                var playerList = GameEntry.Entity.GetEntityGroup("Player").GetAllEntities();
-                var battleUnitList = GameEntry.Entity.GetEntityGroup("BattleUnit").GetAllEntities();
+                
+                var battleUnitList = GameEntry.Entity.GetEntityGroup("ChaObj").GetAllEntities();
         
                 cachedEntities.Clear();
-                cachedEntities.AddRange(playerList);
+                
                 cachedEntities.AddRange(battleUnitList);
         
                 lastUpdateTime = Time.time;
             }
-    
+        
             foreach (var entity in cachedEntities)
             {
-                if (((UnityGameFramework.Runtime.Entity)entity).Logic is TargetableObject targetableObject)
+                if (((UnityGameFramework.Runtime.Entity)entity).Logic is BattleUnit targetableObject)
                 {
                     if (Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
-                        && (GetRelation(self.GetImpactData().Camp, targetableObject.GetImpactData().Camp) & relationTypes) != RelationType.None 
-                        && targetableObject.Available && !targetableObject.IsDead)
+                        && (GetRelation(self.GetBattleUnitData().Camp, targetableObject.GetBattleUnitData().Camp) & relationTypes) != RelationType.None 
+                        && targetableObject.Available && !targetableObject.chaState.dead)
                     {
                        ret.Add(targetableObject);
                     }
                 }
             }
-
+        
             return ret;
         }
 
 
-        public static void Attack(BattleUnit attacker,Weapon weapon, TargetableObject victim)
-        {
-            if (attacker == null || victim == null)
-            {
-                return;
-            }
-            
-
-            int attack = weapon.m_WeaponData.Attack;
-            BattleData attackerBattleData = attacker.GetImpactData();
-            BattleData victimBattleData = victim.GetImpactData();
-            if (GetRelation(attackerBattleData.Camp, victimBattleData.Camp) == RelationType.Friendly)
-            {
-                return;
-            }
-
-           
-            int targetDamageHP = CalcDamageHP(attack, victimBattleData.Defense);
-
-           
-
-           
-            victim.ApplyDamage(attacker, targetDamageHP);
-            
-        }
-
-        public static bool BulletAttack(BattleUnit bulletOwner,Bullet bullet, TargetableObject victim)
-        {
-            BattleData victimBattleData = victim.GetImpactData();
-            BattleData bulletBattleData = bullet.GetImpactData();
-            if (GetRelation(bulletBattleData.Camp, victimBattleData.Camp) == RelationType.Friendly)
-            {
-                return false;
-            }
-
-            var bulletData = bullet.m_BulletData;
-
-            var weapon = bulletOwner.GetWeaponByIndex(bulletData.WeaponIndex);
-            
-            
-            
-            int damageHp = CalcDamageHP(weapon.m_WeaponData.Attack, victimBattleData.Defense);
-            
-            
-            victim.ApplyDamage(bulletOwner,damageHp);
-            
-            GameEntry.Entity.HideEntity(bullet);
-
-            return true;
-        }
         
        
 
-        /// <summary>
-        /// 爆炸并施加力
-        /// </summary>
-        /// <param name="attacker"></param>
-        /// <param name="center"></param>
-        /// <param name="radius"></param>
-        /// <param name="power"></param>
-        /// <param name="useLineCast"></param>
-        public static void ExplosionWithForce(BattleUnit attacker, Vector3 center, float radius, int power,bool useLineCast)
-        {
-            HashSet<Entity> damagedEntities = new HashSet<Entity>();
-            Dictionary<Rigidbody, Vector3> forceOnRigidbodies = new Dictionary<Rigidbody, Vector3>();
-
-            Collider[] hitColliders = Physics.OverlapSphere(center, radius);
-            foreach (var hitCollider in hitColliders)
-            {
-                bool hitSuccess = false;
-                if (Physics.Linecast(center, hitCollider.transform.position, out RaycastHit hit))
-                {
-                    if (hitCollider == hit.collider)
-                    {
-                        hitSuccess = true;
-                        Debug.Log("爆炸投射成功：" + hit.collider.name);
-                    }
-                    else
-                    {
-                        Debug.Log("和" + hitCollider.name + "之间有障碍物：" + hit.collider.name);
-                    }
-                }
-                if (!useLineCast)
-                    hitSuccess = true;
-
-                if (hitSuccess)
-                {
-                    TargetableObject entity = hitCollider.GetComponentInParent<TargetableObject>();
-                    if (entity != null && !damagedEntities.Contains(entity))
-                    {
-                        var realDamage = CalcDamageHP(power, attacker.GetImpactData().Defense);
-                        entity.ApplyDamage(attacker, realDamage);
-                        damagedEntities.Add(entity);
-                    }
-
-                    // 计算物理力并记录
-                    Rigidbody hitRigidbody = hitCollider.attachedRigidbody;
-                    if (hitRigidbody != null)
-                    {
-                        Vector3 forceDirection = (hitCollider.transform.position - center).normalized;
-                        Vector3 force = forceDirection *
-                                        CalculateForce(power, hitRigidbody, center,
-                                            hitCollider.transform.position); // CalculateForce 是计算力的方法
-
-                        if (forceOnRigidbodies.ContainsKey(hitRigidbody))
-                        {
-                            forceOnRigidbodies[hitRigidbody] += force;
-                        }
-                        else
-                        {
-                            forceOnRigidbodies.Add(hitRigidbody, force);
-                        }
-                    }
-                }
-            }
-
-            // 对每个 Rigidbody 施加合力
-            foreach (var rbForcePair in forceOnRigidbodies)
-            {
-                rbForcePair.Key.AddForce(rbForcePair.Value);
-            }
-        }
-
-        // 计算力的方法（示例，您可以根据需求调整）
-        private static float CalculateForce(int power, Rigidbody rb, Vector3 explosionCenter, Vector3 colliderPosition)
-        {
-            float distance = Vector3.Distance(explosionCenter, colliderPosition);
-            float forceMagnitude = power / distance; // 举例：力量随距离递减
-            return forceMagnitude * rb.mass; // 根据质量调整力的大小
-        }
-
-        
-        /// <summary>
-        /// 爆炸效果实现，useLinecast决定是否被射线遮挡，为true是被遮挡时不造成伤害
-        /// </summary>
-        /// <param name="attacker"></param>
-        /// <param name="center"></param>
-        /// <param name="radius"></param>
-        /// <param name="power">攻击力</param>
-        /// <param name="useLineCast"></param>
-        public static void Explosion(BattleUnit attacker,Vector3 center, float radius,int power,bool useLineCast)
-        {
-            // 记录已经受到伤害的实体，以确保同一个实体只受到一次伤害
-            HashSet<Entity> damagedEntities = new HashSet<Entity>();
-
-            // 球形检测以找到爆炸半径内的所有碰撞体
-            Collider[] hitColliders = Physics.OverlapSphere(center, radius);
-            foreach (var hitCollider in hitColliders)
-            {
-                bool hitSuccess = false;
-                // 射线检测以确定是否有遮挡物
-                if (useLineCast && Physics.Linecast(center, hitCollider.transform.position, out RaycastHit hit))
-                {
-                    if (hitCollider == hit.collider)
-                    {
-                        hitSuccess = true;
-                        Debug.Log("爆炸投射成功：" + hit.collider.name);
-                    }
-                    else
-                    {
-                        Debug.Log("和"+hitCollider.name+"之间有障碍物："+hit.collider.name);
-                    }
-                   
-                }
-
-                if (!useLineCast)
-                    hitSuccess = true;
-                if(hitSuccess)
-                {
-                    // 检测到的碰撞体就是最近的对象，没有遮挡物
-
-                    // 获取实体组件
-                    TargetableObject entity = hitCollider.GetComponentInParent<TargetableObject>();
-                    if (entity != null && !damagedEntities.Contains(entity) )
-                    {
-                        // 对实体造成伤害
-                        var realDamage = CalcDamageHP(power,
-                            attacker.GetImpactData().Defense);
-                        entity.ApplyDamage(attacker, realDamage);
-
-                        // 标记该实体已受伤害
-                        damagedEntities.Add(entity);
-                    }
-                }
-            }
-        }
+        // /// <summary>
+        // /// 爆炸并施加力
+        // /// </summary>
+        // /// <param name="attacker"></param>
+        // /// <param name="center"></param>
+        // /// <param name="radius"></param>
+        // /// <param name="power"></param>
+        // /// <param name="useLineCast"></param>
+        // public static void ExplosionWithForce(BattleUnit attacker, Vector3 center, float radius, int power,bool useLineCast)
+        // {
+        //     HashSet<Entity> damagedEntities = new HashSet<Entity>();
+        //     Dictionary<Rigidbody, Vector3> forceOnRigidbodies = new Dictionary<Rigidbody, Vector3>();
+        //
+        //     Collider[] hitColliders = Physics.OverlapSphere(center, radius);
+        //     foreach (var hitCollider in hitColliders)
+        //     {
+        //         bool hitSuccess = false;
+        //         if (Physics.Linecast(center, hitCollider.transform.position, out RaycastHit hit))
+        //         {
+        //             if (hitCollider == hit.collider)
+        //             {
+        //                 hitSuccess = true;
+        //                 Debug.Log("爆炸投射成功：" + hit.collider.name);
+        //             }
+        //             else
+        //             {
+        //                 Debug.Log("和" + hitCollider.name + "之间有障碍物：" + hit.collider.name);
+        //             }
+        //         }
+        //         if (!useLineCast)
+        //             hitSuccess = true;
+        //
+        //         if (hitSuccess)
+        //         {
+        //             BattleUnit entity = hitCollider.GetComponentInParent<BattleUnit>();
+        //             if (entity != null && !damagedEntities.Contains(entity))
+        //             {
+        //                 var realDamage = CalcDamageHP(power, attacker.GetImpactData().Defense);
+        //                 entity.ApplyDamage(attacker, realDamage);
+        //                 damagedEntities.Add(entity);
+        //             }
+        //
+        //             // 计算物理力并记录
+        //             Rigidbody hitRigidbody = hitCollider.attachedRigidbody;
+        //             if (hitRigidbody != null)
+        //             {
+        //                 Vector3 forceDirection = (hitCollider.transform.position - center).normalized;
+        //                 Vector3 force = forceDirection *
+        //                                 CalculateForce(power, hitRigidbody, center,
+        //                                     hitCollider.transform.position); // CalculateForce 是计算力的方法
+        //
+        //                 if (forceOnRigidbodies.ContainsKey(hitRigidbody))
+        //                 {
+        //                     forceOnRigidbodies[hitRigidbody] += force;
+        //                 }
+        //                 else
+        //                 {
+        //                     forceOnRigidbodies.Add(hitRigidbody, force);
+        //                 }
+        //             }
+        //         }
+        //     }
+        //
+        //     // 对每个 Rigidbody 施加合力
+        //     foreach (var rbForcePair in forceOnRigidbodies)
+        //     {
+        //         rbForcePair.Key.AddForce(rbForcePair.Value);
+        //     }
+        // }
+        //
+        // // 计算力的方法（示例，您可以根据需求调整）
+        // private static float CalculateForce(int power, Rigidbody rb, Vector3 explosionCenter, Vector3 colliderPosition)
+        // {
+        //     float distance = Vector3.Distance(explosionCenter, colliderPosition);
+        //     float forceMagnitude = power / distance; // 举例：力量随距离递减
+        //     return forceMagnitude * rb.mass; // 根据质量调整力的大小
+        // }
+        //
+        //
+        // /// <summary>
+        // /// 爆炸效果实现，useLinecast决定是否被射线遮挡，为true是被遮挡时不造成伤害
+        // /// </summary>
+        // /// <param name="attacker"></param>
+        // /// <param name="center"></param>
+        // /// <param name="radius"></param>
+        // /// <param name="power">攻击力</param>
+        // /// <param name="useLineCast"></param>
+        // public static void Explosion(BattleUnit attacker,Vector3 center, float radius,int power,bool useLineCast)
+        // {
+        //     // 记录已经受到伤害的实体，以确保同一个实体只受到一次伤害
+        //     HashSet<Entity> damagedEntities = new HashSet<Entity>();
+        //
+        //     // 球形检测以找到爆炸半径内的所有碰撞体
+        //     Collider[] hitColliders = Physics.OverlapSphere(center, radius);
+        //     foreach (var hitCollider in hitColliders)
+        //     {
+        //         bool hitSuccess = false;
+        //         // 射线检测以确定是否有遮挡物
+        //         if (useLineCast && Physics.Linecast(center, hitCollider.transform.position, out RaycastHit hit))
+        //         {
+        //             if (hitCollider == hit.collider)
+        //             {
+        //                 hitSuccess = true;
+        //                 Debug.Log("爆炸投射成功：" + hit.collider.name);
+        //             }
+        //             else
+        //             {
+        //                 Debug.Log("和"+hitCollider.name+"之间有障碍物："+hit.collider.name);
+        //             }
+        //            
+        //         }
+        //
+        //         if (!useLineCast)
+        //             hitSuccess = true;
+        //         if(hitSuccess)
+        //         {
+        //             // 检测到的碰撞体就是最近的对象，没有遮挡物
+        //
+        //             // 获取实体组件
+        //             TargetableObject entity = hitCollider.GetComponentInParent<TargetableObject>();
+        //             if (entity != null && !damagedEntities.Contains(entity) )
+        //             {
+        //                 // 对实体造成伤害
+        //                 var realDamage = CalcDamageHP(power,
+        //                     attacker.GetImpactData().Defense);
+        //                 entity.ApplyDamage(attacker, realDamage);
+        //
+        //                 // 标记该实体已受伤害
+        //                 damagedEntities.Add(entity);
+        //             }
+        //         }
+        //     }
+        // }
 
         private static int CalcDamageHP(int attack, int defense)
         {

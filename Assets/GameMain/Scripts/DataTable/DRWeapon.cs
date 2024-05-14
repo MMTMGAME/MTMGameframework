@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-05-10 15:20:47.408
+// 生成时间：2024-05-13 15:43:14.732
 //------------------------------------------------------------
 
 using GameFramework;
@@ -99,6 +99,78 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取血量加算。
+        /// </summary>
+        public int HPAdd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取血量乘算（%）。
+        /// </summary>
+        public int HPTimes
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取MP加算。
+        /// </summary>
+        public int MPAdd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取MP乘算。
+        /// </summary>
+        public int MPTimes
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取攻击加算。
+        /// </summary>
+        public int AttackAdd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取攻击乘算。
+        /// </summary>
+        public int AttackTimes
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取防御加算。
+        /// </summary>
+        public int DefenseAdd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取防御乘算。
+        /// </summary>
+        public int DefenseTimes
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -118,6 +190,14 @@ namespace GameMain
             ShootSoundId = int.Parse(columnStrings[index++]);
             AttackLogicComponent = columnStrings[index++];
             ShootPoint = columnStrings[index++];
+            HPAdd = int.Parse(columnStrings[index++]);
+            HPTimes = int.Parse(columnStrings[index++]);
+            MPAdd = int.Parse(columnStrings[index++]);
+            MPTimes = int.Parse(columnStrings[index++]);
+            AttackAdd = int.Parse(columnStrings[index++]);
+            AttackTimes = int.Parse(columnStrings[index++]);
+            DefenseAdd = int.Parse(columnStrings[index++]);
+            DefenseTimes = int.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -137,6 +217,14 @@ namespace GameMain
                     ShootSoundId = binaryReader.Read7BitEncodedInt32();
                     AttackLogicComponent = binaryReader.ReadString();
                     ShootPoint = binaryReader.ReadString();
+                    HPAdd = binaryReader.Read7BitEncodedInt32();
+                    HPTimes = binaryReader.Read7BitEncodedInt32();
+                    MPAdd = binaryReader.Read7BitEncodedInt32();
+                    MPTimes = binaryReader.Read7BitEncodedInt32();
+                    AttackAdd = binaryReader.Read7BitEncodedInt32();
+                    AttackTimes = binaryReader.Read7BitEncodedInt32();
+                    DefenseAdd = binaryReader.Read7BitEncodedInt32();
+                    DefenseTimes = binaryReader.Read7BitEncodedInt32();
                 }
             }
 

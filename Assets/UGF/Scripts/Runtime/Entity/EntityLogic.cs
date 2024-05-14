@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -14,12 +15,32 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public abstract class EntityLogic : MonoBehaviour
     {
+        /// <summary>
+        /// 是否被HideEntity
+        /// </summary>
         private bool m_Available = false;
+        /// <summary>
+        /// 是否SetActive
+        /// </summary>
         private bool m_Visible = false;
         private Entity m_Entity = null;
         private Transform m_CachedTransform = null;
         private int m_OriginalLayer = 0;
         private Transform m_OriginalTransform = null;
+
+        
+        //为了解决作为子物体时，父物体Entity被HideEntity销毁时直接销毁了子物体，导致后续HideAllEntites的时候报错，记录是否被销毁
+        private bool hided;
+        private void OnEnable()
+        {
+            hided = false;
+        }
+
+        private void OnDisable()
+        {
+            hided = true;
+        }
+
 
         /// <summary>
         /// 获取实体。

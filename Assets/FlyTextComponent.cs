@@ -62,7 +62,7 @@ public class FlyTextComponent : GameFrameworkComponent
         
     }
 
-    public void FlyText(Vector3 worldPos, string msg, Color color, float jumpHeight, float duration)
+    public void FlyText(Vector3 worldPos, string msg, Color color, float jumpHeight=1f, float duration=0.6f)
     {
         // 通过GetFlyTextUi实例化一个新的UI
         FlyTextUI flyTextUI = GetFlyTextUi();

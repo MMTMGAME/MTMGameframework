@@ -15,9 +15,7 @@ namespace GameMain
     [Serializable]
     public class WeaponData : AccessoryObjectData
     {
-        [SerializeField]
-        private int m_Attack = 0;
-
+        
         [SerializeField]
         private float m_AttackInterval = 0f;
 
@@ -34,7 +32,10 @@ namespace GameMain
 
         private string attackLogicComponent;
         [FormerlySerializedAs("shootPoint")] public string shootPointPath;
-
+        
+        //属性
+        public ChaProperty[] propMod=new ChaProperty[2];
+        
         //所处玩家槽位
         private int slotIndex;
         public WeaponData(int entityId, int typeId, int ownerId, CampType ownerCamp,int slotIndex)
@@ -48,7 +49,7 @@ namespace GameMain
             }
 
             this.slotIndex = slotIndex;
-            m_Attack = drWeapon.Attack;
+           
             m_AttackInterval = drWeapon.AttackInterval;
             m_BulletId = drWeapon.BulletId;
             m_BulletSpeed = drWeapon.BulletSpeed;
@@ -56,19 +57,20 @@ namespace GameMain
             
             attackLogicComponent = drWeapon.AttackLogicComponent;
             shootPointPath = drWeapon.ShootPoint;
+            
+            //属性
+            propMod[0].hp = drWeapon.HPAdd;
+            propMod[0].mp = drWeapon.MPAdd;
+            propMod[0].attack = drWeapon.AttackAdd;
+            propMod[0].defense = drWeapon.DefenseAdd;
+
+            propMod[1].hp = drWeapon.HPTimes;
+            propMod[1].mp = drWeapon.MPTimes;
+            propMod[1].attack = drWeapon.AttackTimes;
+            propMod[1].defense = drWeapon.DefenseTimes;
         }
 
-        /// <summary>
-        /// 攻击力。
-        /// </summary>
-        public int Attack
-        {
-            get
-            {
-                return m_Attack;
-            }
-        }
-
+      
         /// <summary>
         /// 攻击间隔。
         /// </summary>

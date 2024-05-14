@@ -62,15 +62,33 @@ namespace GameMain
             entityComponent.ShowEntity(typeof(Armor), "Armor", Constant.AssetPriority.ArmorAsset, data);
         }
 
-        public static void ShowBullet(this EntityComponent entityCompoennt, BulletData data)
+        
+
+        //固定Id
+        public static void ShowBulletObj(this EntityComponent entityComponent,BulletLauncher bulletLauncher,Action<Entity> action)
         {
-            entityCompoennt.ShowEntity(typeof(Bullet), "Bullet", Constant.AssetPriority.BulletAsset, data);
+            entityComponent.ShowEntity(typeof(BulletObj), "BulletObj", Constant.AssetPriority.BulletAsset,new BulletObjData(GameEntry.Entity.GenerateSerialId(),10,bulletLauncher)
+            {
+                Position = bulletLauncher.firePosition,
+                OnShowCallBack = action
+            });
+        }
+
+        public static void ShowAoeObj(this EntityComponent entityComponent, AoeLauncher aoeLauncher,
+            Action<Entity> action)
+        {
+            entityComponent.ShowEntity(typeof(AoeObj), "AoeObj", Constant.AssetPriority.BulletAsset,new AoeObjData(GameEntry.Entity.GenerateSerialId(),11,aoeLauncher)
+            {
+                Position = aoeLauncher.position,
+                Rotation = Quaternion.identity,
+                OnShowCallBack = action
+            });
         }
         
         
         public static void ShowPlayer(this EntityComponent entityCompoennt, PlayerData data)
         {
-            entityCompoennt.ShowEntity(typeof(Player), "Player", Constant.AssetPriority.PlayerAsset, data);
+            entityCompoennt.ShowEntity(typeof(Player), "ChaObj", Constant.AssetPriority.PlayerAsset, data);
         }
         
         public static void ShowSceneCam(this EntityComponent entityCompoennt)
@@ -157,6 +175,18 @@ namespace GameMain
         #endregion
 
         
+        
+        public static void ShowModelObj(this EntityComponent entityComponent, int typeId,Vector3 pos,Quaternion rotation,Action<Entity> callBack )
+        {
+            entityComponent.ShowEntity(typeof(ModelObj), "ModelObj", Constant.AssetPriority.EffectAsset, new ModelObjData(
+                GameEntry.Entity.GenerateSerialId(),typeId)
+            {
+                Position = pos,
+                Rotation = rotation,
+                OnShowCallBack = callBack,
+            });
+        }
+        
         public static void ShowEffect(this EntityComponent entityComponent, EffectData data)
         {
             entityComponent.ShowEntity(typeof(Effect), "Effect", Constant.AssetPriority.EffectAsset, data);
@@ -164,7 +194,7 @@ namespace GameMain
 
         public static void ShowBattleUnit(this EntityComponent entityComponent, global::BattleUnitData data)
         {
-            entityComponent.ShowEntity(typeof(BattleUnit), "BattleUnit", Constant.AssetPriority.BattleUnitAsset, data);
+            entityComponent.ShowEntity(typeof(BattleUnit), "ChaObj", Constant.AssetPriority.BattleUnitAsset, data);
         }
         
         private static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, int priority, EntityData data)

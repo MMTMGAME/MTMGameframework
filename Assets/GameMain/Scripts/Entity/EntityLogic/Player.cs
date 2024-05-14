@@ -93,6 +93,9 @@ public class Player : BattleUnit
             return;
         }
         Name = Utility.Text.Format("Player ({0})", Id);
+        
+        chaState.LearnSkill(DesingerTables.Skill.data["fire"]);
+        chaState.LearnSkill(DesingerTables.Skill.data["spaceMonkeyBall"]);
     }
 
     protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -110,35 +113,39 @@ public class Player : BattleUnit
     
     void StartMouseLeft(InputAction.CallbackContext callbackContext)
     {
-        var weapon = GetWeaponByIndex(0);
-        if (weapon != null)
-        {
+        chaState.CastSkill(chaState.skills[0].model.id);
 
-            //weapon.StartFire();
-            //理论上应该用上面的StartFire，但是目前demo没有接入动画模块，直接触发攻击,接入技能和buff模块后再接入动画
-            weapon.HandleAnimEvent("Shoot");
-        }
+        // var weapon = GetWeaponByIndex(0);
+        // if (weapon != null)
+        // {
+        //
+        //     //weapon.StartFire();
+        //     //理论上应该用上面的StartFire，但是目前demo没有接入动画模块，直接触发攻击,接入技能和buff模块后再接入动画
+        //     weapon.HandleAnimEvent("Shoot");
+        // }
     }
     
     void CancelMouseLeft(InputAction.CallbackContext callbackContext)
     {
-        var weapon = GetWeaponByIndex(0);
-        if (weapon != null)
-        {
-
-            weapon.CancelFire();
-        }
+        // var weapon = GetWeaponByIndex(0);
+        // if (weapon != null)
+        // {
+        //
+        //     weapon.CancelFire();
+        // }
     }
     
     void StartMouseRight(InputAction.CallbackContext callbackContext)
     {
-        var weapon = GetWeaponByIndex(1);
-        if (weapon != null)
-        {
-            //weapon.StartFire();
-            //理论上应该用上面的StartFire，但是目前demo没有接入动画模块，直接触发攻击,接入技能和buff模块后再接入动画
-            weapon.HandleAnimEvent("Shoot");
-        }
+        chaState.CastSkill(chaState.skills[1].model.id);
+        
+        // var weapon = GetWeaponByIndex(1);
+        // if (weapon != null)
+        // {
+        //     //weapon.StartFire();
+        //     //理论上应该用上面的StartFire，但是目前demo没有接入动画模块，直接触发攻击,接入技能和buff模块后再接入动画
+        //     weapon.HandleAnimEvent("Shoot");
+        // }
     }
     
     void CancelMouseRight(InputAction.CallbackContext callbackContext)
@@ -152,11 +159,5 @@ public class Player : BattleUnit
     }
     
 
-    public override void ApplyDamage(BattleUnit attacker, int damageHP)
-    {
-        base.ApplyDamage(attacker, damageHP);
-        GameEntry.CameraShake.ShakeCamera(3f,5f,0.3f);
-
-        GameEntry.Sound.PlaySound(20000,transform.position);
-    }
+  
 }

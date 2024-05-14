@@ -14,13 +14,11 @@ namespace GameMain
     [Serializable]
     public class ArmorData : AccessoryObjectData
     {
-        [SerializeField]
-        private int m_MaxHP = 0;
-
-        [SerializeField]
-        private int m_Defense = 0;
-
+       
         private string path;
+        
+        //属性
+        public ChaProperty[] propMod=new ChaProperty[2];
 
         public ArmorData(int entityId, int typeId, int ownerId, CampType ownerCamp)
             : base(entityId, typeId, ownerId, ownerCamp)
@@ -31,33 +29,22 @@ namespace GameMain
             {
                 return;
             }
-
-            m_MaxHP = drArmor.MaxHP;
-            m_Defense = drArmor.Defense;
+            
             path = drArmor.Path;
+            
+            //属性
+            propMod[0].hp = drArmor.HPAdd;
+            propMod[0].mp = drArmor.MPAdd;
+            propMod[0].attack = drArmor.AttackAdd;
+            propMod[0].defense = drArmor.DefenseAdd;
+
+            propMod[1].hp = drArmor.HPTimes;
+            propMod[1].mp = drArmor.MPTimes;
+            propMod[1].attack = drArmor.AttackTimes;
+            propMod[1].defense = drArmor.DefenseTimes;
         }
 
-        /// <summary>
-        /// 最大生命。
-        /// </summary>
-        public int MaxHP
-        {
-            get
-            {
-                return m_MaxHP;
-            }
-        }
-
-        /// <summary>
-        /// 防御力。
-        /// </summary>
-        public int Defense
-        {
-            get
-            {
-                return m_Defense;
-            }
-        }
+        
 
         public string Path
         {

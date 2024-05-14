@@ -46,7 +46,7 @@ public class BattleUnitDieEventArgs : GameEventArgs
     }
 }
 
-public class BattleUnit : TargetableObject
+public class BattleUnit : Entity
 {
     [SerializeField]
     private BattleUnitData BattleUnitData;
@@ -55,13 +55,19 @@ public class BattleUnit : TargetableObject
 
     [SerializeField] protected List<Armor> m_Armors = new List<Armor>();
 
-    private WeaponAnimEventListener weaponAnimEventListener;
+    private WeaponAnimEventListener weaponAnimEventListener;//监听武器攻击动画帧事件
     public BattleUnitData GetBattleUnitData()
     {
         return BattleUnitData;
     }
 
-    
+    public ChaState chaState;
+
+
+    public bool IsValid()
+    {
+        return Visible && !chaState.dead;
+    }
     
     public Weapon GetWeaponByIndex(int index)
     {
@@ -72,17 +78,14 @@ public class BattleUnit : TargetableObject
         return m_Weapons[index];
     }
 
-    public void OnBeforeDamageVictim(TargetableObject victim, int damageHp)
+
+    protected override void OnInit(object userData)
     {
-        //暂不实现，接入技能，Buff,天赋等系统
-    }
-    
-    public void OnAfterDamageVictim(TargetableObject victim, int damageHp)
-    {
-        //暂不实现
+        base.OnInit(userData);
+        chaState = gameObject.GetOrAddComponent<ChaState>();
+        chaState.onDead += OnDead;
     }
 
-    
 
 #if UNITY_2017_3_OR_NEWER
     protected override void OnShow(object userData)
@@ -117,6 +120,7 @@ public class BattleUnit : TargetableObject
         weaponAnimEventListener = gameObject.AddComponent<WeaponAnimEventListener>();
         weaponAnimEventListener.Init(this);
 
+        chaState.InitBaseProp(new ChaProperty(10,BattleUnitData.baseHP,BattleUnitData.baseMP,BattleUnitData.baseAttack,BattleUnitData.baseDefense));
     }
 
 #if UNITY_2017_3_OR_NEWER
@@ -139,7 +143,9 @@ public class BattleUnit : TargetableObject
 
         if (childEntity is Weapon)
         {
-            m_Weapons.Add((Weapon)childEntity);
+            var weapon = (Weapon)childEntity;
+            m_Weapons.Add(weapon);
+            chaState.equipmentProp[0] += new ChaProperty();
             return;
         }
 
@@ -172,11 +178,11 @@ public class BattleUnit : TargetableObject
         }
     }
 
-    protected override void OnDead(Entity attacker)
+    protected virtual void OnDead()
     {
         GameEntry.Event.Fire(this,BattleUnitDieEventArgs.Create(this));
         
-        base.OnDead(attacker);
+        
 
         CustomEvent.Trigger(gameObject, "OnDead"); // "OnDead"是在Visual Scripting中定义的事件名
         
@@ -194,11 +200,7 @@ public class BattleUnit : TargetableObject
         return BattleUnitData.Camp;
     }
     
-    public override GameMain.BattleData GetImpactData()
-    {
-        
-        return new GameMain.BattleData(BattleUnitData.Camp, BattleUnitData.HP, BattleUnitData.Defense);
-    }
+   
 
     protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
     {

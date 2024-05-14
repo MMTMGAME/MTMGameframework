@@ -32,9 +32,9 @@ public abstract class WeaponAttack : MonoBehaviour
     protected float lastAttackTime;
     private static readonly int Fire = Animator.StringToHash("Fire");
     
-    public virtual void Attack(TargetableObject victim)
+    public virtual void Attack(BattleUnit victim)
     {
-        AIUtility.Attack((BattleUnit)Weapon.OwnerEntity,Weapon,victim);
+        GameEntry.Combat.CreateDamage(Weapon.OwnerEntity.gameObject,victim.gameObject,new Damage(Weapon.OwnerBattleUnit.chaState.property.attack),0,10,new DamageInfoTag[]{});
     }
     
     public virtual void StartFire()

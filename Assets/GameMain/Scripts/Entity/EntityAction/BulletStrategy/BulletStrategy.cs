@@ -36,7 +36,7 @@ public abstract class BulletStrategy : MonoBehaviour
     public virtual void PerformCollision(Collision collision)
     {
        
-        TargetableObject victim = collision.gameObject.GetComponentInParent<TargetableObject>();
+        BattleUnit victim = collision.gameObject.GetComponentInParent<BattleUnit>();
         if (victim == null)
         {
             return;
@@ -51,7 +51,7 @@ public abstract class BulletStrategy : MonoBehaviour
             
             if(hited)
                 return;
-            AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, victim);
+            //AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, victim);
             hited = true;
 
         }
@@ -63,28 +63,28 @@ public abstract class BulletStrategy : MonoBehaviour
 
     public virtual void PerformTrigger(Collider other)
     {
-        TargetableObject victim = other.gameObject.GetComponentInParent<TargetableObject>();
-        if (victim == null)
-        {
-            return;
-        }
-        
-        
-        if(victim.Id==bulletData.OwnerId)
-            return;
-        var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
-        if (owner != null)
-        {
-            
-            if(hited)
-                return;
-            bool attacked=AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, victim);
-
-            bullet.PlaySoundAndFxByPhysMat(other);
-            
-            if(attacked) 
-                hited = true;
-        }
+        // TargetableObject victim = other.gameObject.GetComponentInParent<TargetableObject>();
+        // if (victim == null)
+        // {
+        //     return;
+        // }
+        //
+        //
+        // if(victim.Id==bulletData.OwnerId)
+        //     return;
+        // var owner = GameEntry.Entity.GetEntity(bulletData.OwnerId);
+        // if (owner != null)
+        // {
+        //     
+        //     if(hited)
+        //         return;
+        //     bool attacked=AIUtility.BulletAttack((BattleUnit)owner.Logic,bullet, victim);
+        //
+        //     bullet.PlaySoundAndFxByPhysMat(other);
+        //     
+        //     if(attacked) 
+        //         hited = true;
+        // }
             
     }
 }

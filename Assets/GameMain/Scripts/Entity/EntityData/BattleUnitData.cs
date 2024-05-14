@@ -10,7 +10,7 @@ using UnityEngine;
 
 [System.Serializable]
 [IncludeInSettings(true)]
-public class BattleUnitData : TargetableObjectData
+public class BattleUnitData : EntityData
 {
     
     
@@ -37,6 +37,16 @@ public class BattleUnitData : TargetableObjectData
     private string weaponPath2;
 
     public int DieScore;
+
+    public int baseHP;
+    public int baseDefense;
+    public int baseAttack;
+    public int baseMP;
+
+    public CampType Camp
+    {
+        get;
+    }
     public string GetWeaponPath(int index)
     {
         switch (index)
@@ -52,9 +62,10 @@ public class BattleUnitData : TargetableObjectData
         return "";
     }
 
-    public BattleUnitData(int entityId, int typeId, CampType camp) : base(entityId, typeId, camp)
+    public BattleUnitData(int entityId, int typeId, CampType camp) : base(entityId, typeId)
     {
-        
+
+        this.Camp = camp;
         
         IDataTable<DRBattleUnit> dtBattleUnits = GameEntry.DataTable.GetDataTable<DRBattleUnit>();
         DRBattleUnit drBattleUnit = dtBattleUnits.GetDataRow(TypeId);
@@ -68,6 +79,11 @@ public class BattleUnitData : TargetableObjectData
         weaponPath2 = drBattleUnit.WeaponPath2;
 
         DieScore = drBattleUnit.DieScore;
+
+        baseHP = drBattleUnit.BaseHP;
+        baseAttack = drBattleUnit.BaseAttack;
+        baseDefense = drBattleUnit.BaseAttack;
+        baseMP = drBattleUnit.BaseMP;
         
         for (int index = 0, weaponId = 0; (weaponId = drBattleUnit.GetWeaponIdAt(index)) > 0; index++)
         {
@@ -82,32 +98,9 @@ public class BattleUnitData : TargetableObjectData
         m_DeadEffectId = drBattleUnit.DeadEffectId;
         m_DeadSoundId = drBattleUnit.DeadSoundId;
 
-        HP = m_MaxHP;
+        
     }
 
-    /// <summary>
-    /// 最大生命。
-    /// </summary>
-    public override int MaxHP
-    {
-        get
-        {
-            return m_MaxHP;
-        }
-    }
-
-    /// <summary>
-    /// 防御。
-    /// </summary>
-    public int Defense
-    {
-        get
-        {
-            return m_Defense;
-        }
-    }
-
-    
 
     public int DeadEffectId
     {
@@ -174,7 +167,7 @@ public class BattleUnitData : TargetableObjectData
         }
 
         m_ArmorDatas.Add(armorData);
-        RefreshData();
+       
     }
 
     public void DetachArmorData(ArmorData armorData)
@@ -185,22 +178,8 @@ public class BattleUnitData : TargetableObjectData
         }
 
         m_ArmorDatas.Remove(armorData);
-        RefreshData();
+        
     }
 
-    private void RefreshData()
-    {
-        m_MaxHP = 0;
-        m_Defense = 0;
-        for (int i = 0; i < m_ArmorDatas.Count; i++)
-        {
-            m_MaxHP += m_ArmorDatas[i].MaxHP;
-            m_Defense += m_ArmorDatas[i].Defense;
-        }
-
-        if (HP > m_MaxHP)
-        {
-            HP = m_MaxHP;
-        }
-    }
+    
 }

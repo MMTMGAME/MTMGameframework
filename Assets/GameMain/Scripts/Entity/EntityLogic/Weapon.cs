@@ -34,6 +34,11 @@ namespace GameMain
             
         }
 
+        public BattleUnit OwnerBattleUnit
+        {
+            get { return (BattleUnit)ownerEntity; }
+        }
+
         [SerializeField]
         public WeaponData m_WeaponData = null;
 

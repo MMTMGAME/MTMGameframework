@@ -59,6 +59,12 @@ namespace GameMain
             private set;
         }
 
+        public static CombatComponent Combat
+        {
+            get;
+            private set;
+        }
+
         private static void InitCustomComponents()
         {
             BuiltinData = UnityGameFramework.Runtime.GameEntry.GetComponent<BuiltinDataComponent>();
@@ -68,6 +74,7 @@ namespace GameMain
             TimingWheel=UnityGameFramework.Runtime.GameEntry.GetComponent<TimingWheelComponent>();
             CameraShake = UnityGameFramework.Runtime.GameEntry.GetComponent<CameraShakeComponent>();
             FlyText = UnityGameFramework.Runtime.GameEntry.GetComponent<FlyTextComponent>();
+            Combat= UnityGameFramework.Runtime.GameEntry.GetComponent<CombatComponent>();
         }
     }
 }
