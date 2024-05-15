@@ -68,7 +68,10 @@ public class BulletState:MonoBehaviour{
         get{return moveForce;}
     }
 
-   
+    ///<summary>
+    ///子弹的移动轨迹是否严格遵循发射出来的角度,为true的话子弹按照初始方向移动，否则子弹根据子弹当前朝向移动
+    ///</summary>
+    public bool useFireDegreeForever = false;
 
     ///<summary>
     ///子弹命中纪录
@@ -124,22 +127,32 @@ public class BulletState:MonoBehaviour{
         }
         set
         {
-            m_HitedObstacle = true;
+            m_HitedObstacle = value;
         }
     }
 
     ///<summary>
-    ///控制子弹移动，这应该是由bulletSystem来调用的
+    ///传入的mf是偏移量，函数中现根据是否使用初始角度和elpasedTime计算初始移动方向，然后把mf作为偏移加载初始移动方向上，最后再进行移动，
+    /// 我推测这个偏移量可以在之后用来制作散弹之类的地方派上用场。
     ///</summary>
     public void SetMoveForce(Vector3 mf){
         this.moveForce = mf;
         
-        moveForce *= speed;
+       
         
+        Quaternion baseMoveVec=(useFireDegreeForever == true ||
+                            timeElapsed <= 0     //还是那个问题，unity的动画走的是update，所以慢了，旋转没转到预设角度，fireRotation
+            ) ? fireRotation : transform.rotation; //欧拉获得的是角度
+
+        moveForce = baseMoveVec * this.moveForce;
+            
+        moveForce *= speed;
 
         unitMove.MoveBy(moveForce);
         unitRotate.RotateTo(Quaternion.LookRotation(moveForce));
     }
+
+   
 
     ///<summary>
     ///根据BulletLauncher初始化这个数据
@@ -157,6 +170,7 @@ public class BulletState:MonoBehaviour{
         this.duration = bullet.duration;
         this.timeElapsed = 0;
         this.tween = bullet.tween;
+        this.useFireDegreeForever = this.useFireDegreeForever;
         this.canHitAfterCreated = bullet.canHitAfterCreated;
         this.smoothMove = !bullet.model.removeOnObstacle;
         this.moveType = bullet.model.moveType;
@@ -195,6 +209,10 @@ public class BulletState:MonoBehaviour{
         
         this.followingTarget = bullet.targetFunc == null ? null :
             bullet.targetFunc(this.gameObject, targets);
+
+        this.HitedObstacle = false;//对象池状态重置
+        
+        
     }
 
     //同步一下unitMove和自己的一些状态
@@ -237,6 +255,13 @@ public class BulletState:MonoBehaviour{
 
     public bool CanHit(ChaState chaState)
     {
+        
+        if (!model.hitSelf && caster == chaState.gameObject)
+        {
+            Debug.Log("击中自己，跳过");
+            return false;
+        }
+        
         for (int i = 0; i < this.hitRecords.Count; i++){
             if (hitRecords[i].target == chaState.gameObject){
                 return false;
@@ -338,6 +363,7 @@ public class BulletState:MonoBehaviour{
         var targetChaState = collider.GetComponent<ChaState>();
         if (targetChaState == null)
         {
+            Debug.Log($"子弹碰到障碍物{collider.gameObject.name}",collider.gameObject);
             HitedObstacle = true;
             return;
         }
@@ -362,6 +388,7 @@ public class BulletState:MonoBehaviour{
 
             if (model.onHit != null)
             {
+                Debug.Log("子弹OnHit"+targetChaState.gameObject.name);
                 model.onHit(gameObject, targetChaState.gameObject);
             }
 

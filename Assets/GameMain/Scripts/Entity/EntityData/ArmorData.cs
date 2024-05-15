@@ -37,11 +37,15 @@ namespace GameMain
             propMod[0].mp = drArmor.MPAdd;
             propMod[0].attack = drArmor.AttackAdd;
             propMod[0].defense = drArmor.DefenseAdd;
+            propMod[0].moveSpeed = drArmor.MoveSpeedAdd;
+            propMod[0].actionSpeed = drArmor.ActionSpeedAdd;
 
             propMod[1].hp = drArmor.HPTimes;
             propMod[1].mp = drArmor.MPTimes;
             propMod[1].attack = drArmor.AttackTimes;
             propMod[1].defense = drArmor.DefenseTimes;
+            propMod[0].moveSpeed = drArmor.MoveSpeedTimes;
+            propMod[0].actionSpeed = drArmor.MoveSpeedTimes;
         }
 
         

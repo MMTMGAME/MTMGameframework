@@ -38,7 +38,7 @@ public class UnitMove : MonoBehaviour
         if (canMove == false || velocity == Vector3.zero) return;   
         
 
-        var targetPos = transform.TransformPoint(velocity*Time.fixedDeltaTime);
+        var targetPos = transform.position+(velocity*Time.fixedDeltaTime);
 
         transform.position = targetPos;
 

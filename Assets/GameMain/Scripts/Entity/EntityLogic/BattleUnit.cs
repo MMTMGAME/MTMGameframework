@@ -120,7 +120,7 @@ public class BattleUnit : Entity
         weaponAnimEventListener = gameObject.AddComponent<WeaponAnimEventListener>();
         weaponAnimEventListener.Init(this);
 
-        chaState.InitBaseProp(new ChaProperty(10,BattleUnitData.baseHP,BattleUnitData.baseMP,BattleUnitData.baseAttack,BattleUnitData.baseDefense));
+        chaState.InitBaseProp(new ChaProperty(BattleUnitData.baseMoveSpeed,BattleUnitData.baseHP,BattleUnitData.baseMP,BattleUnitData.baseAttack,BattleUnitData.baseDefense,BattleUnitData.baseMoveSpeed));
     }
 
 #if UNITY_2017_3_OR_NEWER

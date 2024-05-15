@@ -63,11 +63,15 @@ namespace GameMain
             propMod[0].mp = drWeapon.MPAdd;
             propMod[0].attack = drWeapon.AttackAdd;
             propMod[0].defense = drWeapon.DefenseAdd;
+            propMod[0].moveSpeed = drWeapon.MoveSpeedAdd;
+            propMod[0].actionSpeed = drWeapon.ActionSpeedAdd;
 
             propMod[1].hp = drWeapon.HPTimes;
             propMod[1].mp = drWeapon.MPTimes;
             propMod[1].attack = drWeapon.AttackTimes;
             propMod[1].defense = drWeapon.DefenseTimes;
+            propMod[1].moveSpeed = drWeapon.MoveSpeedTimes;
+            propMod[1].actionSpeed = drWeapon.ActionSpeedTimes;
         }
 
       

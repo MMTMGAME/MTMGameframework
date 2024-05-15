@@ -126,7 +126,7 @@ public class ChaState:MonoBehaviour{
     ///<summary>
     ///角色移动力，单位：米/秒
     ///</summary>
-    public float moveSpeed{get{
+    public float MoveSpeed{get{
         //这个公式也可以通过给策划脚本接口获得，这里就写代码里了，不走策划脚本了
         //设定，值=0.2+5.6*x/(x+100)，初始速度是100，移动力3米/秒，最小值0.2米/秒。
         return this._prop.moveSpeed * 5.600f / (this._prop.moveSpeed + 100.000f) + 0.200f;
@@ -350,6 +350,8 @@ public class ChaState:MonoBehaviour{
     public void AddForceRotate(float degree){
         this.forceRotate.Add(degree);
     }
+
+    
 
     ///<summary>
     ///添加角色要做的动作请求

@@ -142,6 +142,7 @@ public class CombatComponent : GameFrameworkComponent
 
     public void CreateDamage(GameObject attacker,GameObject victim,Damage damage,float damageDegree=0f, float criticalRate=0f, DamageInfoTag[] tags=null)
     {
+        Debug.Log($"attacker对victim造成伤害：{damage.bullet}，{damage.explosion},{damage.mental}");
         DamageManager.DoDamage(attacker,victim,damage,damageDegree,criticalRate,tags);
     }
     
@@ -256,7 +257,7 @@ public class CombatComponent : GameFrameworkComponent
     public void CreateSightEffect(int typeId, Vector3 pos, float degree, string key = "", bool loop = false,float duration=1){
         if (sightEffect.ContainsKey(key) == true) return;    //已经存在，加不成
         
-        
+        Debug.Log("CreateSightEffect");
         GameEntry.Entity.ShowModelObj(typeId,pos,Quaternion.identity, (effectGO) =>
         {
             

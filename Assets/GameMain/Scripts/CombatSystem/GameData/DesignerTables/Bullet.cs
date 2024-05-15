@@ -13,9 +13,9 @@ namespace DesingerTables
             {"normal0", new BulletModel(
                 "normal0", 50000, 
                 "", new object[0],
-                "CommonBulletHit", new object[]{1.0f,0.05f,71000,"Body"},
-                "CommonBulletRemoved", new object[]{70000}
-            )},
+                "CommonBulletHit", new object[]{1.0f,0.05f,70000,"Body"},
+                "CommonBulletRemoved", new object[]{71000}
+            ){hitSelf = false}},
             {"normal1", new BulletModel(
                 "normal1", 50001, 
                 "", new object[0],

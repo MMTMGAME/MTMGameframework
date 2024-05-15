@@ -42,6 +42,8 @@ public class BattleUnitData : EntityData
     public int baseDefense;
     public int baseAttack;
     public int baseMP;
+    public int baseMoveSpeed;
+    public int baseActionSpeed;
 
     public CampType Camp
     {
@@ -84,6 +86,8 @@ public class BattleUnitData : EntityData
         baseAttack = drBattleUnit.BaseAttack;
         baseDefense = drBattleUnit.BaseAttack;
         baseMP = drBattleUnit.BaseMP;
+        baseMoveSpeed = drBattleUnit.BaseMoveSpeed;
+        baseActionSpeed = drBattleUnit.BaseActionSpeed;
         
         for (int index = 0, weaponId = 0; (weaponId = drBattleUnit.GetWeaponIdAt(index)) > 0; index++)
         {

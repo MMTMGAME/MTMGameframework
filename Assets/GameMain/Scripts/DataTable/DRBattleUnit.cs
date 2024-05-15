@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-05-13 15:43:14.734
+// 生成时间：2024-05-15 15:59:57.037
 //------------------------------------------------------------
 
 using GameFramework;
@@ -180,6 +180,24 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取初始移动速度。
+        /// </summary>
+        public int BaseMoveSpeed
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取初始行动速度。
+        /// </summary>
+        public int BaseActionSpeed
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -208,6 +226,8 @@ namespace GameMain
             BaseAttack = int.Parse(columnStrings[index++]);
             BaseDefense = int.Parse(columnStrings[index++]);
             BaseMP = int.Parse(columnStrings[index++]);
+            BaseMoveSpeed = int.Parse(columnStrings[index++]);
+            BaseActionSpeed = int.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -236,6 +256,8 @@ namespace GameMain
                     BaseAttack = binaryReader.Read7BitEncodedInt32();
                     BaseDefense = binaryReader.Read7BitEncodedInt32();
                     BaseMP = binaryReader.Read7BitEncodedInt32();
+                    BaseMoveSpeed = binaryReader.Read7BitEncodedInt32();
+                    BaseActionSpeed = binaryReader.Read7BitEncodedInt32();
                 }
             }
 

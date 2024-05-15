@@ -52,9 +52,12 @@ namespace DesignerScripts
             if (sightEffectId != 0){
                 UnitBindManager ubm = target.GetComponent<UnitBindManager>();
                 if (ubm){
+                    Debug.Log($"播放受击特效，部位{bpName}");
                     ubm.AddBindEntity(bpName, sightEffectId, "", false);
                 }
             }
+            
+            Debug.Log($"CreateDamage");
             GameEntry.Combat.CreateDamage(
                 bulletState.caster, 
                 target,

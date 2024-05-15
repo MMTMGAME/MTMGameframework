@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if (ix != 0 || iz != 0){
-            float mSpd = chaState.moveSpeed;
+            float mSpd = chaState.MoveSpeed;
             Vector3 mInfo = new Vector3(ix*mSpd, 0, iz*mSpd);
             chaState.OrderMove(mInfo);
         }

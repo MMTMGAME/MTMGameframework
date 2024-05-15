@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-05-13 15:43:14.722
+// 生成时间：2024-05-15 15:59:56.983
 //------------------------------------------------------------
 
 using GameFramework;
@@ -117,6 +117,42 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取移动速度加算。
+        /// </summary>
+        public int MoveSpeedAdd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取移动速度乘算。
+        /// </summary>
+        public int MoveSpeedTimes
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取行动速度加算。
+        /// </summary>
+        public int ActionSpeedAdd
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取行动速度乘算。
+        /// </summary>
+        public int ActionSpeedTimes
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -138,6 +174,10 @@ namespace GameMain
             DefenseAdd = int.Parse(columnStrings[index++]);
             DefenseTimes = int.Parse(columnStrings[index++]);
             Path = columnStrings[index++];
+            MoveSpeedAdd = int.Parse(columnStrings[index++]);
+            MoveSpeedTimes = int.Parse(columnStrings[index++]);
+            ActionSpeedAdd = int.Parse(columnStrings[index++]);
+            ActionSpeedTimes = int.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -159,6 +199,10 @@ namespace GameMain
                     DefenseAdd = binaryReader.Read7BitEncodedInt32();
                     DefenseTimes = binaryReader.Read7BitEncodedInt32();
                     Path = binaryReader.ReadString();
+                    MoveSpeedAdd = binaryReader.Read7BitEncodedInt32();
+                    MoveSpeedTimes = binaryReader.Read7BitEncodedInt32();
+                    ActionSpeedAdd = binaryReader.Read7BitEncodedInt32();
+                    ActionSpeedTimes = binaryReader.Read7BitEncodedInt32();
                 }
             }
 

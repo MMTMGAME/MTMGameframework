@@ -41,6 +41,7 @@ namespace DesignerScripts
                 if (!ubp) return;
 
                 bLauncher.caster = tlo.caster;
+                
                 bLauncher.fireRotation = tlo.caster.transform.rotation;
                 bLauncher.firePosition = ubp.gameObject.transform.position;
 

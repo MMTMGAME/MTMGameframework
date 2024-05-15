@@ -62,7 +62,7 @@ public class BulletLauncher{
 
     ///<summary>
     ///子弹的移动轨迹是否严格遵循发射出来的角度
-    ///如果是true，则子弹每一帧Tween返回的角度是按照fireDegree来偏移的
+    ///如果是true，则子弹每一帧Tween返回的角度是按照fireDegree来偏移的。详情查看BulletState.SetMoveForce
     ///如果是false，则会根据子弹正在飞的角度(transform.rotation)来算下一帧的角度
     ///</summary>
     public bool useFireDegreeForever = false;
