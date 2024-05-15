@@ -19,5 +19,7 @@ namespace DesignerScripts
             bool isCrit = Random.Range(0.00f, 1.00f) <= damageInfo.criticalRate;
             return Mathf.CeilToInt(damageInfo.damage.Overall(asHeal) * (isCrit == true ? 1.80f:1.00f));  //暴击1.8倍（就这么设定的别问为啥，我是数值策划我说了算）
         }
+        
+        
     }
 }

@@ -48,22 +48,22 @@ public class ChaState:MonoBehaviour{
     ///<summary>
     ///角色主动期望的移动方向
     ///</summary>
-    public float moveDegree{
+    public Quaternion moveDegree{
         get{
             return _wishToMoveDegree;
         }
     }
-    private float _wishToMoveDegree = 0.00f;
+    private Quaternion _wishToMoveDegree ;
 
     ///<summary>
     ///角色主动期望的面向
     ///</summary>
-    public float faceDegree{
+    public Quaternion faceDegree{
         get{
             return _wishToFaceDegree;
         }
     }
-    private float _wishToFaceDegree = 0.00f;
+    private Quaternion _wishToFaceDegree;
 
     ///<summary>
     ///角色是否已经死了，这不由我这个系统判断，其他系统应该告诉我
@@ -81,10 +81,10 @@ public class ChaState:MonoBehaviour{
     private List<AnimOrder> animOrders = new List<AnimOrder>();
 
     //来自操作或者ai的旋转角度请求
-    private float rotateToOrder;
+    private Quaternion rotateToOrder;
 
     //来自强制执行的旋转角度
-    private List<float> forceRotate = new List<float>();
+    private List<Quaternion> forceRotate = new List<Quaternion>();
 
     ///<summary>
     ///角色现有的资源，比如hp之类的
@@ -184,7 +184,7 @@ public class ChaState:MonoBehaviour{
     //private GameObject viewContainer;
 
     void Start() {
-        rotateToOrder = transform.rotation.eulerAngles.y;
+        rotateToOrder = transform.rotation;
 
         synchronizedUnits();
 
@@ -240,14 +240,14 @@ public class ChaState:MonoBehaviour{
             //给各个系统发消息
             bool wishToMove = moveOrder != Vector3.zero;
             if (wishToMove == true) 
-            _wishToMoveDegree = Mathf.Atan2(moveOrder.x, moveOrder.z) * 180 / Mathf.PI;
+                _wishToMoveDegree = Quaternion.LookRotation(moveOrder);
             
             ChaControlState curCS = this.ControlState;// _controlState + timelineControlState;
 
             //首先是合并移动信息，发送给UnitMove
-            bool tryRun = curCS.canMove == true && moveOrder != Vector3.zero;
-            float tryMoveDegree = Mathf.Atan2(moveOrder.x, moveOrder.z) * 180 / Mathf.PI;
-            if (tryMoveDegree > 180) tryMoveDegree -= 360;
+            // bool tryRun = curCS.canMove == true && moveOrder != Vector3.zero;
+            // float tryMoveDegree = Mathf.Atan2(moveOrder.x, moveOrder.z) * 180 / Mathf.PI;
+            // if (tryMoveDegree > 180) tryMoveDegree -= 360;
             if (unitMove){
                 if (curCS.canMove == false) moveOrder = Vector3.zero;
                 int fmIndex = 0;
@@ -267,13 +267,14 @@ public class ChaState:MonoBehaviour{
             _wishToFaceDegree = rotateToOrder;
             if (wishToMove == false) _wishToMoveDegree = _wishToFaceDegree;
             //然后是旋转信息
-            if (unitRotate){
-                if (curCS.canRotate == false) rotateToOrder = transform.rotation.eulerAngles.y;
+            if (unitRotate)
+            {
+                if (curCS.canRotate == false) rotateToOrder = transform.rotation;
                 for (int i = 0; i < forceRotate.Count; i++){
-                    //这里全是增量，而不是设定为，所以可以直接加
-                    rotateToOrder += forceRotate[i];
+                    //这里全是增量，而不是设定为
+                    rotateToOrder *= forceRotate[i];//四元数用乘法表示连续应用
                 }
-                unitRotate.RotateTo(Quaternion.Euler(0,rotateToOrder,0)); 
+                unitRotate.RotateTo(rotateToOrder); 
                 forceRotate.Clear();
             }
             //再是动画处理
@@ -304,7 +305,7 @@ public class ChaState:MonoBehaviour{
                 animator.speed = this.actionSpeed;
             }
         }else{
-            _wishToFaceDegree = transform.rotation.eulerAngles.y * 180.00f / Mathf.PI;
+            _wishToFaceDegree = transform.rotation;
             _wishToMoveDegree = _wishToFaceDegree;
         }
     }
@@ -339,16 +340,16 @@ public class ChaState:MonoBehaviour{
     ///命令旋转到多少度
     ///<param name="degree">旋转目标</param>
     ///</summary>
-    public void OrderRotateTo(float degree){
+    public void OrderRotateTo(Quaternion degree){
         this.rotateToOrder = degree;
     }
 
     ///<summary>
     ///强制旋转的力量
-    ///<param name="degree">偏移角度</param>
+    ///<param name="quaternion">偏移旋转</param>
     ///</summary>
-    public void AddForceRotate(float degree){
-        this.forceRotate.Add(degree);
+    public void AddForceRotate(Quaternion quaternion){
+        this.forceRotate.Add(quaternion);
     }
 
     

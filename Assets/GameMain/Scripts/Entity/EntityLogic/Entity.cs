@@ -85,7 +85,12 @@ namespace GameMain
             //在这里加载状态机
             if (m_EntityData.AIData != null)
             {
-                    GameEntry.AI.AttachStateGraphToEntity(new LoadStateGraphInfo(m_EntityData.Id,m_EntityData.AIData.AssetName));
+                GameEntry.AI.AttachStateGraphToEntity(new LoadStateGraphInfo(m_EntityData.Id,m_EntityData.AIData.AssetName));
+                //AI属性适配
+                if(m_EntityData.AIData.AddAIMove)
+                         gameObject.AddComponent<AIMove>();
+                if(m_EntityData.AIData.AddAIRotate)
+                        gameObject.AddComponent<AIRotate>();
             }
             
             m_EntityData.OnShowCallBack?.Invoke(this);

@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-05-15 15:59:57.043
+// 生成时间：2024-05-15 16:29:54.774
 //------------------------------------------------------------
 
 using GameFramework;
@@ -63,6 +63,24 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取添加AIMove组件以适配NavMesh。
+        /// </summary>
+        public bool AddAIMove
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取添加AIRotate组件以适配NavMesh。
+        /// </summary>
+        public bool AddAIRotate
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -78,6 +96,8 @@ namespace GameMain
             AssetName = columnStrings[index++];
             Radius = float.Parse(columnStrings[index++]);
             AttackDistance = float.Parse(columnStrings[index++]);
+            AddAIMove = bool.Parse(columnStrings[index++]);
+            AddAIRotate = bool.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -93,6 +113,8 @@ namespace GameMain
                     AssetName = binaryReader.ReadString();
                     Radius = binaryReader.ReadSingle();
                     AttackDistance = binaryReader.ReadSingle();
+                    AddAIMove = binaryReader.ReadBoolean();
+                    AddAIRotate = binaryReader.ReadBoolean();
                 }
             }
 

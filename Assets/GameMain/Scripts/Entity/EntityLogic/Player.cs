@@ -119,7 +119,7 @@ public class Player : BattleUnit
             //先获得主角的屏幕坐标，然后对比鼠标坐标就知道转向了
             Vector2 mScreenPos = RectTransformUtility.WorldToScreenPoint(mainCam, transform.position);
             rotateTo = Mathf.Atan2(cursorPos.x - mScreenPos.x, cursorPos.y - mScreenPos.y) * 180.00f / Mathf.PI;
-            chaState.OrderRotateTo(rotateTo);
+            chaState.OrderRotateTo(Quaternion.Euler(0,rotateTo,0));
         }
 
         if (horizontal != 0 || vertical != 0){

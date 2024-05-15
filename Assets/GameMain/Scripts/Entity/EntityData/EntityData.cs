@@ -18,6 +18,9 @@ namespace GameMain
         public string AssetName { get; set; }
         public float Radius { get; set; }
         public float AttackDistance { get; set; }
+
+        public bool AddAIMove { get; set; }
+        public bool AddAIRotate { get; set; }
     }
     
     [System.Serializable]
@@ -53,6 +56,8 @@ namespace GameMain
                     Radius = drAi.Radius,
                     AssetName = drAi.AssetName,
                     AttackDistance = drAi.AttackDistance,
+                    AddAIMove = drAi.AddAIMove,
+                    AddAIRotate = drAi.AddAIRotate
                 };
             }
         }

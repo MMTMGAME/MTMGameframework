@@ -140,21 +140,22 @@ namespace DesignerScripts
                 bool basedOnMoveDir = args.Length >= 4 ? (bool)args[3] : true;
                 bool useCurrentDeg = args.Length >= 5 ? (bool)args[4] : false;
                 
-                if (cs){
-                    float mr = (
-                        (
-                            basedOnMoveDir == true ? 
-                                (useCurrentDeg == true ? cs.moveDegree : (float)tlo.GetValue("moveDegree")) : 
-                                (useCurrentDeg == true ? cs.faceDegree : (float)tlo.GetValue("faceDegree"))
-                        ) + degOffset
-                    ) * Mathf.PI / 180.00f;
-
-                    Vector3 mdir = new Vector3(
-                        Mathf.Sin(mr) * dis,
-                        0,
-                        Mathf.Cos(mr) * dis
+                if (cs)
+                {
+                    Quaternion rotation =
+                    (
+                        basedOnMoveDir == true
+                            ? (useCurrentDeg == true
+                                ? cs.moveDegree
+                                : Quaternion.Euler((Vector3)tlo.GetValue("moveDegree")))
+                            : (useCurrentDeg == true
+                                ? cs.faceDegree
+                                : Quaternion.Euler((Vector3)tlo.GetValue("faceDegree")))
                     );
-                    cs.AddForceMove(new MovePreorder(mdir, inSec));
+                    
+
+                   
+                    cs.AddForceMove(new MovePreorder((rotation * Vector3.forward).normalized, inSec));
                 }
             }
         }
