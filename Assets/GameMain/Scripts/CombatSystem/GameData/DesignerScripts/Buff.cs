@@ -16,7 +16,8 @@ namespace DesignerScripts
             {"TeleportCarrier", TeleportCarrier}
         };
         public static Dictionary<string, BuffOnTick> onTickFunc = new Dictionary<string, BuffOnTick>(){
-            {"BarrelDurationLose", BarrelDurationLose}
+            {"BarrelDurationLose", BarrelDurationLose},
+            {"DoPercentDamageToCarrier", DoPercentDamageToCarrier},
         };
         public static Dictionary<string, BuffOnCast> onCastFunc = new Dictionary<string, BuffOnCast>(){
             {"ReloadAmmo", ReloadAmmo},
@@ -117,6 +118,31 @@ namespace DesignerScripts
         private static void BarrelDurationLose(BuffObj buff){
             GameEntry.Combat.CreateDamage(buff.carrier, buff.carrier, new Damage(0,1), 0, 0, new DamageInfoTag[]{DamageInfoTag.directDamage});
         }
+
+        private static void DoPercentDamageToCarrier(BuffObj buff)
+        {
+            var cha = buff.carrier.GetComponent<ChaState>();
+            if(cha==null)
+                return;
+            var onTickParams = buff.model.onTickParams;
+            var damageType = onTickParams.Length > 0 ? (string)onTickParams[0] : "MaxHealth";
+            var basePercent = onTickParams.Length > 1 ? (float)onTickParams[1] : 1;
+            var stackPercent = onTickParams.Length > 2 ? (float)onTickParams[2] : 0.5f;
+
+            float damageValue = 0;
+            if (damageType.ToLower().Contains("max"))
+            {
+                damageValue = cha.property.hp* (basePercent+stackPercent*buff.stack)*0.01f ;
+            }
+            else if(damageType.ToLower().Contains("current"))
+            {
+                damageValue = cha.resource.hp* (basePercent+stackPercent*buff.stack)*0.01f ;
+
+            }
+            GameEntry.Combat.CreateDamage(buff.caster, buff.carrier, new Damage(0,0,Mathf.CeilToInt(damageValue)), 0, 0, new DamageInfoTag[]{DamageInfoTag.periodDamage});
+
+        }
+        
         ///<summary>
         ///beKilled
         ///死亡后爆炸，对敌人造成伤害，其他桶子也是其他敌人，所以不必特殊处理，beHurt已经特殊处理了，当然还要立即清除掉这个桶子。

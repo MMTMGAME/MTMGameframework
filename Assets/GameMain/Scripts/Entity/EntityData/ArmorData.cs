@@ -7,6 +7,8 @@
 
 using GameFramework.DataTable;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GameMain
@@ -20,6 +22,7 @@ namespace GameMain
         //属性
         public ChaProperty[] propMod=new ChaProperty[2];
 
+        public List<string> buffs = new List<string>();
         public ArmorData(int entityId, int typeId, int ownerId, CampType ownerCamp)
             : base(entityId, typeId, ownerId, ownerCamp)
         {
@@ -46,6 +49,8 @@ namespace GameMain
             propMod[1].defense = drArmor.DefenseTimes;
             propMod[0].moveSpeed = drArmor.MoveSpeedTimes;
             propMod[0].actionSpeed = drArmor.MoveSpeedTimes;
+
+            buffs = drArmor.Buffs.Split(",").ToList();
         }
 
         

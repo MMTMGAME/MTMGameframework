@@ -7,6 +7,8 @@
 
 using GameFramework.DataTable;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -35,7 +37,9 @@ namespace GameMain
         
         //属性
         public ChaProperty[] propMod=new ChaProperty[2];
-        
+
+        public List<string> skills = new List<string>();
+        public List<string> buffs = new List<string>();
         //所处玩家槽位
         private int slotIndex;
         public WeaponData(int entityId, int typeId, int ownerId, CampType ownerCamp,int slotIndex)
@@ -72,6 +76,9 @@ namespace GameMain
             propMod[1].defense = drWeapon.DefenseTimes;
             propMod[1].moveSpeed = drWeapon.MoveSpeedTimes;
             propMod[1].actionSpeed = drWeapon.ActionSpeedTimes;
+
+            skills = drWeapon.Skills.Split(",").ToList();
+            buffs = drWeapon.Buffs.Split(",").ToList();
         }
 
       

@@ -5,7 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 // 此文件由工具自动生成，请勿直接修改。
-// 生成时间：2024-05-15 16:29:54.735
+// 生成时间：2024-05-16 18:50:58.917
 //------------------------------------------------------------
 
 using GameFramework;
@@ -153,6 +153,15 @@ namespace GameMain
             private set;
         }
 
+        /// <summary>
+        /// 获取Buff列表。
+        /// </summary>
+        public string Buffs
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -178,6 +187,7 @@ namespace GameMain
             MoveSpeedTimes = int.Parse(columnStrings[index++]);
             ActionSpeedAdd = int.Parse(columnStrings[index++]);
             ActionSpeedTimes = int.Parse(columnStrings[index++]);
+            Buffs = columnStrings[index++];
 
             GeneratePropertyArray();
             return true;
@@ -203,6 +213,7 @@ namespace GameMain
                     MoveSpeedTimes = binaryReader.Read7BitEncodedInt32();
                     ActionSpeedAdd = binaryReader.Read7BitEncodedInt32();
                     ActionSpeedTimes = binaryReader.Read7BitEncodedInt32();
+                    Buffs = binaryReader.ReadString();
                 }
             }
 

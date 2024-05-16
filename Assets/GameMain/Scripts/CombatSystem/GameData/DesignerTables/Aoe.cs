@@ -25,7 +25,7 @@ namespace DesingerTables
                 "", new object[0],  //create
                 "", new object[0],  //remove
                 "", new object[0],  //tick
-                "DoDamageToEnterCha", new object[]{new Damage(0, 20), 0.2f, true, false, true, 71000, "Body"},  //chaEnter
+                "AddBuffToEnterCha", new object[]{"Poison", 1,10f,true, true, false},  //chaEnter
                 "", new object[0],  //chaLeave
                 "SpaceMonkeyBallHit", new object[]{0.05f},  //bulletEnter
                 "", new object[0]   //bulletLeave

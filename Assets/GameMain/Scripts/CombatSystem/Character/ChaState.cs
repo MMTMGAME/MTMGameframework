@@ -602,6 +602,28 @@ public class ChaState:MonoBehaviour{
         }
     }
 
+    /// <summary>
+    /// 移除Skill,一般在更换武器的时候移除对应id的SkillObj
+    /// </summary>
+    /// <param name="id"></param>
+    public void RemoveSkill(string id)
+    {
+        var skill = GetSkillById(id);
+        if (skill != null)
+        {
+            if (skill.model.buff != null){
+                for (int i = 0; i < skill.model.buff.Length; i++){
+                    AddBuffInfo abi = skill.model.buff[i];
+                    abi.permanent = true;
+                    abi.duration = 0;//设置成0的话会被自动移除
+                    abi.durationSetTo = true;
+                    this.AddBuff(abi);
+                }
+            }
+            this.skills.Remove(skill);
+        }
+    }
+
     ///<summary>
     ///设置视觉元素
     ///</summary>

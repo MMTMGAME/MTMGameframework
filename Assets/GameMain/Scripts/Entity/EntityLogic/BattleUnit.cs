@@ -63,7 +63,19 @@ public class BattleUnit : Entity
 
     public ChaState chaState;
 
+    //记录id，后面通过键位调用对应index的skill进行调用,在移除武器时也需要通过这个进行Skill的移除
+    public List<string> weaponSkillIds = new List<string>();
 
+    //记录通过武器添加的buff，便于切换武器时移除buff
+    public List<string> weaponBuffIds = new List<string>();
+    
+    //记录通过Armor添加的Buff，便于切换Armors移除Buff
+    public List<string> armorBuffIds = new List<string>();
+
+    public void CastWeaponSkill(int index)
+    {
+        chaState.CastSkill(weaponSkillIds[index]);
+    }
     public bool IsValid()
     {
         return Visible && !chaState.dead;
@@ -146,13 +158,44 @@ public class BattleUnit : Entity
         {
             var weapon = (Weapon)childEntity;
             m_Weapons.Add(weapon);
+            if (m_Weapons.Count == 1)
+            {
+                foreach (var skillId in weapon.m_WeaponData.skills)
+                {
+                    if(skillId=="")
+                        continue;
+                    chaState.LearnSkill(DesingerTables.Skill.data[skillId]);
+                }
+                weaponSkillIds.AddRange(weapon.m_WeaponData.skills);
+            }
+            
+            //buff
+            foreach (var buffId in weapon.m_WeaponData.buffs)
+            {
+                if(buffId=="")
+                    continue;
+                chaState.AddBuff(new AddBuffInfo(DesingerTables.Buff.data[buffId],gameObject,
+                    gameObject,1,10,true,true));
+            }
+            
             chaState.equipmentProp[0] += new ChaProperty();
             return;
         }
 
         if (childEntity is Armor)
         {
-            m_Armors.Add((Armor)childEntity);
+            var armor = (Armor)childEntity;
+            m_Armors.Add(armor);
+            
+            //buff
+            foreach (var buffId in armor.m_ArmorData.buffs)
+            {
+                if(buffId=="")
+                    continue;
+                chaState.AddBuff(new AddBuffInfo(DesingerTables.Buff.data[buffId],gameObject,
+                    gameObject,1,10,true,true));
+            }
+            
             return;
         }
     }
@@ -168,13 +211,38 @@ public class BattleUnit : Entity
 
         if (childEntity is Weapon)
         {
+            var weapon = (Weapon)childEntity;
             m_Weapons.Remove((Weapon)childEntity);
+
+            foreach (var skillId in weapon.m_WeaponData.skills)
+            {
+                if(skillId=="")
+                    continue;
+                chaState.RemoveSkill(skillId);
+            }
+
+            foreach (var buffId in weapon.m_WeaponData.buffs)
+            {
+                if(buffId=="")
+                    continue;
+                chaState.AddBuff(new AddBuffInfo(DesingerTables.Buff.data[buffId],gameObject,
+                    gameObject,1,0,true,true));
+            }
+            
             return;
         }
 
         if (childEntity is Armor)
         {
-            m_Armors.Remove((Armor)childEntity);
+            var armor = (Armor)childEntity;
+            m_Armors.Remove(armor);
+            foreach (var buffId in armor.m_ArmorData.buffs)
+            {
+                if(buffId=="")
+                    continue;
+                chaState.AddBuff(new AddBuffInfo(DesingerTables.Buff.data[buffId],gameObject,
+                    gameObject,1,0,true,true));
+            }
             return;
         }
     }

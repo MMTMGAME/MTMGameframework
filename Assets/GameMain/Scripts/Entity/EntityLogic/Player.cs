@@ -98,8 +98,7 @@ public class Player : BattleUnit
         }
         Name = Utility.Text.Format("Player ({0})", Id);
         
-        chaState.LearnSkill(DesingerTables.Skill.data["fire"]);
-        chaState.LearnSkill(DesingerTables.Skill.data["spaceMonkeyBall"]);
+        
     }
 
     protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -143,10 +142,11 @@ public class Player : BattleUnit
         }
 
     }
-    
+
+   
     void StartMouseLeft(InputAction.CallbackContext callbackContext)
     {
-        chaState.CastSkill(chaState.skills[0].model.id);
+        CastWeaponSkill(0);
 
         // var weapon = GetWeaponByIndex(0);
         // if (weapon != null)
@@ -170,7 +170,7 @@ public class Player : BattleUnit
     
     void StartMouseRight(InputAction.CallbackContext callbackContext)
     {
-        chaState.CastSkill(chaState.skills[1].model.id);
+        CastWeaponSkill(1);
         
         // var weapon = GetWeaponByIndex(1);
         // if (weapon != null)

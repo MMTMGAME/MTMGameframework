@@ -21,14 +21,16 @@ namespace DesignerScripts
             {"BlackHole", BlackHole}
         };
         public static Dictionary<string, AoeOnCharacterEnter> onChaEnterFunc = new Dictionary<string, AoeOnCharacterEnter>(){
-            {"DoDamageToEnterCha", DoDamageToEnterCha}
+            {"DoDamageToEnterCha", DoDamageToEnterCha},
+            {"AddBuffToEnterCha", AddBuffToEnterCha}
         };
         public static Dictionary<string, AoeOnCharacterLeave> onChaLeaveFunc = new Dictionary<string, AoeOnCharacterLeave>(){
             
         };
         public static Dictionary<string, AoeOnBulletEnter> onBulletEnterFunc = new Dictionary<string, AoeOnBulletEnter>(){
             {"BlockBullets", BlockBullets},
-            {"SpaceMonkeyBallHit", SpaceMonkeyBallHit}
+            {"SpaceMonkeyBallHit", SpaceMonkeyBallHit},
+            
         };
         public static Dictionary<string, AoeOnBulletLeave> onBulletLeaveFunc = new Dictionary<string, AoeOnBulletLeave>(){
             
@@ -196,8 +198,9 @@ namespace DesignerScripts
             Damage damage = baseDamage * (aoeState.propWhileCreate.attack * damageTimes);
 
             CampType camp = CampType.Unknown;
+            ChaState ccs=null;
             if (aoeState.caster){
-                ChaState ccs = aoeState.caster.GetComponent<ChaState>();
+                ccs = aoeState.caster.GetComponent<ChaState>();
                 if (ccs) camp = ccs.Camp;
             }
 
@@ -210,11 +213,63 @@ namespace DesignerScripts
                         damage, Mathf.Atan2(chaToAoe.x, chaToAoe.z) * 180 / Mathf.PI,
                         0.05f, new DamageInfoTag[]{DamageInfoTag.directDamage}
                     );
+                    //cs.AddBuff(new AddBuffInfo(DesingerTables.Buff.data["Poison"],aoeState.caster,cs.gameObject,1,10));
                     if (hurtAction == true) cs.AddAnimOrder(UnitAnim.AnimOrderType.Trigger, "Hurt");
                     if (effect !=0) cs.PlaySightEffect(bp, effect);
                 }
             }
         }
+        
+        
+        ///<summary>
+        ///AddBuffToEnterCha
+        ///对于范围内的人添加buff，参数：
+        ///[0]buffId：buffId
+        ///[1]stack：buff层数
+        ///[2]stack：持续时间
+        ///[3]SetTo：设置buff时间还是增加
+        ///[4]bool：对敌人有效
+        ///[5]bool：对盟军有效
+        ///[6]int：挨打者身上特效Id
+        ///[7]string：挨打者特效绑点，默认"Body"
+        ///</summary>
+        private static void AddBuffToEnterCha(GameObject aoe, List<GameObject> characters){
+            AoeState aoeState = aoe.GetComponent<AoeState>();
+            if (!aoeState) return;
+
+            object[] p = aoeState.model.onChaEnterParams;
+            string buffId = p.Length > 0 ? (string)p[0] : "";
+            if (buffId == "")
+            {
+                Debug.LogError("Aoe添加buff参数错误");
+                return;
+            }
+
+            int stack = p.Length > 1 ? (int)p[1] : 1;
+            float duration = p.Length > 2 ? (float)p[2] : 5;
+            var durationSetTo = p.Length > 3 ? (bool)p[3] : true;
+            bool toFoe = p.Length > 4 ? (bool)p[4] : true;
+            bool toAlly = p.Length > 5 ? (bool)p[5] : false;
+            int effect = p.Length > 6 ? (int)p[6] : 0;
+            string bp = p.Length > 7 ? (string)p[7] : "Body";
+            
+            CampType camp = CampType.Unknown;
+            if (aoeState.caster)
+            {
+                var ccs=aoeState.caster.GetComponent<ChaState>();
+                if (ccs) camp = ccs.Camp;
+            }
+
+            for (int i = 0; i < characters.Count; i++){
+                ChaState cs = characters[i].GetComponent<ChaState>();
+                if (cs && cs.dead == false && ((toFoe == true && CombatComponent.GetRelation(camp,cs.Camp)!=RelationType.Friendly) || (toAlly == true && CombatComponent.GetRelation(camp,cs.Camp)==RelationType.Friendly))){
+                    
+                    cs.AddBuff(new AddBuffInfo(DesingerTables.Buff.data[buffId],aoeState.caster,cs.gameObject,stack,duration,durationSetTo));
+                    if (effect !=0) cs.PlaySightEffect(bp, effect);
+                }
+            }
+        }
+        
 
         ///<summary>
         ///onRemoved
