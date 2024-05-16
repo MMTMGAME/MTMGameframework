@@ -95,7 +95,7 @@ public class ChaState:MonoBehaviour{
     ///<summary>
     ///角色所处阵营，阵营不同就会对打
     ///</summary>
-    public int side = 0;
+    //public int side = 0;
     
     
     [SerializeField]
@@ -107,6 +107,10 @@ public class ChaState:MonoBehaviour{
         get
         {
             return m_Camp;
+        }
+        set
+        {
+            m_Camp = value;
         }
     }
 

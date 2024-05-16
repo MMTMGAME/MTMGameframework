@@ -121,6 +121,7 @@ public class BattleUnit : Entity
         weaponAnimEventListener.Init(this);
 
         chaState.InitBaseProp(new ChaProperty(BattleUnitData.baseMoveSpeed,BattleUnitData.baseHP,BattleUnitData.baseMP,BattleUnitData.baseAttack,BattleUnitData.baseDefense,BattleUnitData.baseMoveSpeed));
+        chaState.Camp = BattleUnitData.Camp;
     }
 
 #if UNITY_2017_3_OR_NEWER

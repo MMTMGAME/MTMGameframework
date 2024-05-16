@@ -93,17 +93,17 @@ namespace DesignerScripts
         ///</summary>
         private static GameObject GetNearestEnemy(GameObject bullet, GameObject[] targets){
             BulletState bs = bullet.GetComponent<BulletState>();
-            int side = -1;
+            CampType casterCamp = CampType.Unknown;
             if (bs.caster){
                 ChaState ccs = bs.caster.GetComponent<ChaState>();
-                if (ccs) side = ccs.side;
+                if (ccs) casterCamp = ccs.Camp;
             }
 
             GameObject bestTarget = null;
             float bestDis = float.MaxValue;
             for (int i = 0; i < targets.Length; i++){
                 ChaState tcs = targets[i].GetComponent<ChaState>();
-                if (!tcs || tcs.side == side || tcs.dead == true) continue;
+                if (!tcs || CombatComponent.GetRelation(casterCamp,tcs.Camp)==RelationType.Friendly || tcs.dead == true) continue;
                 float dis2 = (
                     Mathf.Pow(bullet.transform.position.x - targets[i].transform.position.x, 2) +
                     Mathf.Pow(bullet.transform.position.z - targets[i].transform.position.z, 2)
@@ -175,7 +175,7 @@ namespace DesignerScripts
 
             ChaState ccs = bs.caster.GetComponent<ChaState>();
             ChaState tcs = target.GetComponent<ChaState>();
-            if (ccs != null && tcs != null && ccs.side != tcs.side){
+            if (ccs != null && tcs != null && CombatComponent.GetRelation(ccs.Camp,tcs.Camp)!=RelationType.Friendly){
                 CommonBulletHit(bullet, target);
             }else{
                 float backTime = bs.param.ContainsKey("backTime") ? (float)bs.param["backTime"] : 1.0f; //默认1秒 

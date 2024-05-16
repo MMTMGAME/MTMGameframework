@@ -80,20 +80,20 @@ namespace DesignerScripts
             bool countLimited = am.onBulletEnterParams.Length > 0 ? (bool)am.onBulletEnterParams[0] : false;
             int times = aoeState.param.ContainsKey("times") ? (int)aoeState.param["times"] : 1;
 
-            int side = -1;
+            CampType ccsCamp = CampType.Unknown;
             if (aoeState.caster){
                 ChaState ccs = aoeState.caster.GetComponent<ChaState>();
-                side = ccs.side;
+                ccsCamp = ccs.Camp;
             }
 
             for (int i = 0; i < bullets.Count; i++){
                 BulletState bs = bullets[i].GetComponent<BulletState>();
-                int bSide = -1;
+                CampType bCamp = CampType.Unknown;
                 if (bs && bs.caster){
                     ChaState bcs = bs.caster.GetComponent<ChaState>();
-                    if (bcs) bSide = bcs.side;
+                    if (bcs) bCamp = bcs.Camp;
                 }
-                if (side != bSide){
+                if (CombatComponent.GetRelation(ccsCamp,bCamp)!=RelationType.Friendly){
                     GameEntry.Combat.RemoveBullet(bullets[i], false);
                     GameEntry.Combat.CreateSightEffect(70000, aoe.transform.position, aoe.transform.eulerAngles.y);
                 }
@@ -137,10 +137,10 @@ namespace DesignerScripts
             float baseForce = aoeState.model.onBulletEnterParams.Length > 0 ? (float)aoeState.model.onBulletEnterParams[0] : 0;
             if (baseForce == 0) return;
 
-            int side = -1;
+            CampType side = CampType.Unknown;
             if (aoeState.caster){
                 ChaState ccs = aoeState.caster.GetComponent<ChaState>();
-                side = ccs.side;
+                side = ccs.Camp;
             }
 
             if (aoeState.param.ContainsKey("forces") == false){
@@ -148,14 +148,14 @@ namespace DesignerScripts
             }
             for (int i = 0; i < bullets.Count; i++){
                 BulletState bs = bullets[i].GetComponent<BulletState>();
-                int bSide = -1;
+                CampType bSide =CampType.Unknown;
                 
                 if (bs){
                     if (bs.caster){
                         ChaState bcs = bs.caster.GetComponent<ChaState>();
-                        if (bcs) bSide = bcs.side;
+                        if (bcs) bSide = bcs.Camp;
                     }
-                    if (bSide == side){
+                    if (CombatComponent.GetRelation(side,bSide)==RelationType.Friendly){
                         Vector3 bMove = bs.velocity * baseForce;    //算了，就直接乘把，凑合凑合
                         ((List<Vector3>)aoeState.param["forces"]).Add(bMove);
                         GameEntry.Combat.RemoveBullet(bullets[i]);
@@ -242,15 +242,15 @@ namespace DesignerScripts
 
             Damage damage = baseDamage * (aoeState.propWhileCreate.attack * damageTimes);
 
-            int side = -1;
+            CampType ccsCamp = CampType.Unknown;
             if (aoeState.caster){
                 ChaState ccs = aoeState.caster.GetComponent<ChaState>();
-                if (ccs) side = ccs.side;
+                if (ccs) ccsCamp = ccs.Camp;
             }
 
             for (int i = 0; i < aoeState.characterInRange.Count; i++){
                 ChaState cs = aoeState.characterInRange[i].GetComponent<ChaState>();
-                if (cs && cs.dead == false && ((toFoe == true && side != cs.side) || (toAlly == true && side == cs.side))){
+                if (cs && cs.dead == false && ((toFoe == true && CombatComponent.GetRelation(ccsCamp,cs.Camp)!=RelationType.Friendly) || (toAlly == true && CombatComponent.GetRelation(ccsCamp,cs.Camp)==RelationType.Friendly))){
                     Vector3 chaToAoe = aoeState.characterInRange[i].transform.position - aoe.transform.position;
                     GameEntry.Combat.CreateDamage(
                         aoeState.caster, aoeState.characterInRange[i], 
@@ -351,15 +351,15 @@ namespace DesignerScripts
 
             Damage damage = baseDamage * (aoeState.propWhileCreate.attack * damageTimes);
 
-            int side = -1;
+            CampType ccsCamp = CampType.Unknown;
             if (aoeState.caster){
                 ChaState ccs = aoeState.caster.GetComponent<ChaState>();
-                if (ccs) side = ccs.side;
+                if (ccs) ccsCamp = ccs.Camp;
             }
 
             for (int i = 0; i < aoeState.characterInRange.Count; i++){
                 ChaState cs = aoeState.characterInRange[i].GetComponent<ChaState>();
-                if (cs && cs.dead == false && side != cs.side){
+                if (cs && cs.dead == false && CombatComponent.GetRelation(ccsCamp,cs.Camp)!=RelationType.Friendly){
                     if (cs.HasTag("Barrel") == true){
                         GameEntry.Combat.CreateDamage(
                             (GameObject)aoeState.param["Barrel"], aoeState.characterInRange[i],
