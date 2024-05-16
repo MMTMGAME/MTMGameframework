@@ -412,9 +412,7 @@ public class ChaState:MonoBehaviour{
         
         this._prop = (this.baseProp + this.equipmentProp[0] + this.buffProp[0]) *(this.equipmentProp[1] + this.buffProp[1]);
 
-        if (unitMove){
-            unitMove.bodyRadius = this._prop.bodyRadius;
-        }
+        
     }
 
     ///<summary>

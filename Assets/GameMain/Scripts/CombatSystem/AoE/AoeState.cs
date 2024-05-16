@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameMain;
 using UnityEngine;
 
 
@@ -59,7 +61,7 @@ public class AoeState : MonoBehaviour{
     public Dictionary<string, object> param = new Dictionary<string, object>();
 
     ///<summary>
-    ///现在aoe范围内的所有角色的gameobject
+    ///现在aoe范围内的所有角色的gameobject,
     ///</summary>
     public List<GameObject> characterInRange = new List<GameObject>();
 
@@ -83,7 +85,9 @@ public class AoeState : MonoBehaviour{
 
     private UnitMove unitMove;
     private UnitRotate unitRotate;
-    private GameObject viewContainer;
+    //private GameObject viewContainer;
+
+    private bool inited=false;//异步加载的，所以要判端这个，不然直接报错了
 
     private void Start() {
         // this.unitMove = this.gameObject.GetComponent<UnitMove>();
@@ -97,8 +101,6 @@ public class AoeState : MonoBehaviour{
     public void SetMoveAndRotate(AoeMoveInfo aoeMoveInfo){
         if (aoeMoveInfo != null){
             if (unitMove){
-                unitMove.moveType = aoeMoveInfo.moveType;
-                unitMove.bodyRadius = this.radius;
                 _velo = aoeMoveInfo.velocity / Time.fixedDeltaTime;
                 unitMove.MoveBy(_velo);
             }
@@ -115,14 +117,12 @@ public class AoeState : MonoBehaviour{
     private void synchronizedUnits(){
         if (!unitMove) unitMove = this.gameObject.GetComponent<UnitMove>();
         if (!unitRotate) unitRotate = this.gameObject.GetComponent<UnitRotate>();
-        if (!viewContainer) viewContainer = this.gameObject.GetComponentInChildren<ViewContainer>().gameObject;
-        unitMove.bodyRadius = this.radius;
-        unitMove.smoothMove = !model.removeOnObstacle;
+        //if (!viewContainer) viewContainer = this.gameObject.GetComponentInChildren<ViewContainer>().gameObject;
     }
 
     public void InitByAoeLauncher(AoeLauncher aoe){
         this.model = aoe.model;
-        this.radius = aoe.radius;
+        
         this.duration = aoe.duration;
         this.timeElapsed = 0;
         this.tween = aoe.tween;
@@ -136,45 +136,133 @@ public class AoeState : MonoBehaviour{
         this.propWhileCreate = aoe.caster ? aoe.caster.GetComponent<ChaState>().property : ChaProperty.zero;
         
         this.transform.position = aoe.position;
-        this.transform.eulerAngles.Set(0, aoe.degree, 0);
+        this.transform.rotation = aoe.rotation;
 
         synchronizedUnits();
+        inited = true;
 
-        //把视觉特效给aoe
-        if (aoe.model.prefab != ""){
-            GameObject aoeEffect = Instantiate<GameObject>(
-                Resources.Load<GameObject>("Prefabs/" + aoe.model.prefab),
-                new Vector3(),
-                Quaternion.identity,
-                viewContainer.transform
-            );
-            
-            aoeEffect.transform.localPosition = new Vector3(0, this.gameObject.transform.position.y, 0);
-            aoeEffect.transform.localRotation = Quaternion.identity;
-        }
-        this.gameObject.transform.position = new Vector3(
-            this.gameObject.transform.position.x,
-            0,
-            this.gameObject.transform.position.z
-        );
+        // //把视觉特效给aoe
+        // if (aoe.model.entityTypeId != 0){
+        //     GameEntry.Entity.ShowModelObj(aoe.model.entityTypeId,Vector3.zero, Quaternion.identity, (aoeEffect) =>
+        //     {
+        //         
+        //         GameEntry.Entity.AttachEntity(aoeEffect.Entity,GetComponent<Entity>().Entity,transform);
+        //         aoeEffect.transform.localPosition =Vector3.zero;
+        //         aoeEffect.transform.localRotation = Quaternion.identity;
+        //     } );
+        // }
+        // this.gameObject.transform.position = new Vector3(
+        //     this.gameObject.transform.position.x,
+        //     0,
+        //     this.gameObject.transform.position.z
+        // );
     }
 
     ///<summary>
     ///改变aoe视觉的尺寸
     ///</summary>
-    public void SetViewScale(float scaleX = 1, float scaleY = 1, float scaleZ = 1){
-        synchronizedUnits();
-        viewContainer.transform.localScale.Set(scaleX, scaleY, scaleZ);
+    // public void SetViewScale(float scaleX = 1, float scaleY = 1, float scaleZ = 1){
+    //     synchronizedUnits();
+    //     
+    // }
+
+    // ///<summary>
+    // ///改变图形的y高度
+    // ///</summary>
+    // public void ModViewY(float toY){
+    //     this.viewContainer.transform.position = new Vector3(
+    //         viewContainer.transform.position.x,
+    //         toY,
+    //         viewContainer.transform.position.z
+    //     );
+    // }
+
+    
+   
+    
+    private void FixedUpdate()
+    {
+        if(!inited)
+            return;
+        float timePassed = Time.fixedDeltaTime;
+        
+        //首先是aoe的移动
+        if (duration > 0 && tween != null){
+            AoeMoveInfo aoeMoveInfo = tween(gameObject, tweenRunnedTime);
+            tweenRunnedTime += timePassed;
+            SetMoveAndRotate(aoeMoveInfo);
+        }
+
+        if (justCreated == true)
+        {
+            //刚创建的，走onCreate
+            justCreated = false;
+            
+            if(model.onCreate!=null)
+                model.onCreate(gameObject);
+        }
+
+        duration -= timePassed;
+        timeElapsed += timePassed;
+        if (duration <= 0)
+        {
+            if (model.onRemoved != null)
+            {
+                if(model.onRemoved!=null)
+                    model.onRemoved(gameObject);
+            }
+            GameEntry.Entity.HideEntity(GetComponent<Entity>());
+        }
+        else
+        {
+            if (
+                model.tickTime > 0 && model.onTick != null &&
+                Mathf.RoundToInt(duration * 1000) % Mathf.RoundToInt(model.tickTime * 1000) == 0
+            ){
+                if(model.onTick!=null)
+                    model.onTick(gameObject);
+            }
+        }
     }
 
-    ///<summary>
-    ///改变图形的y高度
-    ///</summary>
-    public void ModViewY(float toY){
-        this.viewContainer.transform.position = new Vector3(
-            viewContainer.transform.position.x,
-            toY,
-            viewContainer.transform.position.z
-        );
+    
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<ChaState>())
+        {
+            characterInRange.Add(other.gameObject);
+            if(model.onChaEnter!=null)
+                model.onChaEnter(gameObject, new List<GameObject>() { other.gameObject });
+        }
+
+        var bulletState = other.GetComponentInParent<BulletState>();
+        if (bulletState)
+        {
+            bulletInRange.Add(bulletState.gameObject);
+            if(model.onBulletEnter!=null)
+                model.onBulletEnter(gameObject, new List<GameObject>() { bulletState.gameObject });
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (characterInRange.Contains(other.gameObject))
+        {
+            characterInRange.Remove(other.gameObject);
+            if(model.onChaLeave!=null)
+                model.onChaLeave(gameObject, new List<GameObject>() { other.gameObject });
+        }
+        
+        var bulletState = other.GetComponentInParent<BulletState>();
+        if (bulletState)
+        {
+            if (bulletInRange.Contains(bulletState.gameObject))
+            {
+                bulletInRange.Remove(bulletState.gameObject);
+                if(model.onBulletLeave!=null)
+                    model.onBulletLeave(gameObject, new List<GameObject>() { bulletState.gameObject });
+            }
+        }
     }
 }

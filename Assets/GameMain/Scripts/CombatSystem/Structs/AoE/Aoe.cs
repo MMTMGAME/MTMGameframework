@@ -21,12 +21,7 @@ public class AoeLauncher{
     ///</summary>
     public GameObject caster;
 
-    ///<summary>
-    ///aoe的半径，单位：米
-    ///目前这游戏的设计中，aoe只有圆形，所以只有一个半径，也不存在角度一说，如果需要可以扩展
-    ///</summary>
-    public float radius;
-
+    
     ///<summary>
     ///aoe存在的时间，单位：秒
     ///</summary>
@@ -35,7 +30,7 @@ public class AoeLauncher{
     ///<summary>
     ///aoe的角度
     ///</summary>
-    public float degree;
+    public Quaternion rotation;
 
     ///<summary>
     ///aoe移动轨迹函数
@@ -49,15 +44,15 @@ public class AoeLauncher{
     public Dictionary<string, object> param = new Dictionary<string, object>();
 
     public AoeLauncher(
-        AoeModel model, GameObject caster, Vector3 position, float radius, float duration, float degree, 
+        AoeModel model, GameObject caster, Vector3 position, float duration, Quaternion rotation, 
         AoeTween tween = null, object[] tweenParam = null, Dictionary<string, object> aoeParam = null
     ){
         this.model = model;
         this.caster = caster;
         this.position = position;
-        this.radius = radius;
+        
         this.duration = duration;
-        this.degree = degree;
+        this.rotation = rotation;
         this.tween = tween;
         if (aoeParam != null) this.param = aoeParam;
         if (tweenParam != null) this.tweenParam = tweenParam;
@@ -68,9 +63,8 @@ public class AoeLauncher{
             this.model,
             this.caster,
             this.position,
-            this.radius,
             this.duration,
-            this.degree,
+            this.rotation,
             this.tween,
             this.tweenParam,
             this.param
@@ -85,10 +79,10 @@ public struct AoeModel{
     public string id;
 
     ///<summary>
-    ///aoe的视觉特效，如果是空字符串，就不会添加视觉特效
-    ///这里需要的是在Prefabs/下的路径，因为任何东西都可以是视觉特效
+    ///aoe的视觉特效的entityId，如果是0，就不会添加视觉特效
+    ///
     ///</summary>
-    public string prefab;
+    public int entityTypeId;
 
     ///<summary>
     ///aoe是否碰撞到阻挡就摧毁了（removed），如果不是，移动就是smooth的，如果移动的话……
@@ -153,7 +147,7 @@ public struct AoeModel{
     public object[] onBulletLeaveParams;
 
     public AoeModel(
-        string id, string prefab, string[] tags, float tickTime, bool removeOnObstacle,
+        string id, int entityTypeId, string[] tags, float tickTime, bool removeOnObstacle,
         string onCreate, object[] onCreateParam,
         string onRemoved, object[] onRemovedParam,
         string onTick, object[] onTickParam,
@@ -163,7 +157,7 @@ public struct AoeModel{
         string onBulletLeave, object[] onBulletLeaveParam
     ){
         this.id = id;
-        this.prefab = prefab;
+        this.entityTypeId = entityTypeId;
         this.tags = tags;
         this.tickTime = tickTime;
         this.removeOnObstacle = removeOnObstacle;

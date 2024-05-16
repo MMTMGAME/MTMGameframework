@@ -67,7 +67,7 @@ namespace GameMain
         //固定Id
         public static void ShowBulletObj(this EntityComponent entityComponent,BulletLauncher bulletLauncher,Action<Entity> action)
         {
-            entityComponent.ShowEntity(typeof(BulletObj), "BulletObj", Constant.AssetPriority.BulletAsset,new BulletObjData(GameEntry.Entity.GenerateSerialId(),10,bulletLauncher)
+            entityComponent.ShowEntity(typeof(BulletObj), "BulletObj", Constant.AssetPriority.BulletAsset,new BulletObjData(GameEntry.Entity.GenerateSerialId(),bulletLauncher.model.entityTypeId,bulletLauncher)
             {
                 Position = bulletLauncher.firePosition,
                 OnShowCallBack = action
@@ -77,10 +77,10 @@ namespace GameMain
         public static void ShowAoeObj(this EntityComponent entityComponent, AoeLauncher aoeLauncher,
             Action<Entity> action)
         {
-            entityComponent.ShowEntity(typeof(AoeObj), "AoeObj", Constant.AssetPriority.BulletAsset,new AoeObjData(GameEntry.Entity.GenerateSerialId(),11,aoeLauncher)
+            entityComponent.ShowEntity(typeof(AoeObj), "AoeObj", Constant.AssetPriority.BulletAsset,new AoeObjData(GameEntry.Entity.GenerateSerialId(),aoeLauncher.model.entityTypeId,aoeLauncher)
             {
                 Position = aoeLauncher.position,
-                Rotation = Quaternion.identity,
+                Rotation = aoeLauncher.rotation,
                 OnShowCallBack = action
             });
         }

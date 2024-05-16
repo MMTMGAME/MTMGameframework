@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GameMain;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Log = UnityGameFramework.Runtime.Log;
 
 
 ///<summary>
@@ -109,7 +110,7 @@ public class BulletState:MonoBehaviour{
     //private GameObject viewContainer;
 
     private Rigidbody rb;
-    private Collider col;
+    private Collider[] colliders;
     private void Start() {
         
         synchronizedUnits();
@@ -170,7 +171,7 @@ public class BulletState:MonoBehaviour{
         this.duration = bullet.duration;
         this.timeElapsed = 0;
         this.tween = bullet.tween;
-        this.useFireDegreeForever = this.useFireDegreeForever;
+        this.useFireDegreeForever = bullet.useFireDegreeForever;
         this.canHitAfterCreated = bullet.canHitAfterCreated;
         this.smoothMove = !bullet.model.removeOnObstacle;
         this.moveType = bullet.model.moveType;
@@ -186,19 +187,24 @@ public class BulletState:MonoBehaviour{
         synchronizedUnits();
 
         this.rb.useGravity = bullet.model.useGravity;
-        this.col.isTrigger = bullet.model.isTrigger;
+        foreach (var c in this.colliders)
+        {
+            c.isTrigger = bullet.model.isTrigger;
+        }
+       
         
 
         //把视觉特效补充给bulletObj
-        if (bullet.model.entityTypeId != 0)
-        {
-            GameEntry.Entity.ShowModelObj(bullet.model.entityTypeId,Vector3.zero, Quaternion.identity, (bulletEffect) =>
-            {
-                bulletEffect.transform.SetParent(transform);
-                bulletEffect.transform.localPosition =Vector3.zero;
-                bulletEffect.transform.localRotation = Quaternion.identity;
-            } );
-        }
+        // if (bullet.model.entityTypeId != 0)
+        // {
+        //     GameEntry.Entity.ShowModelObj(bullet.model.entityTypeId,Vector3.zero, Quaternion.identity, (bulletEffect) =>
+        //     {
+        //         //bulletEffect.transform.SetParent(transform);
+        //         GameEntry.Entity.AttachEntity(bulletEffect.Entity,GetComponent<Entity>().Entity,transform);
+        //         bulletEffect.transform.localPosition =Vector3.zero;
+        //         bulletEffect.transform.localRotation = Quaternion.identity;
+        //     } );
+        // }
 
         // this.gameObject.transform.position = new Vector3(
         //     this.gameObject.transform.position.x,
@@ -219,15 +225,21 @@ public class BulletState:MonoBehaviour{
     private void synchronizedUnits(){
         if (!unitRotate) unitRotate = gameObject.GetOrAddComponent<UnitRotate>();
         if (!unitMove)  unitMove = gameObject.GetOrAddComponent<UnitMove>();
-        //if (!viewContainer) viewContainer = gameObject.GetComponentInChildren<ViewContainer>().gameObject;
         
-        unitMove.smoothMove = this.smoothMove;
-        unitMove.moveType = this.moveType;
-        unitMove.bodyRadius = this.model.radius;
 
-        col = gameObject.GetOrAddComponent<SphereCollider>();
-        (col as SphereCollider).radius = model.radius;
+        colliders = gameObject.GetComponentsInChildren<Collider>();
         rb = gameObject.GetOrAddComponent<Rigidbody>();
+        rb.collisionDetectionMode =CollisionDetectionMode.Continuous;
+
+        if (colliders == null || colliders.Length==0)
+        {
+            Log.Warning($"注意,{gameObject.name}没有配置碰撞体");
+        }
+
+        if (rb == null)
+        {
+            Log.Warning($"注意,{gameObject.name}没有配置Rigidbody");
+        }
     }
 
     public void SetMoveType(MoveType toType){
@@ -286,14 +298,7 @@ public class BulletState:MonoBehaviour{
         ));
     }
 
-    ///<summary>
-    ///改变子弹半径
-    ///<param name="radius">子弹要改变为的半径，单位米</param>
-    ///</summary>
-    public void SetRadius(float radius){
-        this.model.radius = radius;
-        synchronizedUnits();
-    }
+    
 
     private void FixedUpdate()
     {

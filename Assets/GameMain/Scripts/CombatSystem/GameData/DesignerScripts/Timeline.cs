@@ -67,25 +67,13 @@ namespace DesignerScripts
                 bool inFront = args.Length > 1 ? (bool)args[1] : true;
                 
                 aLauncher.caster = tlo.caster;
-                aLauncher.degree += tlo.caster.transform.rotation.eulerAngles.y;
+                aLauncher.rotation = tlo.caster.transform.rotation * aLauncher.rotation;
 
-                float rr = aLauncher.degree * Mathf.PI / 180;
-                Vector3 pos = aLauncher.position;
+               
+                aLauncher.position = aLauncher.caster.transform.TransformPoint( aLauncher.position);
                 
-                float dis = Mathf.Sqrt(Mathf.Pow(pos.x, 2) + Mathf.Pow(pos.z, 2));
-                if (inFront == true){
-                    dis += tlo.caster.GetComponent<ChaState>().property.bodyRadius + aLauncher.radius;
-                } 
-
-                aLauncher.position.x = dis * Mathf.Sin(rr) + tlo.caster.transform.position.x;
-                aLauncher.position.z = dis * Mathf.Cos(rr) + tlo.caster.transform.position.z;
-
                 aLauncher.tweenParam = new object[]{
-                    new Vector3(
-                        dis * Mathf.Sin(rr),
-                        0,
-                        dis * Mathf.Cos(rr)
-                    )
+                    aLauncher.caster.transform.forward
                 };
 
                 GameEntry.Combat.CreateAoE(aLauncher);
@@ -184,7 +172,7 @@ namespace DesignerScripts
         ///<param name="args">总共4个参数：
         ///[0]string：要播放特效的绑点
         ///[1]string：特效的文件名，位于Prafabs/下
-        ///[2]string：特效的key，用于删除的
+        ///[2]string：特效的key，用于之后删除的
         ///[3]bool：是否循环播放特效（循环就要手动删除）
         ///</param>
         ///</summary>

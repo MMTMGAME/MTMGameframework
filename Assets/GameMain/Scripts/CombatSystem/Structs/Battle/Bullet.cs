@@ -112,10 +112,7 @@ public struct BulletModel{
     ///</summary>
     public int entityTypeId;
 
-    ///<summary>
-    ///子弹的碰撞半径，单位：米。这个游戏里子弹在逻辑世界都是圆形的，当然是这个游戏设定如此，实际策划的需求未必只能是圆形。
-    ///</summary>
-    public float radius;
+    
 
     ///<summary>
     ///子弹可以碰触的次数，每次碰到合理目标-1，到0的时候子弹就结束了。
@@ -192,7 +189,7 @@ public struct BulletModel{
         string onRemoved = "",
         object[] onRemovedParams = null,
         MoveType moveType = MoveType.fly, bool removeOnObstacle = true,
-        float radius = 0.1f, int hitTimes = 1, float sameTargetDelay = 0.1f,
+        int hitTimes = 1, float sameTargetDelay = 0.1f,
         bool hitFoe = true, bool hitAlly = false,bool hitSelf=false,bool isTrigger=true,bool useGravity=false
     ){
         this.id = id;
@@ -203,7 +200,7 @@ public struct BulletModel{
         this.onCreateParam = createParams != null ? createParams : new object[0];
         this.onHitParams = onHitParams != null ? onHitParams : new object[0];
         this.onRemovedParams = onRemovedParams != null ? onRemovedParams : new object[0];
-        this.radius = radius;
+        
         this.hitTimes = hitTimes;
         this.sameTargetDelay = sameTargetDelay;
         this.moveType = moveType;

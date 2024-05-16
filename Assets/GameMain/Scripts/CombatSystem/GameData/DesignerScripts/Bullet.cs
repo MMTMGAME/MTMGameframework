@@ -283,8 +283,8 @@ namespace DesignerScripts
             }
             al.caster = bulletState.caster;
             al.position = bullet.transform.position;
-            al.degree = bullet.transform.eulerAngles.y;
-            Debug.Log("to create aoe effect " + al.model.prefab);
+            al.rotation = bullet.transform.rotation;
+            Debug.Log("to create aoe effect " + al.model.entityTypeId);
             GameEntry.Combat.CreateAoE(al);
         }
 
@@ -301,7 +301,7 @@ namespace DesignerScripts
             AoeLauncher al = (AoeLauncher)onHitParams[0];
             al.caster = bulletState.caster;
             al.position = bullet.transform.position;
-            al.degree = bullet.transform.eulerAngles.y;
+            al.rotation = bullet.transform.rotation;
             GameEntry.Combat.CreateAoE(al);
         }
 

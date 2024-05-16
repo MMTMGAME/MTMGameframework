@@ -1,0 +1,2 @@
+改写了原框架的子弹，原框架的子弹只支持球形碰撞，我改为了一个BulletObj就是一种子弹，但是可以通过配置BulletModel来修改它的isTrigger和useGravity属性。
+在BulletModel中配置entityTypeId来设置想要使用的子弹，可以再通过isTrigger和useGravity属性来做到一定的灵活性。

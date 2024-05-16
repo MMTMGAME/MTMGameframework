@@ -126,7 +126,7 @@ namespace DesignerScripts
             //AoeModel是可以动态生成的
             GameEntry.Combat.CreateAoE(new AoeLauncher(
                 new AoeModel(
-                    "BoomExplosive", "", new string[0], 0, false,
+                    "BoomExplosive", 0, new string[0], 0, false,
                     "CreateSightEffect", new object[]{"Effect/Explosion_A"},
                     "BarrelExplosed", new object[0], 
                     "", new object[0],  //tick
@@ -135,7 +135,7 @@ namespace DesignerScripts
                     "", new object[0],  //bulletEnter
                     "", new object[0]   //bulletLeave
                 ), 
-                aoeCaster, buff.carrier.transform.position, 2.2f, 0.5f, 0,
+                aoeCaster, buff.carrier.transform.position, 2.2f, Quaternion.identity,
                 null, null, new Dictionary<string, object>(){
                     {"Barrel", buff.carrier}
                 }

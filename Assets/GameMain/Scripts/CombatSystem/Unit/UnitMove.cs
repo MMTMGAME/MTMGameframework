@@ -15,16 +15,9 @@ public class UnitMove : MonoBehaviour
     [Tooltip("单位的移动类型，根据游戏设计不同，这个值也可以不同")]
     public MoveType moveType = MoveType.ground;
 
-    [Tooltip("单位的移动体型碰撞圆形的半径，单位：米")]
-    public float bodyRadius = 0.25f;
+   
 
-    [Tooltip(
-        "当单位移动被地图阻挡的时候，是选择一个更好的落脚点（true）还是直接停止移动（false），如果直接停止移动，那么停下的时候访问hitObstacle的时候就是true，否则hitObstacle永远是false"
-    )]
-    public bool smoothMove = true;
-
-    [Tooltip("是否会忽略关卡外围，即飞行（只有飞行允许）到地图外的地方全部视作可过")]
-    public bool ignoreBorder = true;
+   
 
     public bool hitObstacle{get{
         return _hitObstacle;

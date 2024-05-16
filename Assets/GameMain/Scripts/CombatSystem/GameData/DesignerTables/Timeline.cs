@@ -111,10 +111,10 @@ namespace DesingerTables
             { "skill_spaceMonkeyBall", new TimelineModel("skill_spaceMonkeyBall", new TimelineNode[]{
                 new TimelineNode(0.00f, "SetCasterControlState", new object[]{true, true, false}),
                 new TimelineNode(0.00f, "CasterPlayAnim", new object[]{UnitAnim.AnimOrderType.Trigger,"Fire"}),
-                new TimelineNode(0.10f, "PlaySightEffectOnCaster", new object[]{"Muzzle","Effect/MuzzleFlash","",false}),
+                new TimelineNode(0.10f, "PlaySightEffectOnCaster", new object[]{"Muzzle",71000,"",false}),
                 new TimelineNode(0.10f, "CreateAoE", new object[]{
                     new AoeLauncher(
-                        AoE.data["SpaceMonkeyBall"], null, Vector3.zero, 0.25f, 100, 0,
+                        AoE.data["SpaceMonkeyBall"], null, Vector3.zero, 2.5f,  Quaternion.identity,
                         DesignerScripts.AoE.aoeTweenFunc["SpaceMonkeyBallRolling"], new object[]{Vector3.forward * 0.1f} //小猴球原始滚动速度0.1米/秒
                     ), true
                 }),

@@ -121,12 +121,8 @@ namespace DesignerScripts
                     velocity += forces[i] * Time.fixedDeltaTime;
                 }
             }
-
-            float dis = Mathf.Sqrt(Mathf.Pow(velocity.x, 2) + Mathf.Pow(velocity.z, 2));
-            float rr = Mathf.Atan2(velocity.x, velocity.z);
-            float rotateTo = rr * 180 / Mathf.PI;
-
-            return new AoeMoveInfo(MoveType.fly, new Vector3(Mathf.Sin(rr) * dis, 0, Mathf.Cos(rr) * dis), Quaternion.Euler(0,rotateTo,0));
+            
+            return new AoeMoveInfo(MoveType.fly, velocity, Quaternion.LookRotation(velocity));
         }
 
         ///<summary>
@@ -167,10 +163,10 @@ namespace DesignerScripts
                 }
             }
 
-            float scaleTo = 1 + ((List<Vector3>)aoeState.param["forces"]).Count * 0.05f;
-            aoeState.radius = 0.25f * scaleTo;
-            aoeState.SetViewScale(scaleTo);
-            aoeState.ModViewY(aoeState.radius);
+            float scaleTo = 1 + ((List<Vector3>)aoeState.param["forces"]).Count * 0.5f;
+            aoeState.radius =  scaleTo;
+            aoeState.duration += 2.5f;
+            aoeState.transform.localScale =Vector3.one* aoeState.radius;
         }
 
         ///<summary>
@@ -199,15 +195,15 @@ namespace DesignerScripts
 
             Damage damage = baseDamage * (aoeState.propWhileCreate.attack * damageTimes);
 
-            int side = -1;
+            CampType camp = CampType.Unknown;
             if (aoeState.caster){
                 ChaState ccs = aoeState.caster.GetComponent<ChaState>();
-                if (ccs) side = ccs.side;
+                if (ccs) camp = ccs.Camp;
             }
 
             for (int i = 0; i < characters.Count; i++){
                 ChaState cs = characters[i].GetComponent<ChaState>();
-                if (cs && cs.dead == false && ((toFoe == true && side != cs.side) || (toAlly == true && side == cs.side))){
+                if (cs && cs.dead == false && ((toFoe == true && CombatComponent.GetRelation(camp,cs.Camp)!=RelationType.Friendly) || (toAlly == true && CombatComponent.GetRelation(camp,cs.Camp)==RelationType.Friendly))){
                     Vector3 chaToAoe = characters[i].transform.position - aoe.transform.position;
                     GameEntry.Combat.CreateDamage(
                         aoeState.caster, characters[i], 
@@ -321,20 +317,20 @@ namespace DesignerScripts
             string id = (string)p[0];
             if (id == "" || DesingerTables.AoE.data.ContainsKey(id) == false) return;
             AoeModel model = DesingerTables.AoE.data[id];
-            float radius = p.Length > 1 ? (float)p[1] : 0.01f;
-            float duration = p.Length > 2 ? (float)p[2] : 0;
-            string aoeTweenId = p.Length > 3 ? (string)p[3] : "";
+            //float radius = p.Length > 1 ? (float)p[1] : 0.01f;
+            float duration = p.Length > 1 ? (float)p[1] : 0;
+            string aoeTweenId = p.Length > 2 ? (string)p[2] : "";
             AoeTween tween = null;
             if (aoeTweenId != "" && DesignerScripts.AoE.aoeTweenFunc.ContainsKey(aoeTweenId)){
                 tween = DesignerScripts.AoE.aoeTweenFunc[aoeTweenId];
             }
             object[] tp = new object[0];
-            if (p.Length > 4) tp = (object[])p[4];
+            if (p.Length > 3) tp = (object[])p[3];
             Dictionary<string,object> ap = null;
-            if (p.Length > 5) ap = (Dictionary<string, object>)p[5];
+            if (p.Length > 4) ap = (Dictionary<string, object>)p[4];
             AoeLauncher al = new AoeLauncher(
-                model, ast.caster, aoe.transform.position, radius, 
-                duration, aoe.transform.eulerAngles.y, tween, tp, ap
+                model, ast.caster, aoe.transform.position, 
+                duration, aoe.transform.rotation, tween, tp, ap
             );
             GameEntry.Combat.CreateAoE(al);
         }

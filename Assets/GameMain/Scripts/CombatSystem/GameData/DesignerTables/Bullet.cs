@@ -27,7 +27,7 @@ namespace DesingerTables
                 "", new object[0],
                 "CloakBoomerangHit", new object[]{1.0f,0.05f,71000}, 
                 "", new object[0],
-                MoveType.fly, false, 0.5f, 99999, 0.5f, true, true)
+                MoveType.fly, false,  99999, 0.5f, true, true)
             },
             {"teleportBullet", new BulletModel(
                 "teleportBullet", 50000,
@@ -39,10 +39,10 @@ namespace DesingerTables
             {"boomball", new BulletModel(
                 "boomball", 50000,
                 "SetBombBouncing", new object[0],
-                "CreateAoEOnHit", new object[]{new AoeLauncher(DesingerTables.AoE.data["BoomExplosive"], null, Vector3.zero, 1.5f, 0, 0)},
+                "CreateAoEOnHit", new object[]{new AoeLauncher(DesingerTables.AoE.data["BoomExplosive"], null, Vector3.zero, 1.5f, Quaternion.identity)},
                 "CreateAoEOnRemoved", new object[]{
-                    new AoeLauncher(DesingerTables.AoE.data["StayingBoom"], null, Vector3.zero, 0.1f, 3.0f, 0),  //反正碰撞也没用，不如就直接…………
-                    new AoeLauncher(DesingerTables.AoE.data["BoomExplosive"], null, Vector3.zero, 1.5f, 0, 0)                    
+                    new AoeLauncher(DesingerTables.AoE.data["StayingBoom"], null, Vector3.zero, 0.1f, Quaternion.identity),  //反正碰撞也没用，不如就直接…………
+                    new AoeLauncher(DesingerTables.AoE.data["BoomExplosive"], null, Vector3.zero, 1.5f, Quaternion.identity)                    
                 }
             )}
         };

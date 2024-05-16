@@ -33,7 +33,7 @@ public class QuickNavigation : EditorWindow
         if (GUILayout.Button("Launcher"))
         {
             // 设置Project窗口的当前选择路径
-            Selection.activeObject = AssetDatabase.LoadAssetAtPath("Assets/Launcher", typeof(Object));
+            Selection.activeObject = AssetDatabase.LoadAssetAtPath("Assets/GameMain/Launcher", typeof(Object));
             EditorGUIUtility.PingObject(Selection.activeObject);
         }
         
