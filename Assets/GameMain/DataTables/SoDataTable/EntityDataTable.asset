@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e0efa7acb3e7f4ea174a1a88f8e28f, type: 3}
+  m_Name: EntityDataTable
+  m_EditorClassIdentifier: 
+  soDataRows:
+  - id: 10000
+    comment: "\u73A9\u5BB6"
+    assetGameObject: {fileID: 4078729425181741037, guid: 9cf293a37a3d5fb4986770edea0a8940, type: 3}
+  - id: 10001
+    comment: "\u76F8\u673A"
+    assetGameObject: {fileID: 1390903421550890690, guid: ead8981b4c827cc4e892caba602f0371, type: 3}
+  - id: 20000
+    comment: "\u8BAD\u7EC3\u4EBA\u5076"
+    assetGameObject: {fileID: 2453985015506265298, guid: 9b6e093ee95d50a47a58b8f5be42151d, type: 3}
+  - id: 20001
+    comment: "\u54E5\u5E03\u6797"
+    assetGameObject: {fileID: 2453985015506265298, guid: be23a74b4f0d0c74cb60a4116af30b56, type: 3}
+  - id: 20002
+    comment: "\u54E5\u5E03\u6797\u5C04\u624B"
+    assetGameObject: {fileID: 2453985015506265298, guid: cf713ba19ca82f746810fca04b3d2746, type: 3}
+  - id: 30000
+    comment: "\u9ED8\u8BA4\u6B66\u5668"
+    assetGameObject: {fileID: 6891853317181021241, guid: b0b4ea1c59c3f674fa910045a1d45f10, type: 3}
+  - id: 30001
+    comment: "\u629B\u5C04\u7269\u7406\u6B66\u5668"
+    assetGameObject: {fileID: 6891853317181021241, guid: b22a33235bd6ae64b9c12296349487e6, type: 3}
+  - id: 30002
+    comment: "\u6728\u68CD\u6B66\u5668"
+    assetGameObject: {fileID: 6709009136842021126, guid: b2637646acc1b1944a717cd1d5d42b63, type: 3}
+  - id: 30003
+    comment: "\u5F13"
+    assetGameObject: {fileID: 5529958519215979562, guid: 0150121b93c6ff04390043d240711531, type: 3}
+  - id: 40000
+    comment: "\u9ED8\u8BA4\u88C5\u7532"
+    assetGameObject: {fileID: 1509545178546367960, guid: 3ecf4e54f1c10a34da42983cb87969bf, type: 3}
+  - id: 50000
+    comment: "\u65B9\u5757\u5B50\u5F39"
+    assetGameObject: {fileID: 6096265812359928624, guid: a33e0242ee5484344baf54d10c834657, type: 3}
+  - id: 50001
+    comment: "\u7403\u5F62\u5B50\u5F39"
+    assetGameObject: {fileID: 6096265812359928624, guid: e35499280afd92146823056f10e9e814, type: 3}
+  - id: 60000
+    comment: "\u5706\u7403\u6A21\u578B"
+    assetGameObject: {fileID: 1154492211757378895, guid: 102d1eb6076c9e646aec8bafce496353, type: 3}
+  - id: 60001
+    comment: "\u65B9\u5757\u6A21\u578B"
+    assetGameObject: {fileID: 8920143130345860944, guid: e6af451988820344c9182f5785db74d3, type: 3}
+  - id: 70000
+    comment: "\u901A\u7528\u6B7B\u4EA1\u7279\u6548"
+    assetGameObject: {fileID: 2836646191567562790, guid: 3349dcd7df4b6624b9e515c782d81434, type: 3}
+  - id: 71000
+    comment: "\u5B50\u5F39\u6DF7\u51DD\u571F\u7279\u6548"
+    assetGameObject: {fileID: 7453483590383341005, guid: 9fb9893b506447e48b41a27aecf7c62f, type: 3}
+  - id: 71001
+    comment: "\u5B50\u5F39\u91D1\u5C5E\u7279\u6548"
+    assetGameObject: {fileID: 7908880502999072935, guid: a190053cebdd6b44c94f6aca5f98c443, type: 3}
+  - id: 80000
+    comment: AoeObj
+    assetGameObject: {fileID: 2140267336788465316, guid: eaa9e16dc91b9f149979d97e10539975, type: 3}

@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc8f8a8a55e3d74e8e8e9ef22ac7b33, type: 3}
+  m_Name: UiFormDataTable
+  m_EditorClassIdentifier: 
+  soDataRows:
+  - id: 1
+    comment: "\u5F39\u51FA\u6846"
+    asset: {fileID: 128074, guid: 04d7dde7615d71b4db1a0c8d67a62e95, type: 3}
+    uiGroupName: Default
+    allowMultiInstance: 1
+    pauseCoveredUIForm: 1
+  - id: 100
+    comment: "\u4E3B\u83DC\u5355"
+    asset: {fileID: 193354, guid: 09966b19e546cc94aa84d0743cb2a83d, type: 3}
+    uiGroupName: Default
+    allowMultiInstance: 0
+    pauseCoveredUIForm: 1
+  - id: 101
+    comment: "\u8BBE\u7F6E"
+    asset: {fileID: 107322, guid: bbfd75fe6fe00e1448fe988173ede7f9, type: 3}
+    uiGroupName: Default
+    allowMultiInstance: 0
+    pauseCoveredUIForm: 1
+  - id: 102
+    comment: "\u5173\u4E8E"
+    asset: {fileID: 193354, guid: 3aa539b1e46111d4299a83c73ebe762c, type: 3}
+    uiGroupName: Default
+    allowMultiInstance: 0
+    pauseCoveredUIForm: 1
+  - id: 103
+    comment: "\u6682\u505C"
+    asset: {fileID: 261303995840871002, guid: 5a4581471a46d564ebf5d6deb8ec6d28, type: 3}
+    uiGroupName: Default
+    allowMultiInstance: 0
+    pauseCoveredUIForm: 1
+  - id: 104
+    comment: "\u9009\u5173"
+    asset: {fileID: 107322, guid: 3f5598754eedf9645a3f967e900713a0, type: 3}
+    uiGroupName: Default
+    allowMultiInstance: 0
+    pauseCoveredUIForm: 1
+  - id: 105
+    comment: "\u8BBE\u7F6E\uFF08\u7AD6\u5C4F)"
+    asset: {fileID: 8230867810964091901, guid: 51cf4077a66e006488cd5a5ef6b468e8, type: 3}
+    uiGroupName: Default
+    allowMultiInstance: 0
+    pauseCoveredUIForm: 1
+  - id: 106
+    comment: "\u6E38\u620F\u7ED3\u7B97"
+    asset: {fileID: 128074, guid: d9b83ad32e4c6684a82018afdefee203, type: 3}
+    uiGroupName: Default
+    allowMultiInstance: 0
+    pauseCoveredUIForm: 1
+  - id: 107
+    comment: "\u6392\u884C\u699C"
+    asset: {fileID: 261303995840871002, guid: 0b44c308db070ee41a893011a2e4bcc9, type: 3}
+    uiGroupName: Default
+    allowMultiInstance: 0
+    pauseCoveredUIForm: 1
+  - id: 200
+    comment: "\u5173\u5361\u8BE6\u60C5"
+    asset: {fileID: 107322, guid: e6f6f76d9f0809f45b61208d9737d6f4, type: 3}
+    uiGroupName: Display
+    allowMultiInstance: 0
+    pauseCoveredUIForm: 0

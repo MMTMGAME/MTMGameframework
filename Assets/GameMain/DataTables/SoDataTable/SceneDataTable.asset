@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 345a706256960fa43bd466736a315cae, type: 3}
+  m_Name: SceneDataTable
+  m_EditorClassIdentifier: 
+  soDataRows:
+  - id: 1
+    comment: "\u83DC\u5355\u573A\u666F"
+    sceneAsset: {fileID: 102900000, guid: b031b4f2980561542a7f7ba41391edc3, type: 3}
+    sceneBgmId: 1
+  - id: 2
+    comment: "\u5173\u53611"
+    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneBgmId: 2
+  - id: 3
+    comment: "\u5173\u53612"
+    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneBgmId: 2
+  - id: 4
+    comment: "\u5173\u53613"
+    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneBgmId: 2
+  - id: 5
+    comment: "\u5173\u53614"
+    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneBgmId: 2
+  - id: 6
+    comment: "\u5173\u53615"
+    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneBgmId: 2
+  - id: 7
+    comment: "\u5173\u53616"
+    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneBgmId: 2
+  - id: 8
+    comment: "\u5173\u53617"
+    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneBgmId: 2

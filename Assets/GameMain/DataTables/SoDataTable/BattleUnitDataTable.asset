@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52da2cc9e691a74384403d855c6a7f6, type: 3}
+  m_Name: BattleUnitDataTable
+  m_EditorClassIdentifier: 
+  soDataRows:
+  - id: 10000
+    comment: "\u73A9\u5BB6"
+    weaponId: 30000
+    weaponPathKey: RightHand
+    armorId0: 40000
+    armorId1: 0
+    armorId2: 0
+    deadEffectId: 70000
+    deadSoundId: 10000
+    dieScore: 0
+    baseHp: 100
+    baseMp: 100
+    baseAttack: 5
+    baseDefense: 25
+    baseMoveSpeed: 100
+    baseActionSpeed: 100
+    skills: []
+    buffs: []
+  - id: 20000
+    comment: "\u8BAD\u7EC3\u4EBA\u5076"
+    weaponId: 30000
+    weaponPathKey: RightHand
+    armorId0: 40000
+    armorId1: 0
+    armorId2: 0
+    deadEffectId: 70000
+    deadSoundId: 10000
+    dieScore: 0
+    baseHp: 100
+    baseMp: 100
+    baseAttack: 5
+    baseDefense: 25
+    baseMoveSpeed: 100
+    baseActionSpeed: 100
+    skills: []
+    buffs: []
+  - id: 20001
+    comment: "\u54E5\u5E03\u6797"
+    weaponId: 30002
+    weaponPathKey: RightHand
+    armorId0: 40000
+    armorId1: 0
+    armorId2: 0
+    deadEffectId: 70000
+    deadSoundId: 10000
+    dieScore: 15
+    baseHp: 100
+    baseMp: 100
+    baseAttack: 5
+    baseDefense: 25
+    baseMoveSpeed: 100
+    baseActionSpeed: 100
+    skills: []
+    buffs: []
+  - id: 20002
+    comment: "\u54E5\u5E03\u6797\u5C04\u624B"
+    weaponId: 30003
+    weaponPathKey: RightHand
+    armorId0: 40000
+    armorId1: 0
+    armorId2: 0
+    deadEffectId: 70000
+    deadSoundId: 10000
+    dieScore: 0
+    baseHp: 100
+    baseMp: 100
+    baseAttack: 5
+    baseDefense: 25
+    baseMoveSpeed: 100
+    baseActionSpeed: 100
+    skills: []
+    buffs: []

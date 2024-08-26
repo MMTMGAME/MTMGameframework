@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: ArmorDataTable
+  m_EditorClassIdentifier: Assembly-CSharp::ArmorDataTable
+  soDataRows:
+  - id: 40000
+    comment: "\u9ED8\u8BA4\u88C5\u7532"
+    pathKey: 
+    hpAdd: 0
+    hpTimes: 0
+    mpAdd: 0
+    mpTimes: 0
+    attackAdd: 0
+    attackTimes: 0
+    defenseAdd: 0
+    defenseTimes: 0
+    moveSpeedAdd: 0
+    moveSpeedTimes: 0
+    actionSpeedAdd: 0
+    actionSpeedTimes: 0
+    buffs: []

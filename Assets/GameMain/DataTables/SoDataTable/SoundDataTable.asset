@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc8f8a8a55e3d74e8e8e9ef22ac7b33, type: 3}
+  m_Name: SoundDataTable
+  m_EditorClassIdentifier: 
+  soDataRows:
+  - id: 10000
+    comment: "\u901A\u7528\u6B7B\u4EA1\u97F3\u6548"
+    audioClip: {fileID: 8300000, guid: 1e1f7e6d3c4f75649972076f8e3ed237, type: 3}
+    priority: 0
+    loop: 0
+    volume: 1
+    spatialBlend: 1
+    maxDistance: 100
+  - id: 20000
+    comment: "\u73A9\u5BB6\u53D7\u4F24"
+    audioClip: {fileID: 8300000, guid: e81fb6047d256b247b262f97e1914cc2, type: 3}
+    priority: 0
+    loop: 0
+    volume: 1
+    spatialBlend: 1
+    maxDistance: 100
+  - id: 30000
+    comment: "\u5B50\u5F39\u53D1\u5C04\u97F3\u65480"
+    audioClip: {fileID: 8300000, guid: f23d7efca2ae0354da4639022a73b3ad, type: 3}
+    priority: 0
+    loop: 0
+    volume: 1
+    spatialBlend: 1
+    maxDistance: 100
+  - id: 30001
+    comment: "\u5B50\u5F39\u53D1\u5C04\u97F3\u65481"
+    audioClip: {fileID: 8300000, guid: 5fb9235bb7d8ab74ab4e1f3e925ac226, type: 3}
+    priority: 0
+    loop: 0
+    volume: 1
+    spatialBlend: 1
+    maxDistance: 100
+  - id: 30002
+    comment: "\u5B50\u5F39\u53D1\u5C04\u97F3\u65482"
+    audioClip: {fileID: 8300000, guid: 50167ed21e741ca47a4fb7c6ff4036f6, type: 3}
+    priority: 0
+    loop: 0
+    volume: 1
+    spatialBlend: 1
+    maxDistance: 100
+  - id: 30003
+    comment: "\u5B50\u5F39\u53D1\u5C04\u97F3\u65483"
+    audioClip: {fileID: 8300000, guid: 180a50130a458ab4687b3579979b67e0, type: 3}
+    priority: 0
+    loop: 0
+    volume: 1
+    spatialBlend: 1
+    maxDistance: 100
+  - id: 30004
+    comment: "\u5B50\u5F39\u53D1\u5C04\u97F3\u65483"
+    audioClip: {fileID: 8300000, guid: d5028bf16cc922a4c85a0bc7a9a53775, type: 3}
+    priority: 0
+    loop: 0
+    volume: 1
+    spatialBlend: 1
+    maxDistance: 100
+  - id: 40000
+    comment: "\u5B50\u5F39\u51FB\u4E2D\u571F"
+    audioClip: {fileID: 8300000, guid: 1037311eef323284790898747af32de0, type: 3}
+    priority: 0
+    loop: 0
+    volume: 1
+    spatialBlend: 1
+    maxDistance: 100
+  - id: 40001
+    comment: "\u5B50\u5F39\u51FB\u4E2D\u91D1\u5C5E"
+    audioClip: {fileID: 8300000, guid: 24c2aed69ccc7f74086daa4c7699260a, type: 3}
+    priority: 0
+    loop: 0
+    volume: 1
+    spatialBlend: 1
+    maxDistance: 100

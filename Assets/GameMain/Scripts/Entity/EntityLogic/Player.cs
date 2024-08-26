@@ -148,47 +148,24 @@ public class Player : BattleUnit
     {
         CastWeaponSkill(0);
 
-        // var weapon = GetWeaponByIndex(0);
-        // if (weapon != null)
-        // {
-        //
-        //     //weapon.StartFire();
-        //     //理论上应该用上面的StartFire，但是目前demo没有接入动画模块，直接触发攻击,接入技能和buff模块后再接入动画
-        //     weapon.HandleAnimEvent("Shoot");
-        // }
+       
     }
     
     void CancelMouseLeft(InputAction.CallbackContext callbackContext)
     {
-        // var weapon = GetWeaponByIndex(0);
-        // if (weapon != null)
-        // {
-        //
-        //     weapon.CancelFire();
-        // }
+       
     }
     
     void StartMouseRight(InputAction.CallbackContext callbackContext)
     {
         CastWeaponSkill(1);
         
-        // var weapon = GetWeaponByIndex(1);
-        // if (weapon != null)
-        // {
-        //     //weapon.StartFire();
-        //     //理论上应该用上面的StartFire，但是目前demo没有接入动画模块，直接触发攻击,接入技能和buff模块后再接入动画
-        //     weapon.HandleAnimEvent("Shoot");
-        // }
+        
     }
     
     void CancelMouseRight(InputAction.CallbackContext callbackContext)
     {
-        var weapon = GetWeaponByIndex(1);
-        if (weapon != null)
-        {
-
-            weapon.CancelFire();
-        }
+        
     }
     
 

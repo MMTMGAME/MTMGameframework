@@ -64,6 +64,12 @@ namespace GameMain
             get;
             private set;
         }
+        
+        public static SoDataTableComponent SoDataTableComponent
+        {
+            get;
+            private set;
+        }
 
         private static void InitCustomComponents()
         {
@@ -75,6 +81,7 @@ namespace GameMain
             CameraShake = UnityGameFramework.Runtime.GameEntry.GetComponent<CameraShakeComponent>();
             FlyText = UnityGameFramework.Runtime.GameEntry.GetComponent<FlyTextComponent>();
             Combat= UnityGameFramework.Runtime.GameEntry.GetComponent<CombatComponent>();
+            SoDataTableComponent= UnityGameFramework.Runtime.GameEntry.GetComponent<SoDataTableComponent>();
         }
     }
 }

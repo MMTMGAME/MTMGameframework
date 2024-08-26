@@ -16,6 +16,8 @@ namespace GameMain
     public class AIData
     {
         public string AssetName { get; set; }
+
+        public StateGraphAsset stateGraphAsset;
         public float Radius { get; set; }
         public float AttackDistance { get; set; }
 
@@ -47,17 +49,17 @@ namespace GameMain
             m_TypeId = typeId;
             
             //获取AI数据
-            var aiTable = GameEntry.DataTable.GetDataTable<DRAI>();
-            var drAi = aiTable.GetDataRow(TypeId);
+            var aiTable = GameEntry.SoDataTableComponent.GetTable<AiDataRow>();
+            var drAi = aiTable.GetDataRow(TypeId) as AiDataRow;
             if (drAi != null)
             {
                 AIData = new AIData()
                 {
-                    Radius = drAi.Radius,
-                    AssetName = drAi.AssetName,
-                    AttackDistance = drAi.AttackDistance,
-                    AddAIMove = drAi.AddAIMove,
-                    AddAIRotate = drAi.AddAIRotate
+                    Radius = drAi.radius,
+                    stateGraphAsset = drAi.stateGraph,
+                    AttackDistance = drAi.attackDistance,
+                    AddAIMove = drAi.addAiMove,
+                    AddAIRotate = drAi.addAiMove
                 };
             }
         }

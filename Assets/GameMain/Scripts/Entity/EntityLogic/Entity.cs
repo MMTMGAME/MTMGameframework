@@ -85,7 +85,10 @@ namespace GameMain
             //在这里加载状态机
             if (m_EntityData.AIData != null)
             {
-                GameEntry.AI.AttachStateGraphToEntity(new LoadStateGraphInfo(m_EntityData.Id,m_EntityData.AIData.AssetName));
+                    //使用表格的方法
+                //GameEntry.AI.AttachStateGraphToEntityByName(new LoadStateGraphInfo(m_EntityData.Id,m_EntityData.AIData.AssetName));
+                GameEntry.AI.AttachStateGraphToEntityByAsset(GetAIData().stateGraphAsset,
+                        new LoadStateGraphInfo(m_EntityData.Id, m_EntityData.AIData.AssetName));//为了保留表格加载，还是用loadGrahpInfo
                 //AI属性适配
                 if(m_EntityData.AIData.AddAIMove)
                          gameObject.AddComponent<AIMove>();

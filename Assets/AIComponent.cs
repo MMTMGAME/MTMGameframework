@@ -55,11 +55,30 @@ public class AIComponent : GameFrameworkComponent
     }
 
 
-    public void AttachStateGraphToEntity(LoadStateGraphInfo userData)
+    public void AttachStateGraphToEntityByName(LoadStateGraphInfo userData)
     {
         var assetName = AssetUtility.GetStateGraphAsset(userData.AssetName);
         
         resourceManager.LoadAsset(assetName, 100, loadAssetCallbacks, userData);
+    }
+    
+    public void AttachStateGraphToEntityByAsset(StateGraphAsset stateGraphAsset,LoadStateGraphInfo userData)
+    {
+        LoadStateGraphInfo loadStateGraphInfo=userData as LoadStateGraphInfo;
+        if (loadStateGraphInfo == null)
+        {
+            Log.Fatal($"实例化状态机失败");
+            return;
+        }
+
+        var entity = GameEntry.Entity.GetEntity(loadStateGraphInfo.EntityId);
+        if (entity != null && entity.Handle is GameObject go)
+        {
+            var stateMachine = go.AddComponent<StateMachine>();
+            //设置graph
+            stateMachine.nest.SwitchToMacro((StateGraphAsset)stateGraphAsset);
+            
+        }
     }
     
     private void LoadAssetSuccessCallback(string assetName, object asset, float duration, object userData)

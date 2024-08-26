@@ -56,6 +56,11 @@ namespace GameMain
         {
             return Utility.Text.Format("Assets/GameMain/StateGraphs/{0}.asset", assetName);
         }
+        
+        public static string GetSoDataTableAsset(string assetName)
+        {
+            return Utility.Text.Format("Assets/GameMain/DataTables/{0}.asset", assetName);
+        }
 
         public static string GetUIFormAsset(string assetName)
         {
