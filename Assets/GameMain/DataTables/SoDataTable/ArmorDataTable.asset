@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 8559010e1d35e8942a444f75477e93a2, type: 3}
   m_Name: ArmorDataTable
-  m_EditorClassIdentifier: Assembly-CSharp::ArmorDataTable
+  m_EditorClassIdentifier: 
   soDataRows:
   - id: 40000
     comment: "\u9ED8\u8BA4\u88C5\u7532"

@@ -12,12 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c5e4a7b9715ed45b45823061d67712, type: 3}
   m_Name: AiDataTable
   m_EditorClassIdentifier: 
-  tableId: 
   soDataRows:
-  - id: 0
-    comment: 
-    stateGraph: {fileID: 0}
-    radius: 0
-    attackDistance: 0
+  - id: 20000
+    comment: "\u8BAD\u7EC3\u4EBA\u5076"
+    stateGraph: {fileID: 11400000, guid: 5dae7ac1eeab0dc4ab10830bbe53e4b1, type: 2}
+    radius: 20
+    attackDistance: 2.6
     addAiMove: 0
     addAiRotate: 0
+  - id: 20001
+    comment: "\u54E5\u5E03\u6797"
+    stateGraph: {fileID: 11400000, guid: 40a779b2d9d2f3a4d8cf0d9ef8cfafb3, type: 2}
+    radius: 20
+    attackDistance: 2.6
+    addAiMove: 1
+    addAiRotate: 1
+  - id: 20002
+    comment: "\u54E5\u5E03\u6797\u5C04\u624B"
+    stateGraph: {fileID: 11400000, guid: c14e01f934d97ae4cb59c15297f9003c, type: 2}
+    radius: 30
+    attackDistance: 8
+    addAiMove: 1
+    addAiRotate: 1

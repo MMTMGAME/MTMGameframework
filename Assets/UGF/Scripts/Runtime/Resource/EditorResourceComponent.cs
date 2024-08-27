@@ -16,6 +16,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace UnityGameFramework.Runtime
 {
@@ -1081,6 +1082,56 @@ namespace UnityGameFramework.Runtime
 
             m_LoadAssetInfos.AddLast(new LoadAssetInfo(assetName, assetType, priority, DateTime.UtcNow, m_MinLoadAssetRandomDelaySeconds + (float)Utility.Random.GetRandomDouble() * (m_MaxLoadAssetRandomDelaySeconds - m_MinLoadAssetRandomDelaySeconds), loadAssetCallbacks, userData));
         }
+        
+        
+        
+        /// <summary>
+        /// 通过实例化。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <param name="assetType">要加载资源的类型。</param>
+        /// <param name="priority">加载资源的优先级。</param>
+        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void LoadAssetByInstantiate(Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            if (loadAssetCallbacks == null)
+            {
+                Log.Error("Load asset callbacks is invalid.");
+                return;
+            }
+
+            if (asset==null)
+            {
+                if (loadAssetCallbacks.LoadAssetFailureCallback != null)
+                {
+                    loadAssetCallbacks.LoadAssetFailureCallback("", LoadResourceStatus.NotExist, "实例化生成资源失败，目标asset为null", userData);
+                }
+
+                return;
+            }
+
+            UnityEngine.Object ret =asset;
+            
+            if (ret != null)
+            {
+                if (loadAssetCallbacks != null)
+                {
+                    loadAssetCallbacks.LoadAssetSuccessCallback(ret.name, ret, 0, userData);
+                }
+            }
+            else
+            {
+                if (loadAssetCallbacks != null)
+                {
+                    loadAssetCallbacks.LoadAssetFailureCallback(ret.name, LoadResourceStatus.AssetError, "实例化加载asset失败.", userData);
+                }
+            }
+
+           
+        }
+        
+        
 
         /// <summary>
         /// 卸载资源。

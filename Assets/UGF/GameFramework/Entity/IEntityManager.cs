@@ -202,6 +202,10 @@ namespace GameFramework.Entity
         /// <param name="entityGroupName">实体组名称。</param>
         void ShowEntity(int entityId, string entityAssetName, string entityGroupName);
 
+
+        void ShowEntity(int entityId, object obj, string entityGroupName, int priority, object userData);
+        
+        
         /// <summary>
         /// 显示实体。
         /// </summary>

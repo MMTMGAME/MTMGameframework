@@ -341,7 +341,10 @@ public class BulletState:MonoBehaviour{
             {
                 model.onRemoved(gameObject);
             }
-            GameEntry.Entity.HideEntity(GetComponent<Entity>());
+
+            var entity = GetComponent<Entity>();
+            Debug.Log("子弹销毁"+entity);
+            GameEntry.Entity.HideEntity(entity);
         }
         
        

@@ -4,14 +4,15 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class SoDataRow
+public  class SoDataRow
 {
    [Header("Id要大于0才有效")]
    public int id;
    public string comment;
+   
 }
 
-public class SoDataTable<T> : ScriptableObject where T:SoDataRow
+public class SoDataTable<T> : SoDataTableBase  where T:SoDataRow
 {
    public List<T> soDataRows = new List<T>();
    public SoDataRow GetDataRow(int id)

@@ -115,10 +115,12 @@ namespace UnityGameFramework.Runtime
                     return;
                 }
 
+                Debug.Log(gameObject.name+"销毁组件"+m_EntityLogic);
                 Destroy(m_EntityLogic);
                 m_EntityLogic = null;
             }
 
+           
             m_EntityLogic = gameObject.AddComponent(entityLogicType) as EntityLogic;
             if (m_EntityLogic == null)
             {
@@ -128,6 +130,7 @@ namespace UnityGameFramework.Runtime
 
             try
             {
+                
                 m_EntityLogic.OnInit(showEntityInfo.UserData);
             }
             catch (Exception exception)

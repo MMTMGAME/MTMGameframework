@@ -30,6 +30,8 @@ namespace GameFramework.Resource
         /// <summary>
         /// 使用时下载的可更新模式。
         /// </summary>
-        UpdatableWhilePlaying
+        UpdatableWhilePlaying,
+        
+        ScriptableObject,
     }
 }

@@ -571,6 +571,17 @@ namespace GameFramework.Resource
         /// <param name="userData">用户自定义数据。</param>
         void LoadAsset(string assetName, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData);
 
+
+        /// <summary>
+        /// 通过实例化直接复制
+        /// </summary>
+        /// <param name="asset"></param>
+        /// <param name="priority"></param>
+        /// <param name="loadAssetCallbacks"></param>
+        /// <param name="userData"></param>
+        void LoadAssetByInstantiate(UnityEngine.Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData);
+        
+        
         /// <summary>
         /// 异步加载资源。
         /// </summary>

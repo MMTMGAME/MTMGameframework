@@ -11,6 +11,7 @@ using GameFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Object = UnityEngine.Object;
 
 namespace GameFramework.Resource
 {
@@ -1603,6 +1604,12 @@ namespace GameFramework.Resource
 
             m_ResourceLoader.LoadAsset(assetName, null, priority, loadAssetCallbacks, userData);
         }
+
+        public void LoadAssetByInstantiate(Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            throw new NotImplementedException();
+        }
+
 
         /// <summary>
         /// 异步加载资源。

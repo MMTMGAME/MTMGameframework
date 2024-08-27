@@ -49,6 +49,7 @@ namespace GameMain
             m_TypeId = typeId;
             
             //获取AI数据
+            var comp = GameEntry.SoDataTableComponent;
             var aiTable = GameEntry.SoDataTableComponent.GetTable<AiDataRow>();
             var drAi = aiTable.GetDataRow(TypeId) as AiDataRow;
             if (drAi != null)

@@ -491,8 +491,20 @@ namespace UnityGameFramework.Runtime
                 Log.Error("Entity type is invalid.");
                 return;
             }
-
+            
             m_EntityManager.ShowEntity(entityId, entityAssetName, entityGroupName, priority, ShowEntityInfo.Create(entityLogicType, userData));
+        }
+        
+        
+        public void ShowEntity(int entityId, Type entityLogicType,object obj, string entityGroupName, int priority, object userData)
+        {
+            if (entityLogicType == null)
+            {
+                Log.Error("Entity type is invalid.");
+                return;
+            }
+         
+            m_EntityManager.ShowEntity(entityId, obj, entityGroupName, priority, ShowEntityInfo.Create(entityLogicType, userData));
         }
 
         /// <summary>

@@ -10,6 +10,7 @@ using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = System.Object;
 
 namespace GameFramework.Entity
 {
@@ -655,6 +656,60 @@ namespace GameFramework.Entity
 
             InternalShowEntity(entityId, entityAssetName, entityGroup, entityInstanceObject.Target, false, 0f, userData);
         }
+        
+        
+        public void ShowEntity(int entityId, object obj, string entityGroupName, int priority, object userData)
+        {
+            if (m_ResourceManager == null)
+            {
+                throw new GameFrameworkException("You must set resource manager first.");
+            }
+
+            if (m_EntityHelper == null)
+            {
+                throw new GameFrameworkException("You must set entity helper first.");
+            }
+
+            
+
+            if (string.IsNullOrEmpty(entityGroupName))
+            {
+                throw new GameFrameworkException("Entity group name is invalid.");
+            }
+
+            if (HasEntity(entityId))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Entity id '{0}' is already exist.", entityId));
+            }
+
+            if (IsLoadingEntity(entityId))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Entity '{0}' is already being loaded.", entityId));
+            }
+
+            EntityGroup entityGroup = (EntityGroup)GetEntityGroup(entityGroupName);
+            if (entityGroup == null)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Entity group '{0}' is not exist.", entityGroupName));
+            }
+
+           
+            //EntityInstanceObject entityInstanceObject = EntityInstanceObject.Create(obj.ToString(), obj, m_EntityHelper.InstantiateEntity(obj), m_EntityHelper);
+            EntityInstanceObject entityInstanceObject =entityGroup.SpawnEntityInstanceObject(obj.ToString());
+            
+           
+            
+            if (entityInstanceObject == null)
+            {
+                int serialId = ++m_Serial;
+                m_EntitiesBeingLoaded.Add(entityId, serialId);
+                
+                m_ResourceManager.LoadAssetByInstantiate((UnityEngine.Object)obj, priority, m_LoadAssetCallbacks, ShowEntityInfo.Create(serialId, entityId, entityGroup, userData));
+                return;
+            }
+
+            InternalShowEntity(entityId, obj.ToString(), entityGroup, entityInstanceObject.Target, false, 0f, userData);
+        }
 
         /// <summary>
         /// 隐藏实体。
@@ -1163,6 +1218,7 @@ namespace GameFramework.Entity
 
         private void InternalShowEntity(int entityId, string entityAssetName, EntityGroup entityGroup, object entityInstance, bool isNewInstance, float duration, object userData)
         {
+           
             try
             {
                 IEntity entity = m_EntityHelper.CreateEntity(entityInstance, entityGroup, userData);
@@ -1201,6 +1257,48 @@ namespace GameFramework.Entity
                 throw;
             }
         }
+        
+        
+        // private void InternalShowEntity(int entityId, UnityEngine.Object obj, EntityGroup entityGroup, object entityInstance, bool isNewInstance, float duration, object userData)
+        // {
+        //     try
+        //     {
+        //         IEntity entity = m_EntityHelper.CreateEntity(entityInstance, entityGroup, userData);
+        //         if (entity == null)
+        //         {
+        //             throw new GameFrameworkException("Can not create entity in entity helper.");
+        //         }
+        //
+        //         EntityInfo entityInfo = EntityInfo.Create(entity);
+        //         m_EntityInfos.Add(entityId, entityInfo);
+        //         entityInfo.Status = EntityStatus.WillInit;
+        //         entity.OnInit(entityId, obj.name, entityGroup, isNewInstance, userData);
+        //         entityInfo.Status = EntityStatus.Inited;
+        //         entityGroup.AddEntity(entity);
+        //         entityInfo.Status = EntityStatus.WillShow;
+        //         entity.OnShow(userData);
+        //         entityInfo.Status = EntityStatus.Showed;
+        //
+        //         if (m_ShowEntitySuccessEventHandler != null)
+        //         {
+        //             ShowEntitySuccessEventArgs showEntitySuccessEventArgs = ShowEntitySuccessEventArgs.Create(entity, duration, userData);
+        //             m_ShowEntitySuccessEventHandler(this, showEntitySuccessEventArgs);
+        //             ReferencePool.Release(showEntitySuccessEventArgs);
+        //         }
+        //     }
+        //     catch (Exception exception)
+        //     {
+        //         if (m_ShowEntityFailureEventHandler != null)
+        //         {
+        //             ShowEntityFailureEventArgs showEntityFailureEventArgs = ShowEntityFailureEventArgs.Create(entityId, obj.name, entityGroup.Name, exception.ToString(), userData);
+        //             m_ShowEntityFailureEventHandler(this, showEntityFailureEventArgs);
+        //             ReferencePool.Release(showEntityFailureEventArgs);
+        //             return;
+        //         }
+        //
+        //         throw;
+        //     }
+        // }
 
         private void InternalHideEntity(EntityInfo entityInfo, object userData)
         {
