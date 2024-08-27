@@ -807,8 +807,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soDataTables:
-  - {fileID: 11400000, guid: b7ed85f8e48d722499506fa9556e1f42, type: 2}
   - {fileID: 11400000, guid: 45e2dd12a073e154381593dda24add75, type: 2}
+  - {fileID: 11400000, guid: fac532d7b60326d428356f85f71ae810, type: 2}
+  - {fileID: 11400000, guid: 267d353147378f944a014d3810512bd1, type: 2}
+  - {fileID: 11400000, guid: b7ed85f8e48d722499506fa9556e1f42, type: 2}
+  - {fileID: 11400000, guid: 90c52290198fe464aac04e8d0a997fb3, type: 2}
+  - {fileID: 11400000, guid: d8e92e1bb33c9b446b6e1956b5502277, type: 2}
+  - {fileID: 11400000, guid: bb441dbbbd7894146ad6dec5402206c7, type: 2}
+  - {fileID: 11400000, guid: cde70e7cf26e2394983e69c5132a5434, type: 2}
+  - {fileID: 11400000, guid: cba095e70d74123439e914768dbdb1d7, type: 2}
+  - {fileID: 11400000, guid: beb0b83b548f43446aa9b3ee9270ceb4, type: 2}
+  - {fileID: 11400000, guid: a52df5e82c654b045b394beb02a47750, type: 2}
 --- !u!1 &1914096819
 GameObject:
   m_ObjectHideFlags: 0

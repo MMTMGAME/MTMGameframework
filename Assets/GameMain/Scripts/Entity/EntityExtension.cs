@@ -205,6 +205,7 @@ namespace GameMain
                 return;
             }
 
+            //原版读表代码
             // IDataTable<DREntity> dtEntity = GameEntry.DataTable.GetDataTable<DREntity>();
             // DREntity drEntity = dtEntity.GetDataRow(data.TypeId);
             // if (drEntity == null)
@@ -212,6 +213,9 @@ namespace GameMain
             //     Log.Warning("Can not load entity id '{0}' from data table.", data.TypeId.ToString());
             //     return;
             // }
+            //
+            // entityComponent.ShowEntity(data.Id, logicType, AssetUtility.GetEntityAsset(drEntity.AssetName), entityGroup, priority, data);
+
 
             var obj = GameEntry.SoDataTableComponent.GetSoDataRow<EntityDataRow>(data.TypeId).assetGameObject;
            

@@ -584,6 +584,11 @@ namespace UnityGameFramework.Runtime
         {
             return m_UIManager.OpenUIForm(uiFormAssetName, uiGroupName, priority, pauseCoveredUIForm, userData);
         }
+        
+        public int OpenUIFormByInstantiate(object obj, string uiGroupName, int priority, bool pauseCoveredUIForm, object userData)
+        {
+            return m_UIManager.OpenUIFormByInstantiate(obj, uiGroupName, priority, pauseCoveredUIForm, userData);
+        }
 
         /// <summary>
         /// 关闭界面。

@@ -763,6 +763,50 @@ namespace GameFramework.UI
             return serialId;
         }
 
+        public int OpenUIFormByInstantiate(object obj, string uiGroupName, int priority, bool pauseCoveredUIForm, object userData)
+        {
+            if (obj == null)
+            {
+                throw new GameFrameworkException("实例化uiForm错误，因为源文件为null");
+
+            }
+            if (m_ResourceManager == null)
+            {
+                throw new GameFrameworkException("You must set resource manager first.");
+            }
+
+            if (m_UIFormHelper == null)
+            {
+                throw new GameFrameworkException("You must set UI form helper first.");
+            }
+            
+
+            if (string.IsNullOrEmpty(uiGroupName))
+            {
+                throw new GameFrameworkException("UI group name is invalid.");
+            }
+
+            UIGroup uiGroup = (UIGroup)GetUIGroup(uiGroupName);
+            if (uiGroup == null)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("UI group '{0}' is not exist.", uiGroupName));
+            }
+
+            int serialId = ++m_Serial;
+            UIFormInstanceObject uiFormInstanceObject = m_InstancePool.Spawn(obj.ToString());
+            if (uiFormInstanceObject == null)
+            {
+                m_UIFormsBeingLoaded.Add(serialId, obj.ToString());
+                m_ResourceManager.LoadAssetByInstantiate((UnityEngine.Object)obj, priority, m_LoadAssetCallbacks, OpenUIFormInfo.Create(serialId, uiGroup, pauseCoveredUIForm, userData));
+            }
+            else
+            {
+                InternalOpenUIForm(serialId, obj.ToString(), uiGroup, uiFormInstanceObject.Target, pauseCoveredUIForm, false, 0f, userData);
+            }
+
+            return serialId;
+        }
+
         /// <summary>
         /// 关闭界面。
         /// </summary>
@@ -972,6 +1016,8 @@ namespace GameFramework.UI
                 throw;
             }
         }
+        
+        
 
         private void LoadAssetSuccessCallback(string uiFormAssetName, object uiFormAsset, float duration, object userData)
         {

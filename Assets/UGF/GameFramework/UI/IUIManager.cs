@@ -311,6 +311,18 @@ namespace GameFramework.UI
         int OpenUIForm(string uiFormAssetName, string uiGroupName, int priority, bool pauseCoveredUIForm, object userData);
 
         /// <summary>
+        /// 通过实例化生成
+        /// </summary>
+        /// <param name="uiFormAssetName"></param>
+        /// <param name="uiGroupName"></param>
+        /// <param name="priority"></param>
+        /// <param name="pauseCoveredUIForm"></param>
+        /// <param name="userData"></param>
+        /// <returns></returns>
+        int OpenUIFormByInstantiate(object obj, string uiGroupName, int priority, bool pauseCoveredUIForm, object userData);
+
+        
+        /// <summary>
         /// 关闭界面。
         /// </summary>
         /// <param name="serialId">要关闭界面的序列编号。</param>

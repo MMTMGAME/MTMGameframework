@@ -134,16 +134,43 @@ namespace GameMain
 
         public static int? OpenUIForm(this UIComponent uiComponent, int uiFormId, object userData = null)
         {
-            IDataTable<DRUIForm> dtUIForm = GameEntry.DataTable.GetDataTable<DRUIForm>();
-            DRUIForm drUIForm = dtUIForm.GetDataRow(uiFormId);
+            // IDataTable<DRUIForm> dtUIForm = GameEntry.DataTable.GetDataTable<DRUIForm>();
+            // DRUIForm drUIForm = dtUIForm.GetDataRow(uiFormId);
+            // if (drUIForm == null)
+            // {
+            //     Log.Warning("Can not load UI form '{0}' from data table.", uiFormId.ToString());
+            //     return null;
+            // }
+            //
+            // string assetName = AssetUtility.GetUIFormAsset(drUIForm.AssetName);
+            // if (!drUIForm.AllowMultiInstance)
+            // {
+            //     if (uiComponent.IsLoadingUIForm(assetName))
+            //     {
+            //         return null;
+            //     }
+            //
+            //     if (uiComponent.HasUIForm(assetName))
+            //     {
+            //         return null;
+            //     }
+            // }
+            //
+            // return uiComponent.OpenUIForm(assetName, drUIForm.UIGroupName, Constant.AssetPriority.UIFormAsset, drUIForm.PauseCoveredUIForm, userData);
+            //
+            
+            var drUIForm = GameEntry.SoDataTableComponent.GetSoDataRow<UiFormDataRow>(uiFormId);
+            
             if (drUIForm == null)
             {
                 Log.Warning("Can not load UI form '{0}' from data table.", uiFormId.ToString());
                 return null;
             }
 
-            string assetName = AssetUtility.GetUIFormAsset(drUIForm.AssetName);
-            if (!drUIForm.AllowMultiInstance)
+            var uiFormAsset = drUIForm.asset;
+
+            string assetName = uiFormAsset.ToString();
+            if (!drUIForm.allowMultiInstance)
             {
                 if (uiComponent.IsLoadingUIForm(assetName))
                 {
@@ -156,7 +183,8 @@ namespace GameMain
                 }
             }
 
-            return uiComponent.OpenUIForm(assetName, drUIForm.UIGroupName, Constant.AssetPriority.UIFormAsset, drUIForm.PauseCoveredUIForm, userData);
+            return uiComponent.OpenUIFormByInstantiate(uiFormAsset, drUIForm.uiGroupName, Constant.AssetPriority.UIFormAsset, drUIForm.pauseCoveredUIForm, userData);
+
         }
 
         public static void OpenDialog(this UIComponent uiComponent, DialogParams dialogParams)

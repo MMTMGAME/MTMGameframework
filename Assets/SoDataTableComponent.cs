@@ -38,7 +38,7 @@ public class SoDataTableComponent : GameFrameworkComponent
                 }
                 else
                 {
-                    Debug.LogWarning($"Table of row type {rowType} already exists.");
+                    Debug.LogError($"Table of row type {rowType} already exists.");
                 }
             }
             else
@@ -76,7 +76,7 @@ public class SoDataTableComponent : GameFrameworkComponent
             return table as SoDataTable<T>;
         }
 
-        Debug.LogWarning($"Table of row type {rowType} not found.");
+        Debug.LogError($"Table of row type {rowType} not found.");
         return null;
     }
 
@@ -97,11 +97,11 @@ public class SoDataTableComponent : GameFrameworkComponent
                 }
             }
 
-            Debug.LogWarning($"Row with ID {id} not found in table of row type {typeof(T)}.");
+            Debug.LogError($"Row with ID {id} not found in table of row type {typeof(T)}.");
         }
         else
         {
-            Debug.LogWarning($"Table of row type {typeof(T)} not found.");
+            Debug.LogError($"Table of row type {typeof(T)} not found.");
         }
 
         return null;
