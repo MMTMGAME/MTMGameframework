@@ -490,6 +490,63 @@ namespace GameFramework.Sound
             return serialId;
         }
 
+        public int PlaySoundByObj(object audioClip, string soundGroupName, int priority, PlaySoundParams playSoundParams,
+            object userData)
+        {
+            if (m_ResourceManager == null)
+            {
+                throw new GameFrameworkException("You must set resource manager first.");
+            }
+
+            if (m_SoundHelper == null)
+            {
+                throw new GameFrameworkException("You must set sound helper first.");
+            }
+
+            if (playSoundParams == null)
+            {
+                playSoundParams = PlaySoundParams.Create();
+            }
+
+            int serialId = ++m_Serial;
+            PlaySoundErrorCode? errorCode = null;
+            string errorMessage = null;
+            SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);
+            if (soundGroup == null)
+            {
+                errorCode = PlaySoundErrorCode.SoundGroupNotExist;
+                errorMessage = Utility.Text.Format("Sound group '{0}' is not exist.", soundGroupName);
+            }
+            else if (soundGroup.SoundAgentCount <= 0)
+            {
+                errorCode = PlaySoundErrorCode.SoundGroupHasNoAgent;
+                errorMessage = Utility.Text.Format("Sound group '{0}' is have no sound agent.", soundGroupName);
+            }
+
+            if (errorCode.HasValue)
+            {
+                if (m_PlaySoundFailureEventHandler != null)
+                {
+                    PlaySoundFailureEventArgs playSoundFailureEventArgs = PlaySoundFailureEventArgs.Create(serialId, audioClip.ToString(), soundGroupName, playSoundParams, errorCode.Value, errorMessage, userData);
+                    m_PlaySoundFailureEventHandler(this, playSoundFailureEventArgs);
+                    ReferencePool.Release(playSoundFailureEventArgs);
+
+                    if (playSoundParams.Referenced)
+                    {
+                        ReferencePool.Release(playSoundParams);
+                    }
+
+                    return serialId;
+                }
+
+                throw new GameFrameworkException(errorMessage);
+            }
+
+            m_SoundsBeingLoaded.Add(serialId);
+            m_ResourceManager.LoadAssetByInstantiate((UnityEngine.Object)audioClip, priority, m_LoadAssetCallbacks, PlaySoundInfo.Create(serialId, soundGroup, playSoundParams, userData));
+            return serialId;
+        }
+
         /// <summary>
         /// 停止播放声音。
         /// </summary>

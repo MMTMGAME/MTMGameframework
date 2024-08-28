@@ -429,6 +429,12 @@ namespace UnityGameFramework.Runtime
         {
             return PlaySound(soundAssetName, soundGroupName, priority, playSoundParams, null, userData);
         }
+        
+        //重载
+        public int PlaySoundByObj(object audioClip, string soundGroupName, int priority, PlaySoundParams playSoundParams, object userData)
+        {
+            return PlaySoundByObj(audioClip, soundGroupName, priority, playSoundParams, null, userData);
+        }
 
         /// <summary>
         /// 播放声音。
@@ -458,6 +464,12 @@ namespace UnityGameFramework.Runtime
         {
             return m_SoundManager.PlaySound(soundAssetName, soundGroupName, priority, playSoundParams, PlaySoundInfo.Create(bindingEntity, Vector3.zero, userData));
         }
+        
+        //重载
+        public int PlaySoundByObj(object audioClip, string soundGroupName, int priority, PlaySoundParams playSoundParams, Entity bindingEntity, object userData)
+        {
+            return m_SoundManager.PlaySoundByObj(audioClip, soundGroupName, priority, playSoundParams, PlaySoundInfo.Create(bindingEntity, Vector3.zero, userData));
+        }
 
         /// <summary>
         /// 播放声音。
@@ -486,6 +498,11 @@ namespace UnityGameFramework.Runtime
         public int PlaySound(string soundAssetName, string soundGroupName, int priority, PlaySoundParams playSoundParams, Vector3 worldPosition, object userData)
         {
             return m_SoundManager.PlaySound(soundAssetName, soundGroupName, priority, playSoundParams, PlaySoundInfo.Create(null, worldPosition, userData));
+        }
+        
+        public int PlaySoundByObj(object audioClip, string soundGroupName, int priority, PlaySoundParams playSoundParams, Vector3 worldPosition, object userData)
+        {
+            return m_SoundManager.PlaySoundByObj(audioClip, soundGroupName, priority, playSoundParams, PlaySoundInfo.Create(null, worldPosition, userData));
         }
 
         /// <summary>

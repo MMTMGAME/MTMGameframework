@@ -56,7 +56,9 @@ namespace DesignerScripts
                     ubm.AddBindEntity(bpName, sightEffectId, "", false);
                 }
             }
-            
+
+            //测试用音效
+            GameEntry.Sound.PlaySound(30000, bullet.transform.position);
             Debug.Log($"CreateDamage");
             GameEntry.Combat.CreateDamage(
                 bulletState.caster, 

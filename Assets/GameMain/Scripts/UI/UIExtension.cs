@@ -169,7 +169,7 @@ namespace GameMain
 
             var uiFormAsset = drUIForm.asset;
 
-            string assetName = uiFormAsset.ToString();
+            string assetName = uiFormAsset.name;
             if (!drUIForm.allowMultiInstance)
             {
                 if (uiComponent.IsLoadingUIForm(assetName))

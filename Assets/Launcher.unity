@@ -661,6 +661,10 @@ PrefabInstance:
       propertyPath: m_EntityGroups.Array.data[8].m_InstanceAutoReleaseInterval
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1844984924396876165, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
+      propertyPath: m_EditorResourceMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1844984924396921253, guid: 362832bc2874d7c40bfffd39298fd230, type: 3}
       propertyPath: m_SoundGroups.Array.data[1].m_AvoidBeingReplacedBySamePriority
       value: 0
