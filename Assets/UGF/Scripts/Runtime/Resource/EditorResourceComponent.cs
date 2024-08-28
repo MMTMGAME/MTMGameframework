@@ -965,6 +965,11 @@ namespace UnityGameFramework.Runtime
             LoadAsset(assetName, null, DefaultPriority, loadAssetCallbacks, null);
         }
 
+        public void LoadAssetByInstantiate(Object asset, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            LoadAssetByInstantiate(asset,null, DefaultPriority, loadAssetCallbacks, null);
+        }
+
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -974,6 +979,11 @@ namespace UnityGameFramework.Runtime
         public void LoadAsset(string assetName, Type assetType, LoadAssetCallbacks loadAssetCallbacks)
         {
             LoadAsset(assetName, assetType, DefaultPriority, loadAssetCallbacks, null);
+        }
+
+        public void LoadAssetByInstantiate(Object asset, Type assetType, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            LoadAssetByInstantiate(asset, assetType, DefaultPriority, loadAssetCallbacks, null);
         }
 
         /// <summary>
@@ -987,6 +997,12 @@ namespace UnityGameFramework.Runtime
             LoadAsset(assetName, null, priority, loadAssetCallbacks, null);
         }
 
+        public void LoadAssetByInstantiate(Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            LoadAssetByInstantiate(asset, null, priority, loadAssetCallbacks, null);
+
+        }
+
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -996,6 +1012,12 @@ namespace UnityGameFramework.Runtime
         public void LoadAsset(string assetName, LoadAssetCallbacks loadAssetCallbacks, object userData)
         {
             LoadAsset(assetName, null, DefaultPriority, loadAssetCallbacks, userData);
+        }
+
+        public void LoadAssetByInstantiate(Object asset, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            LoadAssetByInstantiate(asset, null, DefaultPriority, loadAssetCallbacks, userData);
+
         }
 
         /// <summary>
@@ -1010,6 +1032,11 @@ namespace UnityGameFramework.Runtime
             LoadAsset(assetName, assetType, priority, loadAssetCallbacks, null);
         }
 
+        public void LoadAssetByInstantiate(Object asset, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            LoadAssetByInstantiate(asset, assetType, priority, loadAssetCallbacks, null);
+        }
+
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -1020,6 +1047,11 @@ namespace UnityGameFramework.Runtime
         public void LoadAsset(string assetName, Type assetType, LoadAssetCallbacks loadAssetCallbacks, object userData)
         {
             LoadAsset(assetName, assetType, DefaultPriority, loadAssetCallbacks, userData);
+        }
+
+        public void LoadAssetByInstantiate(Object asset, Type assetType, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            LoadAssetByInstantiate(asset, assetType, DefaultPriority, loadAssetCallbacks, userData);
         }
 
         /// <summary>
@@ -1033,6 +1065,12 @@ namespace UnityGameFramework.Runtime
         {
             LoadAsset(assetName, null, priority, loadAssetCallbacks, userData);
         }
+        
+        public void LoadAssetByInstantiate(Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            LoadAssetByInstantiate(asset,null,priority,loadAssetCallbacks,userData);
+        }
+       
 
         /// <summary>
         /// 异步加载资源。
@@ -1082,19 +1120,11 @@ namespace UnityGameFramework.Runtime
 
             m_LoadAssetInfos.AddLast(new LoadAssetInfo(assetName, assetType, priority, DateTime.UtcNow, m_MinLoadAssetRandomDelaySeconds + (float)Utility.Random.GetRandomDouble() * (m_MaxLoadAssetRandomDelaySeconds - m_MinLoadAssetRandomDelaySeconds), loadAssetCallbacks, userData));
         }
-        
-        
-        
-        /// <summary>
-        /// 通过实例化。
-        /// </summary>
-        /// <param name="assetName">要加载资源的名称。</param>
-        /// <param name="assetType">要加载资源的类型。</param>
-        /// <param name="priority">加载资源的优先级。</param>
-        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void LoadAssetByInstantiate(Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
+
+        public void LoadAssetByInstantiate(Object asset, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks,
+            object userData)
         {
+           
             if (loadAssetCallbacks == null)
             {
                 Log.Error("Load asset callbacks is invalid.");
@@ -1127,11 +1157,8 @@ namespace UnityGameFramework.Runtime
                     loadAssetCallbacks.LoadAssetFailureCallback(ret.name, LoadResourceStatus.AssetError, "实例化加载asset失败.", userData);
                 }
             }
-
-           
         }
-        
-        
+
 
         /// <summary>
         /// 卸载资源。
@@ -1151,6 +1178,8 @@ namespace UnityGameFramework.Runtime
         {
             LoadScene(sceneAssetName, DefaultPriority, loadSceneCallbacks, null);
         }
+
+        
 
         /// <summary>
         /// 异步加载场景。
@@ -1231,6 +1260,40 @@ namespace UnityGameFramework.Runtime
 
             m_LoadSceneInfos.AddLast(new LoadSceneInfo(asyncOperation, sceneAssetName, priority, DateTime.UtcNow, loadSceneCallbacks, userData));
         }
+        
+        //移除掉不必要的检测
+        public void LoadSceneSimply(string sceneAssetName, int priority, LoadSceneCallbacks loadSceneCallbacks, object userData)
+        {
+            if (loadSceneCallbacks == null)
+            {
+                Log.Error("Load scene callbacks is invalid.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(sceneAssetName))
+            {
+                if (loadSceneCallbacks.LoadSceneFailureCallback != null)
+                {
+                    loadSceneCallbacks.LoadSceneFailureCallback(sceneAssetName, LoadResourceStatus.NotExist, "Scene asset name is invalid.", userData);
+                }
+
+                return;
+            }
+            
+
+#if UNITY_5_5_OR_NEWER
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneAssetName, LoadSceneMode.Additive);
+#else
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(SceneComponent.GetSceneName(sceneAssetName), LoadSceneMode.Additive);
+#endif
+            if (asyncOperation == null)
+            {
+                return;
+            }
+
+            m_LoadSceneInfos.AddLast(new LoadSceneInfo(asyncOperation, sceneAssetName, priority, DateTime.UtcNow, loadSceneCallbacks, userData));
+
+        }
 
         /// <summary>
         /// 异步卸载场景。
@@ -1256,11 +1319,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".unity", StringComparison.Ordinal))
-            {
-                Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
-                return;
-            }
+           
 
             if (unloadSceneCallbacks == null)
             {
@@ -1268,11 +1327,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (!HasFile(sceneAssetName))
-            {
-                Log.Error("Scene '{0}' is not exist.", sceneAssetName);
-                return;
-            }
+          
 
 #if UNITY_5_5_OR_NEWER
             AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(sceneAssetName);

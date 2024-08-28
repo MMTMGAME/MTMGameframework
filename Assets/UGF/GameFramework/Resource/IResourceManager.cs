@@ -520,6 +520,8 @@ namespace GameFramework.Resource
         /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
         void LoadAsset(string assetName, LoadAssetCallbacks loadAssetCallbacks);
 
+        void LoadAssetByInstantiate(UnityEngine.Object asset,  LoadAssetCallbacks loadAssetCallbacks);
+
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -527,6 +529,9 @@ namespace GameFramework.Resource
         /// <param name="assetType">要加载资源的类型。</param>
         /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
         void LoadAsset(string assetName, Type assetType, LoadAssetCallbacks loadAssetCallbacks);
+
+        
+        void LoadAssetByInstantiate(UnityEngine.Object asset,  Type assetType, LoadAssetCallbacks loadAssetCallbacks);
 
         /// <summary>
         /// 异步加载资源。
@@ -536,6 +541,8 @@ namespace GameFramework.Resource
         /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
         void LoadAsset(string assetName, int priority, LoadAssetCallbacks loadAssetCallbacks);
 
+        void LoadAssetByInstantiate(UnityEngine.Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks);
+
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -543,6 +550,8 @@ namespace GameFramework.Resource
         /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
         /// <param name="userData">用户自定义数据。</param>
         void LoadAsset(string assetName, LoadAssetCallbacks loadAssetCallbacks, object userData);
+
+        void LoadAssetByInstantiate(UnityEngine.Object asset,  LoadAssetCallbacks loadAssetCallbacks, object userData);
 
         /// <summary>
         /// 异步加载资源。
@@ -553,6 +562,8 @@ namespace GameFramework.Resource
         /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
         void LoadAsset(string assetName, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks);
 
+        void LoadAssetByInstantiate(UnityEngine.Object asset, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks);
+
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -562,6 +573,9 @@ namespace GameFramework.Resource
         /// <param name="userData">用户自定义数据。</param>
         void LoadAsset(string assetName, Type assetType, LoadAssetCallbacks loadAssetCallbacks, object userData);
 
+        void LoadAssetByInstantiate(UnityEngine.Object asset,  Type assetType, LoadAssetCallbacks loadAssetCallbacks, object userData);
+
+        
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -570,15 +584,7 @@ namespace GameFramework.Resource
         /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
         /// <param name="userData">用户自定义数据。</param>
         void LoadAsset(string assetName, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData);
-
-
-        /// <summary>
-        /// 通过实例化直接复制
-        /// </summary>
-        /// <param name="asset"></param>
-        /// <param name="priority"></param>
-        /// <param name="loadAssetCallbacks"></param>
-        /// <param name="userData"></param>
+        
         void LoadAssetByInstantiate(UnityEngine.Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData);
         
         
@@ -592,6 +598,10 @@ namespace GameFramework.Resource
         /// <param name="userData">用户自定义数据。</param>
         void LoadAsset(string assetName, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData);
 
+        
+        void LoadAssetByInstantiate(UnityEngine.Object asset, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData);
+
+        
         /// <summary>
         /// 卸载资源。
         /// </summary>
@@ -629,6 +639,9 @@ namespace GameFramework.Resource
         /// <param name="loadSceneCallbacks">加载场景回调函数集。</param>
         /// <param name="userData">用户自定义数据。</param>
         void LoadScene(string sceneAssetName, int priority, LoadSceneCallbacks loadSceneCallbacks, object userData);
+        //直接加载
+        
+        void LoadSceneSimply(string sceneAssetName, int priority, LoadSceneCallbacks loadSceneCallbacks, object userData);
 
         /// <summary>
         /// 异步卸载场景。

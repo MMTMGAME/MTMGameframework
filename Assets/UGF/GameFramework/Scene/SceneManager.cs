@@ -384,7 +384,7 @@ namespace GameFramework.Scene
             }
 
             m_LoadingSceneAssetNames.Add(sceneAssetName);
-            m_ResourceManager.LoadScene(sceneAssetName, priority, m_LoadSceneCallbacks, userData);
+            m_ResourceManager.LoadSceneSimply(sceneAssetName, priority, m_LoadSceneCallbacks, userData);
         }
 
         /// <summary>

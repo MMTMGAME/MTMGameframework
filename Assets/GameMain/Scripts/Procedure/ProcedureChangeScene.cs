@@ -8,6 +8,7 @@
 using System;
 using GameFramework.DataTable;
 using GameFramework.Event;
+using UnityEngine;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -60,17 +61,20 @@ namespace GameMain
 
             int sceneId = procedureOwner.GetData<VarInt32>("NextSceneId");
             m_ChangeToMenu = sceneId == MenuSceneId;
-            IDataTable<DRScene> dtScene = GameEntry.DataTable.GetDataTable<DRScene>();
-            DRScene drScene = dtScene.GetDataRow(sceneId);
+            
+            var  drScene = GameMain.GameEntry.SoDataTableComponent.GetSoDataRow<SceneDataRow>(sceneId);
             if (drScene == null)
             {
                 Log.Warning("Can not load scene '{0}' from data table.", sceneId.ToString());
                 return;
             }
 
-            
-            GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset, this);
-            m_BackgroundMusicId = drScene.BackgroundMusicId;
+
+            Debug.Log(drScene);
+            Debug.Log(drScene.sceneAsset);
+            Debug.Log(drScene.sceneAsset.name);
+            GameEntry.Scene.LoadScene(drScene.sceneAsset.name, Constant.AssetPriority.SceneAsset, this);
+            m_BackgroundMusicId = drScene.sceneBgmId;
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

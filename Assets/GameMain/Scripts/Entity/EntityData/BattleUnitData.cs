@@ -32,9 +32,8 @@ public class BattleUnitData : EntityData
     [SerializeField]
     private int m_DeadSoundId = 0;
 
-    private string weaponPath0;
-    private string weaponPath1;
-    private string weaponPath2;
+    private string weaponPathKey;
+   
 
     public int DieScore;
 
@@ -54,14 +53,11 @@ public class BattleUnitData : EntityData
         switch (index)
         {
             case 0:
-                return weaponPath0;
-            case 1:
-                return weaponPath1;
-            case 2:
-                return weaponPath2;
+                return weaponPathKey;
+            
         }
 
-        return "";
+        return weaponPathKey;
     }
 
     public BattleUnitData(int entityId, int typeId, CampType camp) : base(entityId, typeId)
@@ -69,25 +65,24 @@ public class BattleUnitData : EntityData
 
         this.Camp = camp;
         
-        IDataTable<DRBattleUnit> dtBattleUnits = GameEntry.DataTable.GetDataTable<DRBattleUnit>();
-        DRBattleUnit drBattleUnit = dtBattleUnits.GetDataRow(TypeId);
+        //IDataTable<DRBattleUnit> dtBattleUnits = GameEntry.DataTable.GetDataTable<DRBattleUnit>();
+        var drBattleUnit = GameEntry.SoDataTableComponent.GetSoDataRow<BattleUnitDataRow>(TypeId);
         if (drBattleUnit == null)
         {
             return;
         }
 
-        weaponPath0 = drBattleUnit.WeaponPath0;
-        weaponPath1 = drBattleUnit.WeaponPath1;
-        weaponPath2 = drBattleUnit.WeaponPath2;
+        weaponPathKey = drBattleUnit.weaponPathKey;
+        
 
-        DieScore = drBattleUnit.DieScore;
+        DieScore = drBattleUnit.dieScore;
 
-        baseHP = drBattleUnit.BaseHP;
-        baseAttack = drBattleUnit.BaseAttack;
-        baseDefense = drBattleUnit.BaseAttack;
-        baseMP = drBattleUnit.BaseMP;
-        baseMoveSpeed = drBattleUnit.BaseMoveSpeed;
-        baseActionSpeed = drBattleUnit.BaseActionSpeed;
+        baseHP = drBattleUnit.baseHp;
+        baseAttack = drBattleUnit.baseAttack;
+        baseDefense = drBattleUnit.baseDefense;
+        baseMP = drBattleUnit.baseMp;
+        baseMoveSpeed = drBattleUnit.baseMoveSpeed;
+        baseActionSpeed = drBattleUnit.baseActionSpeed;
         
         for (int index = 0, weaponId = 0; (weaponId = drBattleUnit.GetWeaponIdAt(index)) > 0; index++)
         {
@@ -99,8 +94,8 @@ public class BattleUnitData : EntityData
             AttachArmorData(new ArmorData(GameEntry.Entity.GenerateSerialId(), armorId, Id, Camp));
         }
 
-        m_DeadEffectId = drBattleUnit.DeadEffectId;
-        m_DeadSoundId = drBattleUnit.DeadSoundId;
+        m_DeadEffectId = drBattleUnit.deadEffectId;
+        m_DeadSoundId = drBattleUnit.deadSoundId;
 
         
     }

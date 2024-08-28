@@ -26,31 +26,31 @@ namespace GameMain
         public ArmorData(int entityId, int typeId, int ownerId, CampType ownerCamp)
             : base(entityId, typeId, ownerId, ownerCamp)
         {
-            IDataTable<DRArmor> dtArmor = GameEntry.DataTable.GetDataTable<DRArmor>();
-            DRArmor drArmor = dtArmor.GetDataRow(TypeId);
+            //IDataTable<DRArmor> dtArmor = GameEntry.DataTable.GetDataTable<DRArmor>();
+            var drArmor = GameEntry.SoDataTableComponent.GetSoDataRow<ArmorDataRow>(TypeId);
             if (drArmor == null)
             {
                 return;
             }
             
-            path = drArmor.Path;
+            path = drArmor.pathKey;
             
             //属性
-            propMod[0].hp = drArmor.HPAdd;
-            propMod[0].mp = drArmor.MPAdd;
-            propMod[0].attack = drArmor.AttackAdd;
-            propMod[0].defense = drArmor.DefenseAdd;
-            propMod[0].moveSpeed = drArmor.MoveSpeedAdd;
-            propMod[0].actionSpeed = drArmor.ActionSpeedAdd;
+            propMod[0].hp = drArmor.hpAdd;
+            propMod[0].mp = drArmor.mpAdd;
+            propMod[0].attack = drArmor.attackAdd;
+            propMod[0].defense = drArmor.defenseAdd;
+            propMod[0].moveSpeed = drArmor.moveSpeedAdd;
+            propMod[0].actionSpeed = drArmor.actionSpeedAdd;
 
-            propMod[1].hp = drArmor.HPTimes;
-            propMod[1].mp = drArmor.MPTimes;
-            propMod[1].attack = drArmor.AttackTimes;
-            propMod[1].defense = drArmor.DefenseTimes;
-            propMod[0].moveSpeed = drArmor.MoveSpeedTimes;
-            propMod[0].actionSpeed = drArmor.MoveSpeedTimes;
+            propMod[1].hp = drArmor.hpTimes;
+            propMod[1].mp = drArmor.mpTimes;
+            propMod[1].attack = drArmor.attackTimes;
+            propMod[1].defense = drArmor.defenseTimes;
+            propMod[0].moveSpeed = drArmor.moveSpeedTimes;
+            propMod[0].actionSpeed = drArmor.actionSpeedTimes;
 
-            buffs = drArmor.Buffs.Split(",").ToList();
+            buffs = drArmor.buffs.ToList();
         }
 
         

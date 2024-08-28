@@ -153,6 +153,11 @@ namespace GameFramework
             ReadData(dataAssetName, Constant.DefaultPriority, null);
         }
 
+        public void ReadDataByObj(object dataAsset)
+        {
+            ReadDataByObj(dataAsset, Constant.DefaultPriority, null);
+        }
+
         /// <summary>
         /// 读取数据。
         /// </summary>
@@ -163,6 +168,11 @@ namespace GameFramework
             ReadData(dataAssetName, priority, null);
         }
 
+        public void ReadDataByObj(object dataAsset, int priority)
+        {
+            ReadDataByObj(dataAsset, priority, null);
+        }
+
         /// <summary>
         /// 读取数据。
         /// </summary>
@@ -171,6 +181,11 @@ namespace GameFramework
         public void ReadData(string dataAssetName, object userData)
         {
             ReadData(dataAssetName, Constant.DefaultPriority, userData);
+        }
+
+        public void ReadDataByObj(object dataAsset, object userData)
+        {
+            ReadDataByObj(dataAsset,Constant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -243,6 +258,21 @@ namespace GameFramework
                 default:
                     throw new GameFrameworkException(Utility.Text.Format("Data asset '{0}' is '{1}'.", dataAssetName, result));
             }
+        }
+        
+        public void ReadDataByObj(object dataAsset, int priority, object userData)
+        {
+            if (m_ResourceManager == null)
+            {
+                throw new GameFrameworkException("You must set resource manager first.");
+            }
+
+            if (m_DataProviderHelper == null)
+            {
+                throw new GameFrameworkException("You must set data provider helper first.");
+            }
+
+            m_ResourceManager.LoadAssetByInstantiate((UnityEngine.Object)dataAsset, priority, m_LoadAssetCallbacks, userData);
         }
 
         /// <summary>

@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Collections.Generic;
 using GameFramework;
 using GameFramework.Config;
 using GameFramework.Resource;
@@ -19,6 +20,9 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Config")]
     public sealed class ConfigComponent : GameFrameworkComponent
     {
+
+      
+        
         private const int DefaultPriority = 0;
 
         private IConfigManager m_ConfigManager = null;
@@ -159,6 +163,11 @@ namespace UnityGameFramework.Runtime
         {
             m_ConfigManager.ReadData(configAssetName);
         }
+        
+        public void ReadDataByObj(object configAsset)
+        {
+            m_ConfigManager.ReadDataByObj(configAsset);
+        }
 
         /// <summary>
         /// 读取全局配置。
@@ -168,6 +177,11 @@ namespace UnityGameFramework.Runtime
         public void ReadData(string configAssetName, int priority)
         {
             m_ConfigManager.ReadData(configAssetName, priority);
+        }
+        
+        public void ReadDataByObj(object configAsset,int priority)
+        {
+            m_ConfigManager.ReadDataByObj(configAsset,priority);
         }
 
         /// <summary>
@@ -179,6 +193,11 @@ namespace UnityGameFramework.Runtime
         {
             m_ConfigManager.ReadData(configAssetName, userData);
         }
+        
+        public void ReadDataByObj(object configAsset, object userData)
+        {
+            m_ConfigManager.ReadDataByObj(configAsset, userData);
+        }
 
         /// <summary>
         /// 读取全局配置。
@@ -189,6 +208,11 @@ namespace UnityGameFramework.Runtime
         public void ReadData(string configAssetName, int priority, object userData)
         {
             m_ConfigManager.ReadData(configAssetName, priority, userData);
+        }
+        
+        public void ReadDataByObj(object configAsset, int priority, object userData)
+        {
+            m_ConfigManager.ReadDataByObj(configAsset, priority, userData);
         }
 
         /// <summary>

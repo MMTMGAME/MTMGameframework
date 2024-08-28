@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14aba16fe5cee6d4f8e25dc5a224d2dd, type: 3}
+  m_Script: {fileID: 11500000, guid: c52da2cc9e691a74384403d855c6a7f6, type: 3}
   m_Name: WeaponDataTable
   m_EditorClassIdentifier: 
   soDataRows:

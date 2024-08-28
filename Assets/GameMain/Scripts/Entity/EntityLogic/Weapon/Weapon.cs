@@ -81,12 +81,12 @@ namespace GameMain
             var battleUnit = ownerEntity.Logic as BattleUnit;
             GameEntry.Entity.AttachEntity(Entity, m_WeaponData.OwnerId, battleUnit.GetBattleUnitData().GetWeaponPath(m_WeaponData.SlotIndex));
             
-            if(WeaponAttack==null)//避免对象池重复添加
-                AddAttackLogicComponent(m_WeaponData.AttackLogicComponent);
-            else
-            {
-                WeaponAttack.Init(this);
-            }
+            // if(WeaponAttack==null)//避免对象池重复添加
+            //     AddAttackLogicComponent(m_WeaponData.AttackLogicComponent);
+            // else
+            // {
+            //     WeaponAttack.Init(this);
+            // }
         }
         
         private void AddAttackLogicComponent(string className)
@@ -131,7 +131,7 @@ namespace GameMain
 
         public virtual void HandleAnimEvent(string eventName)
         {
-            WeaponAttack.HandleAnimeEvent(eventName);
+            //WeaponAttack.HandleAnimeEvent(eventName);
         }
 
        

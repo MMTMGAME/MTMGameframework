@@ -353,6 +353,46 @@ namespace GameFramework.Resource
                     m_ResourceManager.UpdateResource(resourceInfo.ResourceName);
                 }
             }
+            
+            public void LoadAssetByInstantiate(string assetName, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
+            {
+                ResourceInfo resourceInfo = null;
+                string[] dependencyAssetNames = null;
+                if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames))
+                {
+                    string errorMessage = Utility.Text.Format("Can not load asset '{0}'.", assetName);
+                    if (loadAssetCallbacks.LoadAssetFailureCallback != null)
+                    {
+                        loadAssetCallbacks.LoadAssetFailureCallback(assetName, resourceInfo != null && !resourceInfo.Ready ? LoadResourceStatus.NotReady : LoadResourceStatus.NotExist, errorMessage, userData);
+                        return;
+                    }
+
+                    throw new GameFrameworkException(errorMessage);
+                }
+
+                
+                LoadAssetTask mainTask = LoadAssetTask.Create(assetName, assetType, priority, resourceInfo, dependencyAssetNames, loadAssetCallbacks, userData);
+                foreach (string dependencyAssetName in dependencyAssetNames)
+                {
+                    if (!LoadDependencyAsset(dependencyAssetName, priority, mainTask, userData))
+                    {
+                        string errorMessage = Utility.Text.Format("Can not load dependency asset '{0}' when load asset '{1}'.", dependencyAssetName, assetName);
+                        if (loadAssetCallbacks.LoadAssetFailureCallback != null)
+                        {
+                            loadAssetCallbacks.LoadAssetFailureCallback(assetName, LoadResourceStatus.DependencyError, errorMessage, userData);
+                            return;
+                        }
+
+                        throw new GameFrameworkException(errorMessage);
+                    }
+                }
+
+                m_TaskPool.AddTask(mainTask);
+                if (!resourceInfo.Ready)
+                {
+                    m_ResourceManager.UpdateResource(resourceInfo.ResourceName);
+                }
+            }
 
             /// <summary>
             /// 卸载资源。
@@ -938,6 +978,11 @@ namespace GameFramework.Resource
 
                 ReferencePool.Release(loadBinaryInfo);
             }
+        }
+
+        public void LoadSceneSimply(string sceneAssetName, int priority, LoadSceneCallbacks loadSceneCallbacks, object userData)
+        {
+            throw new NotImplementedException();
         }
     }
 }

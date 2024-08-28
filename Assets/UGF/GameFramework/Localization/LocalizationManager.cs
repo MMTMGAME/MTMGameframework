@@ -224,6 +224,11 @@ namespace GameFramework.Localization
             m_DataProvider.ReadData(dictionaryAssetName);
         }
 
+        public void ReadDataByObj(object dataAsset)
+        {
+            m_DataProvider.ReadDataByObj(dataAsset);
+        }
+
         /// <summary>
         /// 读取字典。
         /// </summary>
@@ -232,6 +237,11 @@ namespace GameFramework.Localization
         public void ReadData(string dictionaryAssetName, int priority)
         {
             m_DataProvider.ReadData(dictionaryAssetName, priority);
+        }
+
+        public void ReadDataByObj(object dataAsset, int priority)
+        {
+            m_DataProvider.ReadDataByObj(dataAsset, priority);
         }
 
         /// <summary>
@@ -244,6 +254,11 @@ namespace GameFramework.Localization
             m_DataProvider.ReadData(dictionaryAssetName, userData);
         }
 
+        public void ReadDataByObj(object dataAsset, object userData)
+        {
+            m_DataProvider.ReadDataByObj(dataAsset, userData);
+        }
+
         /// <summary>
         /// 读取字典。
         /// </summary>
@@ -253,6 +268,11 @@ namespace GameFramework.Localization
         public void ReadData(string dictionaryAssetName, int priority, object userData)
         {
             m_DataProvider.ReadData(dictionaryAssetName, priority, userData);
+        }
+
+        public void ReadDataByObj(object dataAsset, int priority, object userData)
+        {
+            m_DataProvider.ReadDataByObj(dataAsset, priority, userData);
         }
 
         /// <summary>

@@ -203,7 +203,9 @@ namespace UnityGameFramework.Runtime
                 Utility.Converter.ScreenDpi = DefaultDpi;
             }
 
-            m_EditorResourceMode &= Application.isEditor;
+            //框架现在调整为轻量模式，不需要用其他模式了
+            //m_EditorResourceMode &= Application.isEditor;
+            m_EditorResourceMode =true;
             if (m_EditorResourceMode)
             {
                 Log.Info("During this run, Game Framework will use editor resource files, which you should validate first.");

@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class SceneDataRow:SoDataRow
 {
-    public SceneAsset sceneAsset;
+    public Scene sceneAsset;
     public int sceneBgmId;
 }
 

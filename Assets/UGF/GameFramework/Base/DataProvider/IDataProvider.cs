@@ -40,6 +40,8 @@ namespace GameFramework
         /// </summary>
         /// <param name="dataAssetName">内容资源名称。</param>
         void ReadData(string dataAssetName);
+        
+        void ReadDataByObj(object dataAsset);
 
         /// <summary>
         /// 读取数据。
@@ -48,6 +50,8 @@ namespace GameFramework
         /// <param name="priority">加载数据资源的优先级。</param>
         void ReadData(string dataAssetName, int priority);
 
+        void ReadDataByObj(object dataAsset, int priority);
+        
         /// <summary>
         /// 读取数据。
         /// </summary>
@@ -55,6 +59,8 @@ namespace GameFramework
         /// <param name="userData">用户自定义数据。</param>
         void ReadData(string dataAssetName, object userData);
 
+        void ReadDataByObj(object dataAsset, object userData);
+        
         /// <summary>
         /// 读取数据。
         /// </summary>
@@ -63,6 +69,7 @@ namespace GameFramework
         /// <param name="userData">用户自定义数据。</param>
         void ReadData(string dataAssetName, int priority, object userData);
 
+        void ReadDataByObj(object dataAsset, int priority, object userData);
         /// <summary>
         /// 解析内容。
         /// </summary>

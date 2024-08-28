@@ -128,11 +128,11 @@ public class EntityUiComponent : GameFrameworkComponent
     {
         ShowEntityUiItemInfo showEntityUiItemInfo=userData as ShowEntityUiItemInfo;
         int typeId = showEntityUiItemInfo.typeId;
-        IDataTable<DREntityUi> table = GameEntry.DataTable.GetDataTable<DREntityUi>();
-        var element = table.GetDataRow(typeId);
+        //IDataTable<DREntityUi> table = GameEntry.DataTable.GetDataTable<DREntityUi>();
+        var element = GameEntry.SoDataTableComponent.GetSoDataRow<EntityUiDataRow>(typeId);
 
         bool needNewInstance=false;
-        bool isSingleton = element.IsSingleton;
+        bool isSingleton = element.isSingleton;
         if (isSingleton)
         {
            
@@ -165,9 +165,9 @@ public class EntityUiComponent : GameFrameworkComponent
         if(!needNewInstance)
             return;
         
-        var assetName = AssetUtility.GetEntityUiAsset(element.AssetName);
-        
-        resourceManager.LoadAsset(assetName, 100, loadAssetCallbacks, userData);
+        //var assetName = AssetUtility.GetEntityUiAsset(element.ass);
+        var obj = element.assetGameObject;
+        resourceManager.LoadAssetByInstantiate(obj, 100, loadAssetCallbacks, userData);
 
     }
 

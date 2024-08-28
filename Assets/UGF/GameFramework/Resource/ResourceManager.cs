@@ -11,6 +11,7 @@ using GameFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace GameFramework.Resource
@@ -1476,6 +1477,11 @@ namespace GameFramework.Resource
             m_ResourceLoader.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, null);
         }
 
+        public void LoadAssetByInstantiate(Object asset, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -1495,6 +1501,11 @@ namespace GameFramework.Resource
             }
 
             m_ResourceLoader.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, null);
+        }
+
+        public void LoadAssetByInstantiate(Object asset, Type assetType, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -1518,6 +1529,11 @@ namespace GameFramework.Resource
             m_ResourceLoader.LoadAsset(assetName, null, priority, loadAssetCallbacks, null);
         }
 
+        public void LoadAssetByInstantiate(Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -1537,6 +1553,11 @@ namespace GameFramework.Resource
             }
 
             m_ResourceLoader.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, userData);
+        }
+
+        public void LoadAssetByInstantiate(Object asset, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -1561,6 +1582,11 @@ namespace GameFramework.Resource
             m_ResourceLoader.LoadAsset(assetName, assetType, priority, loadAssetCallbacks, null);
         }
 
+        public void LoadAssetByInstantiate(Object asset, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 异步加载资源。
         /// </summary>
@@ -1581,6 +1607,11 @@ namespace GameFramework.Resource
             }
 
             m_ResourceLoader.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, userData);
+        }
+
+        public void LoadAssetByInstantiate(Object asset, Type assetType, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -1607,7 +1638,40 @@ namespace GameFramework.Resource
 
         public void LoadAssetByInstantiate(Object asset, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
         {
-            throw new NotImplementedException();
+            if (loadAssetCallbacks == null)
+            {
+                Debug.LogError("Load asset callbacks is invalid.");
+                return;
+            }
+
+            if (asset==null)
+            {
+                if (loadAssetCallbacks.LoadAssetFailureCallback != null)
+                {
+                    loadAssetCallbacks.LoadAssetFailureCallback("", LoadResourceStatus.NotExist, "实例化生成资源失败，目标asset为null", userData);
+                }
+
+                return;
+            }
+
+            UnityEngine.Object ret =asset;
+            
+            if (ret != null)
+            {
+                if (loadAssetCallbacks != null)
+                {
+                    loadAssetCallbacks.LoadAssetSuccessCallback(ret.name, ret, 0, userData);
+                }
+            }
+            else
+            {
+                if (loadAssetCallbacks != null)
+                {
+                    loadAssetCallbacks.LoadAssetFailureCallback(ret.name, LoadResourceStatus.AssetError, "实例化加载asset失败.", userData);
+                }
+            }
+
+           
         }
 
 
@@ -1632,6 +1696,12 @@ namespace GameFramework.Resource
             }
 
             m_ResourceLoader.LoadAsset(assetName, assetType, priority, loadAssetCallbacks, userData);
+        }
+
+        public void LoadAssetByInstantiate(Object asset, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks,
+            object userData)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

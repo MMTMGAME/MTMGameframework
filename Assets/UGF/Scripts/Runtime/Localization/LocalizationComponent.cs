@@ -186,6 +186,11 @@ namespace UnityGameFramework.Runtime
         {
             m_LocalizationManager.ReadData(dictionaryAssetName);
         }
+        
+        public void ReadDataByObj(object dictionaryAsse)
+        {
+            m_LocalizationManager.ReadDataByObj(dictionaryAsse);
+        }
 
         /// <summary>
         /// 读取字典。
@@ -195,6 +200,11 @@ namespace UnityGameFramework.Runtime
         public void ReadData(string dictionaryAssetName, int priority)
         {
             m_LocalizationManager.ReadData(dictionaryAssetName, priority);
+        }
+        
+        public void ReadDataByObj(object dictionaryAsset, int priority)
+        {
+            m_LocalizationManager.ReadDataByObj(dictionaryAsset, priority);
         }
 
         /// <summary>
@@ -206,6 +216,11 @@ namespace UnityGameFramework.Runtime
         {
             m_LocalizationManager.ReadData(dictionaryAssetName, userData);
         }
+        
+        public void ReadDataByObj(object dictionaryAsset, object userData)
+        {
+            m_LocalizationManager.ReadDataByObj(dictionaryAsset, userData);
+        }
 
         /// <summary>
         /// 读取字典。
@@ -216,6 +231,11 @@ namespace UnityGameFramework.Runtime
         public void ReadData(string dictionaryAssetName, int priority, object userData)
         {
             m_LocalizationManager.ReadData(dictionaryAssetName, priority, userData);
+        }
+        
+        public void ReadDataByObj(object dictionaryAsset, int priority, object userData)
+        {
+            m_LocalizationManager.ReadDataByObj(dictionaryAsset, priority, userData);
         }
 
         /// <summary>

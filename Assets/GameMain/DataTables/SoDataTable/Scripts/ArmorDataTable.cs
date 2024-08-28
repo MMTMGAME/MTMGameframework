@@ -9,17 +9,17 @@ public class ArmorDataRow:SoDataRow
     [Header("附加路径")]
     public string pathKey;
     public int hpAdd;
-    public float hpTimes;
+    public int hpTimes;
     public int mpAdd;
-    public float mpTimes;
+    public int mpTimes;
     public int attackAdd;
-    public float attackTimes;
+    public int attackTimes;
     public int defenseAdd;
-    public float defenseTimes;
+    public int defenseTimes;
     public int moveSpeedAdd;
-    public float moveSpeedTimes;
+    public int moveSpeedTimes;
     public int actionSpeedAdd;
-    public float actionSpeedTimes;
+    public int actionSpeedTimes;
     public string[] buffs;
 }
 

@@ -45,8 +45,8 @@ namespace GameMain
         public WeaponData(int entityId, int typeId, int ownerId, CampType ownerCamp,int slotIndex)
             : base(entityId, typeId, ownerId, ownerCamp)
         {
-            IDataTable<DRWeapon> dtWeapon = GameEntry.DataTable.GetDataTable<DRWeapon>();
-            DRWeapon drWeapon = dtWeapon.GetDataRow(TypeId);
+            //IDataTable<DRWeapon> dtWeapon = GameEntry.DataTable.GetDataTable<DRWeapon>();
+            var drWeapon = GameEntry.SoDataTableComponent.GetSoDataRow<WeaponDataRow>(TypeId);
             if (drWeapon == null)
             {
                 return;
@@ -54,31 +54,26 @@ namespace GameMain
 
             this.slotIndex = slotIndex;
            
-            m_AttackInterval = drWeapon.AttackInterval;
-            m_BulletId = drWeapon.BulletId;
-            m_BulletSpeed = drWeapon.BulletSpeed;
-            m_ShootSoundId = drWeapon.ShootSoundId;
-            
-            attackLogicComponent = drWeapon.AttackLogicComponent;
-            shootPointPath = drWeapon.ShootPoint;
+            m_AttackInterval = drWeapon.attackInterval;
+           
             
             //属性
-            propMod[0].hp = drWeapon.HPAdd;
-            propMod[0].mp = drWeapon.MPAdd;
-            propMod[0].attack = drWeapon.AttackAdd;
-            propMod[0].defense = drWeapon.DefenseAdd;
-            propMod[0].moveSpeed = drWeapon.MoveSpeedAdd;
-            propMod[0].actionSpeed = drWeapon.ActionSpeedAdd;
+            propMod[0].hp = drWeapon.hpAdd;
+            propMod[0].mp = drWeapon.mpAdd;
+            propMod[0].attack = drWeapon.attackAdd;
+            propMod[0].defense = drWeapon.defenseAdd;
+            propMod[0].moveSpeed = drWeapon.moveSpeedAdd;
+            propMod[0].actionSpeed = drWeapon.actionSpeedAdd;
 
-            propMod[1].hp = drWeapon.HPTimes;
-            propMod[1].mp = drWeapon.MPTimes;
-            propMod[1].attack = drWeapon.AttackTimes;
-            propMod[1].defense = drWeapon.DefenseTimes;
-            propMod[1].moveSpeed = drWeapon.MoveSpeedTimes;
-            propMod[1].actionSpeed = drWeapon.ActionSpeedTimes;
+            propMod[1].hp = drWeapon.hpTimes;
+            propMod[1].mp = drWeapon.mpTimes;
+            propMod[1].attack = drWeapon.attackTimes;
+            propMod[1].defense = drWeapon.defenseTimes;
+            propMod[1].moveSpeed = drWeapon.moveSpeedTimes;
+            propMod[1].actionSpeed = drWeapon.actionSpeedTimes;
 
-            skills = drWeapon.Skills.Split(",").ToList();
-            buffs = drWeapon.Buffs.Split(",").ToList();
+            skills = drWeapon.skills.ToList();
+            buffs = drWeapon.buffs.ToList();
         }
 
       

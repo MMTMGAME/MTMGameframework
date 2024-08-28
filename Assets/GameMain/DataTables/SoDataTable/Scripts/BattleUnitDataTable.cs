@@ -27,6 +27,42 @@ public class BattleUnitDataRow:SoDataRow
     [Header("单位自带技能和buff，区别于武器的技能和buff")]
     public string[] skills;
     public string[] buffs;
+
+    public int GetArmorIdAt(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return armorId0;
+            case 1:
+                return armorId1;
+            case 2:
+                return armorId2;
+            case 3:
+                return 0;
+            
+            default:
+                return armorId0;
+        }
+
+        return armorId0;
+    }
+    
+    public int GetWeaponIdAt(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return weaponId;
+           
+            case 1:
+                return 0;
+            default:
+                return weaponId;
+        }
+
+        return weaponId;
+    }
 }
 
 [CreateAssetMenu(menuName = "GameMain/DataTable/BattleUnitDataTable",fileName = "BattleUnitDataTable")]

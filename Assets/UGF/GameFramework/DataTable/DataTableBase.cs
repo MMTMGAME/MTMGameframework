@@ -143,6 +143,11 @@ namespace GameFramework.DataTable
             m_DataProvider.ReadData(dataTableAssetName);
         }
 
+        public void ReadDataByObj(object dataAsset)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 读取数据表。
         /// </summary>
@@ -151,6 +156,11 @@ namespace GameFramework.DataTable
         public void ReadData(string dataTableAssetName, int priority)
         {
             m_DataProvider.ReadData(dataTableAssetName, priority);
+        }
+
+        public void ReadDataByObj(object dataAsset, int priority)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -163,6 +173,11 @@ namespace GameFramework.DataTable
             m_DataProvider.ReadData(dataTableAssetName, userData);
         }
 
+        public void ReadDataByObj(object dataAsset, object userData)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 读取数据表。
         /// </summary>
@@ -172,6 +187,11 @@ namespace GameFramework.DataTable
         public void ReadData(string dataTableAssetName, int priority, object userData)
         {
             m_DataProvider.ReadData(dataTableAssetName, priority, userData);
+        }
+
+        public void ReadDataByObj(object dataAsset, int priority, object userData)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

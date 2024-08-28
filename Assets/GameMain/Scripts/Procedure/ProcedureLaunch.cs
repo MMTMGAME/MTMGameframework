@@ -7,6 +7,7 @@
 
 using GameFramework.Localization;
 using System;
+using UnityEngine;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -53,6 +54,7 @@ namespace GameMain
 
         private void InitLanguageSettings()
         {
+            Debug.Log("EditorResourceMode?"+GameEntry.Base.EditorResourceMode);
             if (GameEntry.Base.EditorResourceMode && GameEntry.Base.EditorLanguage != Language.Unspecified)
             {
                 // 编辑器资源模式直接使用 Inspector 上设置的语言

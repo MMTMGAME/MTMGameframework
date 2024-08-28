@@ -290,11 +290,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".unity", StringComparison.Ordinal))
-            {
-                Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
-                return;
-            }
+          
 
             m_SceneManager.LoadScene(sceneAssetName, priority, userData);
         }
@@ -321,11 +317,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (!sceneAssetName.StartsWith("Assets/", StringComparison.Ordinal) || !sceneAssetName.EndsWith(".unity", StringComparison.Ordinal))
-            {
-                Log.Error("Scene asset name '{0}' is invalid.", sceneAssetName);
-                return;
-            }
+           
 
             m_SceneManager.UnloadScene(sceneAssetName, userData);
             m_SceneOrder.Remove(sceneAssetName);

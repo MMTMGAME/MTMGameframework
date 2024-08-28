@@ -96,19 +96,24 @@ namespace GameMain
         private void PreloadResources()
         {
             // Preload configs
-            LoadConfig("DefaultConfig");
+            //LoadConfig("DefaultConfig");
+
+            LoadConfigByObj("DefaultConfig");
 
             // Preload data tables
-            foreach (string dataTableName in DataTableNames)
-            {
-                LoadDataTable(dataTableName);
-            }
+            // foreach (string dataTableName in DataTableNames)
+            // {
+            //     LoadDataTable(dataTableName);
+            // }
 
             // Preload dictionaries
-            LoadDictionary("Default");
+            //LoadDictionary("Default");
+
+            LoadDictionaryByObj("Default");
+            
 
             // Preload fonts
-            LoadFont("MainFont");
+            //LoadFont("MainFont");
         }
 
         private void LoadConfig(string configName)
@@ -116,6 +121,14 @@ namespace GameMain
             string configAssetName = AssetUtility.GetConfigAsset(configName, false);
             m_LoadedFlag.Add(configAssetName, false);
             GameEntry.Config.ReadData(configAssetName, this);
+        }
+
+        public void LoadConfigByObj(string  configName)
+        {
+            var configsHolder = GameEntry.Config.GetComponent<ConfigsHolder>();
+            var configAsset = configsHolder.GetConfig(configName);
+            m_LoadedFlag.Add(configName, false);
+            GameEntry.Config.ReadDataByObj(configAsset, this);
         }
 
         private void LoadDataTable(string dataTableName)
@@ -131,6 +144,15 @@ namespace GameMain
             m_LoadedFlag.Add(dictionaryAssetName, false);
             GameEntry.Localization.ReadData(dictionaryAssetName, this);
         }
+
+        private void LoadDictionaryByObj(string dictionaryName)
+        {
+            var configsHolder = GameEntry.Localization.GetComponent<dictionariesHolder>();
+            var configAsset = configsHolder.GetConfig(dictionaryName);
+            m_LoadedFlag.Add(dictionaryName, false);
+            GameEntry.Localization.ReadDataByObj(configAsset, this);
+        }
+        
 
         private void LoadFont(string fontName)
         {

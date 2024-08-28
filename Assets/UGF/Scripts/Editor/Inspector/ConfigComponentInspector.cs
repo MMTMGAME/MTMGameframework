@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Collections.Generic;
 using UnityEditor;
 using UnityGameFramework.Runtime;
 
@@ -13,6 +14,7 @@ namespace UnityGameFramework.Editor
     [CustomEditor(typeof(ConfigComponent))]
     internal sealed class ConfigComponentInspector : GameFrameworkInspector
     {
+        
         private SerializedProperty m_EnableLoadConfigUpdateEvent = null;
         private SerializedProperty m_EnableLoadConfigDependencyAssetEvent = null;
         private SerializedProperty m_CachedBytesSize = null;

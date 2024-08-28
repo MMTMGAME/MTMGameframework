@@ -186,6 +186,11 @@ namespace GameFramework.Config
             m_DataProvider.ReadData(configAssetName);
         }
 
+        public void ReadDataByObj(object dataAsset)
+        {
+            m_DataProvider.ReadDataByObj(dataAsset);
+        }
+
         /// <summary>
         /// 读取全局配置。
         /// </summary>
@@ -194,6 +199,11 @@ namespace GameFramework.Config
         public void ReadData(string configAssetName, int priority)
         {
             m_DataProvider.ReadData(configAssetName, priority);
+        }
+
+        public void ReadDataByObj(object dataAsset, int priority)
+        {
+            m_DataProvider.ReadDataByObj(dataAsset, priority);
         }
 
         /// <summary>
@@ -206,6 +216,11 @@ namespace GameFramework.Config
             m_DataProvider.ReadData(configAssetName, userData);
         }
 
+        public void ReadDataByObj(object dataAsset, object userData)
+        {
+            m_DataProvider.ReadDataByObj(dataAsset, userData);
+        }
+
         /// <summary>
         /// 读取全局配置。
         /// </summary>
@@ -215,6 +230,11 @@ namespace GameFramework.Config
         public void ReadData(string configAssetName, int priority, object userData)
         {
             m_DataProvider.ReadData(configAssetName, priority, userData);
+        }
+
+        public void ReadDataByObj(object dataAsset, int priority, object userData)
+        {
+            m_DataProvider.ReadDataByObj(dataAsset, priority, userData);
         }
 
         /// <summary>
