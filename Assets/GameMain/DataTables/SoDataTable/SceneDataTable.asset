@@ -15,33 +15,33 @@ MonoBehaviour:
   soDataRows:
   - id: 1
     comment: "\u83DC\u5355\u573A\u666F"
-    sceneAsset: {fileID: 102900000, guid: b031b4f2980561542a7f7ba41391edc3, type: 3}
+    sceneName: Menu
     sceneBgmId: 1
   - id: 2
     comment: "\u5173\u53611"
-    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneName: Level_1
     sceneBgmId: 2
   - id: 3
     comment: "\u5173\u53612"
-    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneName: Level_2
     sceneBgmId: 2
   - id: 4
     comment: "\u5173\u53613"
-    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneName: Level_3
     sceneBgmId: 2
   - id: 5
     comment: "\u5173\u53614"
-    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneName: Level_4
     sceneBgmId: 2
   - id: 6
     comment: "\u5173\u53615"
-    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneName: Level_5
     sceneBgmId: 2
   - id: 7
     comment: "\u5173\u53616"
-    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneName: Level_6
     sceneBgmId: 2
   - id: 8
     comment: "\u5173\u53617"
-    sceneAsset: {fileID: 102900000, guid: 69907256eec356240951a718a5269ef9, type: 3}
+    sceneName: 
     sceneBgmId: 2

@@ -113,7 +113,7 @@ namespace GameMain
             
 
             // Preload fonts
-            //LoadFont("MainFont");
+            LoadFontByObj("MainFont");
         }
 
         private void LoadConfig(string configName)
@@ -169,6 +169,55 @@ namespace GameMain
                 {
                     Log.Error("Can not load font '{0}' from '{1}' with error message '{2}'.", fontName, assetName, errorMessage);
                 }));
+        }
+        
+        private void LoadFontByObj(string fontName)
+        {
+            m_LoadedFlag.Add(Utility.Text.Format("Font.{0}", fontName), false);
+            // GameEntry.Resource.LoadAsset(AssetUtility.GetFontAsset(fontName), Constant.AssetPriority.FontAsset, new LoadAssetCallbacks(
+            //     (assetName, asset, duration, userData) =>
+            //     {
+            //         m_LoadedFlag[Utility.Text.Format("Font.{0}", fontName)] = true;
+            //         UGuiForm.SetMainFont((Font)asset);
+            //         Log.Info("Load font '{0}' OK.", fontName);
+            //     },
+            //
+            //     (assetName, status, errorMessage, userData) =>
+            //     {
+            //         Log.Error("Can not load font '{0}' from '{1}' with error message '{2}'.", fontName, assetName, errorMessage);
+            //     }));
+            
+            
+            var loadAssetCallbacks=new LoadAssetCallbacks(
+                (assetName, asset, duration, userData) =>
+                {
+                    m_LoadedFlag[Utility.Text.Format("Font.{0}", fontName)] = true;
+                    UGuiForm.SetMainFont((Font)asset);
+                    Log.Info("Load font '{0}' OK.", fontName);
+                },
+
+                (assetName, status, errorMessage, userData) =>
+                {
+                    Log.Error("Can not load font '{0}' from '{1}' with error message '{2}'.", fontName, assetName, errorMessage);
+                });
+
+            var asset = GameEntry.Localization.GetComponent<FontAssetHolder>().fontAsset;
+
+            if (asset==null)
+            {
+                if (loadAssetCallbacks.LoadAssetFailureCallback != null)
+                {
+                    loadAssetCallbacks.LoadAssetFailureCallback("", LoadResourceStatus.NotExist, "实例化生成资源失败，目标asset为null", null);
+                }
+
+                return;
+            }
+
+            if (asset != null)
+            {
+                loadAssetCallbacks.LoadAssetSuccessCallback(asset.name, asset, 0, null);
+            }
+        
         }
 
         private void OnLoadConfigSuccess(object sender, GameEventArgs e)

@@ -71,9 +71,9 @@ namespace GameMain
 
 
             Debug.Log(drScene);
-            Debug.Log(drScene.sceneAsset);
-            Debug.Log(drScene.sceneAsset.name);
-            GameEntry.Scene.LoadScene(drScene.sceneAsset.name, Constant.AssetPriority.SceneAsset, this);
+            Debug.Log(drScene.sceneName);
+            
+            GameEntry.Scene.LoadScene(drScene.sceneName, Constant.AssetPriority.SceneAsset, this);
             m_BackgroundMusicId = drScene.sceneBgmId;
         }
 

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 
 [System.Serializable]
 public class SceneDataRow:SoDataRow
 {
-    public Scene sceneAsset;
+    [FormerlySerializedAs("sceneAsset")] public string sceneName;
     public int sceneBgmId;
 }
 
