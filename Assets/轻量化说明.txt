@@ -1,0 +1,54 @@
+本次轻量化关闭了Assetbundle加载，Assetbundle使用表格等形式加载已经失效。
+要正常使用轻量化，需要开启GameFramework的Editor resources模式，否则无法正常使用、
+
+原理：
+	替换了ResourceEditorMode的加载模式，将AssetDataBase.Load移除，改为根据预制体加载对应相关资源。在之前的框架内容中通过assetbundle加载的东西为了避免过大的改动，现在都移动到了scriptableObject和GameFramework预制体的相关组件中。具体如下：
+	1.表格相关。
+		在GameMain/DataTable/SoDataTable中创建了之前的表格的替代的ScriptableObject进行之前的各种配置表格实体表格的存储。
+	2.Config,本地化,字体等文件。
+		依然存放于之前对应的目录，Config文件在GameMain/Configs。本地化文件存放在GameMain/Localization/。字体文件存放在GameMain/Fonts文件中。为避免使用动态加载，上面的响应文件应该拖拽到相关组件的相关Holder中。
+		如Config文件应拖拽到GameFramework的config component的ConfigHolder组件中。
+		字体文件和本地化文件拖拽到GameFramework的Localization的DictionarieHolder和FontAssetHolder组件中。
+
+
+新的表格系统的使用。
+	现在新的表格系统其实是ScriptAbleObject，一个so代表一种表，我创建了GameFramework.SoDataTableComponent进行管理。
+	so文件统一存储在GameMain/Datatable/SoDataTable中。
+	要在代码中使用SoDataTableComponent,使用GameMain.SoDataTableComponent.GetDataRow<T>(id);即可。
+	举例：
+        var drAi = aiTable.GetDataRow(TypeId) as AiDataRow;
+        if (drAi != null)
+        {
+            AIData = new AIData()
+            {
+                Radius = drAi.radius,
+                stateGraphAsset = drAi.stateGraph,
+                AttackDistance = drAi.attackDistance,
+                AddAIMove = drAi.addAiMove,
+                AddAIRotate = drAi.addAiMove
+            };
+        }
+
+    *如果要创建新的表格，需要定义表格类和表格列。
+    表格类定义秩序定义类名和表格列类型和创建方式。如下：
+    首先是表格类，表格类用来区分不同表和创建so文件。
+    [CreateAssetMenu(menuName = "GameMain/DataTable/AiDataTable",fileName = "AiDataTable")]
+	public class AiDataTable : SoDataTable<AiDataRow>
+	{
+  		//无需代码，内容存储已在父类定义
+	}
+	然后创建表格列结构，注意要添加[System.Serializable]属性
+	public class AiDataRow : SoDataRow
+	{
+	    public StateGraphAsset stateGraph;
+	    public float radius;
+	    public float attackDistance;
+	    public bool addAiMove;
+	    public bool addAiRotate;
+	}
+	编写以上代码即可通过鼠标右键创建相应So，然后把so拖放到SoDataTableComponent中即可识别。
+
+
+	注意：在SoDataTableComponent不能存储多个相同表格类的So，同类应该存储在同一个表中，如需要存储多个同结构的表，请创建不同名的新的表格类和表格列。
+
+
