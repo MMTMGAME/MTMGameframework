@@ -31,6 +31,8 @@ MonoBehaviour:
     baseActionSpeed: 100
     skills: []
     buffs: []
+    hideTime: 0
+    tags: []
   - id: 20000
     comment: "\u8BAD\u7EC3\u4EBA\u5076"
     weaponId: 30000
@@ -49,10 +51,12 @@ MonoBehaviour:
     baseActionSpeed: 100
     skills: []
     buffs: []
+    hideTime: 0
+    tags: []
   - id: 20001
     comment: "\u54E5\u5E03\u6797"
     weaponId: 30002
-    weaponPathKey: 
+    weaponPathKey: RightHandWeaponPoint
     armorId0: 40000
     armorId1: 0
     armorId2: 0
@@ -65,12 +69,16 @@ MonoBehaviour:
     baseDefense: 25
     baseMoveSpeed: 100
     baseActionSpeed: 100
-    skills: []
+    skills:
+    - goblinRAttack
+    - goblinSkill0
     buffs: []
+    hideTime: 0
+    tags: []
   - id: 20002
     comment: "\u54E5\u5E03\u6797\u5C04\u624B"
     weaponId: 30003
-    weaponPathKey: 
+    weaponPathKey: LeftHandWeaponPoint
     armorId0: 40000
     armorId1: 0
     armorId2: 0
@@ -83,5 +91,9 @@ MonoBehaviour:
     baseDefense: 25
     baseMoveSpeed: 100
     baseActionSpeed: 100
-    skills: []
+    skills:
+    - goblinShooterShoot
+    - goblinShooterSkill0
     buffs: []
+    hideTime: 0
+    tags: []

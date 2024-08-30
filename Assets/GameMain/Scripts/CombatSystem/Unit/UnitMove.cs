@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,15 +28,34 @@ public class UnitMove : MonoBehaviour
     //要移动的方向的力，单位：米/秒。
     private Vector3 velocity = Vector3.zero;
 
+    public bool posLimit = true;
     void FixedUpdate() {
-        if (canMove == false || velocity == Vector3.zero) return;   
+        if (canMove == false || velocity == Vector3.zero )
+        {
+            if (posLimit)
+            {
+                var nowPos = transform.position;
+               //某些特殊情况下要限制位置，这里没有实现
+                transform.position = nowPos;
+            }
+           
+            return;
+        }
         
-
+        //velocity.y = 0;
         var targetPos = transform.position+(velocity*Time.fixedDeltaTime);
 
+        if (posLimit)
+        {
+           
+           
+        }
         transform.position = targetPos;
+        
 
-        velocity = Vector3.zero;
+        velocity = Vector3.zero;//清零，避免施加一次移动后停不下来了
+        
+        
     }
 
     

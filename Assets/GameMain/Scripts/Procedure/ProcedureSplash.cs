@@ -28,7 +28,7 @@ namespace GameMain
             // TODO: 这里可以播放一个 Splash 动画
             // ...
 
-            if (GameEntry.Base.EditorResourceMode || GameEntry.Resource.ResourceMode == ResourceMode.ScriptableObject)
+            if (GameEntry.Base.EditorResourceMode)
             {
                 // 编辑器模式
                 Log.Info("Editor resource mode detected.");

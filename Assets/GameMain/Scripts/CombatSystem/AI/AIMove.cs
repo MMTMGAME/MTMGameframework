@@ -1,13 +1,45 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityGameFramework.Runtime;
 
 public class AIMove : MonoBehaviour
 {
     private UnitMove m_UnitMove;
 
-    private UnitMove UnitMove
+    protected GroundChecker groundChecker;
+
+    protected Rigidbody rb;
+
+    protected Animator animator;
+
+    private void Awake()
+    {
+        groundChecker = gameObject.GetOrAddComponent<GroundChecker>();
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void OnEnable()
+    {
+        groundChecker.onGroundedStatusChange += OnGroundedStatusChange;
+        
+    }
+
+    private void OnDisable()
+    {
+        groundChecker.onGroundedStatusChange -= OnGroundedStatusChange;
+    }
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+    }
+
+
+    protected UnitMove UnitMove
     {
         get
         {
@@ -20,7 +52,7 @@ public class AIMove : MonoBehaviour
     }
 
     private NavMeshAgent m_NavMeshAgent;
-    private NavMeshAgent NavMeshAgent
+    protected NavMeshAgent NavMeshAgent
     {
         get
         {
@@ -33,7 +65,9 @@ public class AIMove : MonoBehaviour
     }
 
     private ChaState m_ChaState;
-    private ChaState ChaState
+    private static readonly int IsGround = Animator.StringToHash("IsGround");
+
+    protected ChaState ChaState
     {
         get
         {
@@ -45,8 +79,11 @@ public class AIMove : MonoBehaviour
         }
     }
 
+    
+   
+
     // FixedUpdate is used for physics-based update
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         if (UnitMove != null && NavMeshAgent != null)
         {
@@ -71,4 +108,48 @@ public class AIMove : MonoBehaviour
 
         }
     }
+
+    private void Update()
+    {
+        animator.SetBool(IsGround,groundChecker.grounded);
+        try
+        {
+            if (groundChecker.grounded)
+            {
+                
+                // if (ChaState.GetBuffById("CollideAnimHandle").Count > 0)
+                // {
+                //     Debug.LogError("AIMove_update_grounded_Trigger_Bounce");
+                //     ChaState.AddAnimOrder(UnitAnim.AnimOrderType.Float, "BounceSpeed", rb.velocity.magnitude);
+                //     ChaState.AddAnimOrder(UnitAnim.AnimOrderType.Trigger, "Bounce");
+                // }
+            }
+            
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+    }
+
+    public void OnGroundedStatusChange(bool status)
+    {
+        if (status)
+        {
+            //落地
+
+            if (ChaState)
+            {
+               
+              
+            }
+           
+        }
+        else
+        {
+           
+        }
+    }
+   
+
 }

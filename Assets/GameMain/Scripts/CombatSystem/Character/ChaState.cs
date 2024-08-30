@@ -13,6 +13,7 @@ public class ChaState:MonoBehaviour{
     ///<summary>
     //角色最终的可操作性状态
     ///</summary>
+    [SerializeField]
     private ChaControlState _controlState = new ChaControlState(true, true, true);
 
     ///<summary>
@@ -132,8 +133,8 @@ public class ChaState:MonoBehaviour{
     ///</summary>
     public float MoveSpeed{get{
         //这个公式也可以通过给策划脚本接口获得，这里就写代码里了，不走策划脚本了
-        //设定，值=0.2+5.6*x/(x+100)，初始速度是100，移动力3米/秒，最小值0.2米/秒。
-        return this._prop.moveSpeed * 5.600f / (this._prop.moveSpeed + 100.000f) + 0.200f;
+        
+        return this._prop.moveSpeed * 0.03f;
     }}
 
     ///<summary>
@@ -176,6 +177,9 @@ public class ChaState:MonoBehaviour{
     ///</summary>
     public List<BuffObj> buffs = new List<BuffObj>();
 
+    //Debug用
+    public List<string> buffIds = new List<string>();
+
     //装备，不控制装备，只获取装备数据进行属性计算
     public List<Weapon> weapons = new List<Weapon>();
     public List<Armor> armors = new List<Armor>();
@@ -187,6 +191,20 @@ public class ChaState:MonoBehaviour{
     private UnitBindManager bindPoints;
     //private GameObject viewContainer;
 
+    public UnitMove GetUnitMove()
+    {
+        return unitMove;
+    }
+    
+    public UnitRotate GetUnitRotate()
+    {
+        return unitRotate;
+    }
+    
+    public UnitBindManager GetBindManager()
+    {
+        return bindPoints;
+    }
     void Start() {
         rotateToOrder = transform.rotation;
 
@@ -217,10 +235,16 @@ public class ChaState:MonoBehaviour{
                 buffs[i].timeElapsed += timePassed;
 
                 if (buffs[i].model.tickTime > 0 && buffs[i].model.onTick != null){
-                    //float取模不精准，所以用x1000后的整数来
-                    if (Mathf.RoundToInt(buffs[i].timeElapsed * 1000) % Mathf.RoundToInt(buffs[i].model.tickTime * 1000) == 0){
-                        buffs[i].model.onTick(buffs[i]);
+                    // 初始设置下一次执行时间
+                    if (buffs[i].nextTickTime == 0) {
+                        buffs[i].nextTickTime = buffs[i].model.tickTime;
+                    }
+
+                    // 检查当前累计时间是否已经达到下一次执行时间
+                    if (buffs[i].timeElapsed >= buffs[i].nextTickTime) {
+                        buffs[i].model.onTick(buffs[i]);  // 执行操作
                         buffs[i].ticked += 1;
+                        buffs[i].nextTickTime += buffs[i].model.tickTime;  // 更新下一次执行时间
                     }
                 }
 
@@ -273,10 +297,11 @@ public class ChaState:MonoBehaviour{
             //然后是旋转信息
             if (unitRotate)
             {
+                
                 if (curCS.canRotate == false) rotateToOrder = transform.rotation;
                 for (int i = 0; i < forceRotate.Count; i++){
                     //这里全是增量，而不是设定为
-                    rotateToOrder *= forceRotate[i];//四元数用乘法表示连续应用
+                    rotateToOrder *= forceRotate[i];//四元数用乘法表示连续应用,尚未完全接入
                 }
                 unitRotate.RotateTo(rotateToOrder); 
                 forceRotate.Clear();
@@ -371,6 +396,11 @@ public class ChaState:MonoBehaviour{
         this.animOrders.Add(new AnimOrder(animOrderType,param,value));
     }
 
+    public Animator GetAnimator()
+    {
+        return animator;
+    }
+
     ///<summary>
     ///杀死这个角色
     ///</summary>
@@ -392,11 +422,22 @@ public class ChaState:MonoBehaviour{
         this._prop.Zero();
 
         for (var i = 0; i < buffProp.Length; i++) buffProp[i].Zero();
+        
         for (int i = 0; i < this.buffs.Count; i++){
-            for (int j = 0; j < Mathf.Min(buffProp.Length, buffs[i].model.propMod.Length); j++){
-                buffProp[j] += buffs[i].model.propMod[j] * buffs[i].stack;
+            if (buffs[i].model.propMod != null)//我加了null判定，之前没触发估计是都用不到？
+            {
+                for (int j = 0; j < Mathf.Min(buffProp.Length, buffs[i].model.propMod.Length); j++){
+                    buffProp[j] += buffs[i].model.propMod[j] * buffs[i].stack;
+                }
             }
             _controlState += buffs[i].model.stateMod;
+           
+        }
+
+        buffIds.Clear();
+        foreach (var buff in this.buffs)
+        {
+            buffIds.Add(buff.model.id);
         }
 
         for (int i = 0; i < weapons.Count; i++)
@@ -454,6 +495,41 @@ public class ChaState:MonoBehaviour{
         bindPoints.RemoveBindGameObject(bindPointKey, effectKey);
     }
 
+    public void SetBindPointChildrenActive(string key,bool targetStatus)
+    {
+        var bindPoint = GetBindManager().GetBindPointByKey(key);
+        if (bindPoint != null)
+        {
+            var children = FindAllChildObjects(bindPoint.transform);
+            foreach (var child in children)
+            {
+                if(bindPoint.gameObject==child.gameObject)
+                    continue;
+                child.gameObject.SetActive(targetStatus);
+            }
+           
+        }
+    }
+    
+    List<Transform> FindAllChildObjects(Transform parent)
+    {
+        List<Transform> childrenList = new List<Transform>();
+
+        // 遍历当前父物体的所有直接子物体
+        foreach (Transform child in parent)
+        {
+            childrenList.Add(child); // 添加子物体到列表中
+
+            // 递归查找该子物体的子物体
+            if (child.childCount > 0)
+            {
+                childrenList.AddRange(FindAllChildObjects(child)); // 合并子物体的列表
+            }
+        }
+
+        return childrenList;
+    }
+
     ///<summary>
     ///判断这个角色是否会被这个damageInfo所杀
     ///<param name="dInfo">要判断的damageInfo</param>
@@ -465,8 +541,16 @@ public class ChaState:MonoBehaviour{
         return dValue >= this.resource.hp;
     }
 
+
+    public void AddBuff(string buffId, GameObject caster, GameObject target, int stack, float duration,
+        bool durationSetTo, bool permanent,  Dictionary<string, object> buffParam = null)
+    {
+        var model = DesingerTables.Buff.data[buffId];
+        AddBuff(new AddBuffInfo(model, caster, target, stack, duration, durationSetTo, permanent, buffParam));
+    }
+    
     ///<summary>
-    ///为角色添加buff，当然，删除也是走这个的
+    ///为角色添加buff，当然，删除也是走这个的，要删除的话caster记得填null，否则会寻找由caster添加的buff进行删除
     ///</summary>
     public void AddBuff(AddBuffInfo buff){
         List<GameObject> bCaster = new List<GameObject>();
@@ -542,6 +626,14 @@ public class ChaState:MonoBehaviour{
         }
         return null;
     }
+
+    public bool CastSkill(int index)
+    {
+        if (skills.Count <= index)
+            return false;
+        var skillId = skills[index].model.id;
+        return CastSkill(skillId);
+    }
     
     ///<summary>
     ///释放一个技能，释放技能并不总是成功的，如果你一直发释放技能的命令，那失败率应该是骤增的
@@ -573,6 +665,15 @@ public class ChaState:MonoBehaviour{
         return castSuccess;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        for (int i = 0; i < buffs.Count; i++){
+            if (buffs[i].model.onCollide != null){
+                buffs[i].model.onCollide(buffs[i], collision.gameObject);
+            }
+        }
+    }
+
     ///<summary>
     ///初始化角色的属性
     ///</summary>
@@ -582,6 +683,7 @@ public class ChaState:MonoBehaviour{
         this.resource.hp = this._prop.hp;
         this.resource.mp = this._prop.mp;
         this.resource.stamina = 100;
+        this.resource.oxygen = 100;
     }
 
     ///<summary>

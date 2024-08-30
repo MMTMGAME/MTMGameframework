@@ -1,9 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using DG.Tweening;
 using GameMain;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityGameFramework.Runtime;
+using Entity = GameMain.Entity;
 using GameEntry = GameMain.GameEntry;
+using Quaternion = UnityEngine.Quaternion;
+using Random = UnityEngine.Random;
+using Sequence = DG.Tweening.Sequence;
+using Vector3 = UnityEngine.Vector3;
 
 namespace DesignerScripts
 {
@@ -13,14 +24,29 @@ namespace DesignerScripts
             {"CasterForceMove", CasterForceMove},
             {"SetCasterControlState", SetCasterControlState},
             {"PlaySightEffectOnCaster", PlaySightEffectOnCaster},
+            {"PlayEffectInWorld", PlayEffectInWorld},
             {"StopSightEffectOnCaster", StopSightEffectOnCaster},
+            {"SetBindPointChildrenActive", SetBindPointChildrenActive},
+            {"Play2DSound", Play2DSound},
+            {"Play3DSound", Play3DSound},
             {"FireBullet", FireBullet},
+            {"Hiraijin", Hiraijin},
+           
             {"CasterImmune", CasterImmune},
             {"CreateAoE", CreateAoE},
             {"AddBuffToCaster", AddBuffToCaster},
             {"CasterAddAmmo", CasterAddAmmo},
-            {"SummonCharacter", SummonCharacter}
+            {"SummonCharacter", SummonCharacter},
+            {"LightAttack", LightAttack},
+            {"HeavyAttack", HeavyAttack},
+           
+          
+            
         };
+
+        private static readonly int LightAttackTriggerAble = Animator.StringToHash("LightAttackTriggerAble");
+        private static readonly int HeavyAttackTriggerAble = Animator.StringToHash("HeavyAttackTriggerAble");
+        private static readonly int Speed = Animator.StringToHash("Speed");
 
         ///<summary>
         ///在Caster的某个绑点(Muzzle/Head/Body)上发射一个子弹出来
@@ -38,22 +64,86 @@ namespace DesignerScripts
 
                 BulletLauncher bLauncher = (BulletLauncher)args[0];
                 UnitBindPoint ubp = ubm.GetBindPointByKey(args.Length > 1 ? (string)args[1] : "Muzzle");
+                int muzzleId = args.Length > 2 ? (int)args[2] : 0;
+                int soundId = args.Length > 3 ? (int)args[3] : 0;
                 if (!ubp) return;
 
                 bLauncher.caster = tlo.caster;
                 
-                bLauncher.fireRotation = tlo.caster.transform.rotation;
+                
                 bLauncher.firePosition = ubp.gameObject.transform.position;
-
+                
                 GameEntry.Combat.CreateBullet(bLauncher);
+                if (muzzleId > 0)
+                {
+                    GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(),muzzleId)
+                    {
+                        Position = ubp.transform.position,
+                        Rotation = ubp.transform.rotation,
+                    });
+                }
+
+                if (soundId > 0)
+                {
+                    GameEntry.Sound.PlaySound(soundId, ubp.transform.position);
+                }
+                
             }
         }
 
+        private static void Hiraijin(TimelineObj tlo, params object[] args)
+        {
+            if (tlo.caster)
+            {
+                var variables = tlo.caster.GetComponent<Variables>();
+                var target = variables.declarations.Get<BattleUnit>("Target");
+
+                var fxId = args.Length > 0 ? (int)args[0] : 70000;
+                var pointId = args.Length > 1 ? (string)args[1] : "Body";
+                if (target != null)
+                {
+                    var pointTrans = tlo.caster.GetComponent<UnitBindManager>().GetBindPointByKey(pointId);
+                    GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(),fxId)
+                    {
+                        Position = pointTrans.transform.position,
+                        KeepTime = 1f
+                    });
+                    //提前决定好位置便于玩家躲避
+                    var teleportPos=AIUtility.RandomNavMeshPos(target.transform.TransformPoint(-2, 0, 0), 0.5f)+Vector3.up*2f;
+
+                    GameEntry.Timer.AddOnceTimer(500, () =>
+                    {
+                        if (tlo.caster)
+                        {
+                            var rb = tlo.caster.GetComponent<Rigidbody>();
+                            if (rb)
+                            {
+                                rb.velocity=Vector3.zero;
+                            }
+                            
+                            
+                            tlo.caster.transform.position = teleportPos;
+                            GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(),fxId)
+                            {
+                                Position = teleportPos,
+                                KeepTime = 1f
+                            });
+                        }
+                      
+                    });
+                }
+            }
+
+        }
+
+        
+
+      
         ///<summary>
         ///在caster=timeline.caster的面前位置aoe
         ///<param name="args">总共3个参数：
         ///[0]AoeLauncher：aoe的发射器，caster在这里被重新赋值，position则作为增量加给现在的角色坐标
-        ///[1]bool：true=面前，false=角色坐标
+        ///[1]bool：true=局部坐标，false=世界坐标
         ///</param>
         ///</summary>
         private static void CreateAoE(TimelineObj tlo, params object[] args){
@@ -64,13 +154,14 @@ namespace DesignerScripts
                 if (!ubm) return;
 
                 AoeLauncher aLauncher = ((AoeLauncher)args[0]).Clone(); //必须克隆出来，去掉ref属性，使之变成临时的属性
-                bool inFront = args.Length > 1 ? (bool)args[1] : true;
+                bool relativePos = args.Length > 1 ? (bool)args[1] : true;
                 
                 aLauncher.caster = tlo.caster;
                 aLauncher.rotation = tlo.caster.transform.rotation * aLauncher.rotation;
 
                
-                aLauncher.position = aLauncher.caster.transform.TransformPoint( aLauncher.position);
+                if(relativePos)
+                    aLauncher.position = aLauncher.caster.transform.TransformPoint( aLauncher.position);
                 
                 aLauncher.tweenParam = new object[]{
                     aLauncher.caster.transform.forward
@@ -109,6 +200,43 @@ namespace DesignerScripts
             }
         }
 
+        //抓举物体
+       
+
+        private static void LightAttack(TimelineObj tlo, params object[] args){
+            if (tlo.caster){
+                
+                ChaState cs = tlo.caster.GetComponent<ChaState>();
+                if (cs)
+                {
+                    var animator = cs.GetAnimator();
+
+                    if (animator.GetBool(LightAttackTriggerAble))//仅在可输入阶段才能Trigger
+                    {
+                        cs.AddAnimOrder(UnitAnim.AnimOrderType.Trigger,"LightAttack");
+                    }
+                }
+            }
+        }
+        
+        private static void HeavyAttack(TimelineObj tlo, params object[] args){
+            if (tlo.caster){
+                
+                ChaState cs = tlo.caster.GetComponent<ChaState>();
+                if (cs)
+                {
+                    var animator = cs.GetAnimator();
+                    
+                    
+                    if (animator.GetBool(HeavyAttackTriggerAble))//仅在可输入阶段才能Trigger
+                    {
+                        
+                        cs.AddAnimOrder(UnitAnim.AnimOrderType.Trigger,"HeavyAttack");
+                    }
+                }
+            }
+        }
+
         ///<summary>
         ///timeline的焦点角色强制进行移动
         ///<param name="args">总共4个参数：
@@ -122,31 +250,47 @@ namespace DesignerScripts
         private static void CasterForceMove(TimelineObj tlo, params object[] args){
             if (tlo.caster){
                 ChaState cs = tlo.caster.GetComponent<ChaState>();
+               
                 float dis = args.Length >= 1 ? (float)args[0] : 0.00f;
                 float inSec = (args.Length >= 2 ? (float)args[1] : 0.00f) / tlo.timeScale;  //移动速度可得手动设置倍速
-                float degOffset = args.Length >= 3 ? (float)args[2] : 0.00f;
-                bool basedOnMoveDir = args.Length >= 4 ? (bool)args[3] : true;
-                bool useCurrentDeg = args.Length >= 5 ? (bool)args[4] : false;
-                
+                Quaternion rotation=(args.Length >= 3 ? (Quaternion)args[2] : Quaternion.identity);
+                bool local=(args.Length >= 4 ? (bool)args[3] : true);
                 if (cs)
                 {
-                    Quaternion rotation =
-                    (
-                        basedOnMoveDir == true
-                            ? (useCurrentDeg == true
-                                ? cs.moveDegree
-                                : Quaternion.Euler((Vector3)tlo.GetValue("moveDegree")))
-                            : (useCurrentDeg == true
-                                ? cs.faceDegree
-                                : Quaternion.Euler((Vector3)tlo.GetValue("faceDegree")))
-                    );
-                    
-
-                   
-                    cs.AddForceMove(new MovePreorder((rotation * Vector3.forward).normalized, inSec));
+                    var velocity = ((cs.transform.rotation* rotation) * Vector3.forward).normalized * dis;
+                    //Debug.LogError("SwimDash技能Velo:"+velocity);
+                    if(!local)
+                        // 世界坐标移动
+                        velocity = (rotation * Vector3.forward).normalized * dis;
+                    cs.AddForceMove(new MovePreorder(velocity, inSec));
                 }
             }
         }
+        
+        
+        private static void Play2DSound(TimelineObj tlo, params object[] args){
+            if (tlo.caster){
+                var soundId = args[0];
+                GameEntry.Sound.PlaySound((int)soundId);
+            }
+        }
+        
+        private static void Play3DSound(TimelineObj tlo, params object[] args){
+            if (tlo.caster)
+            {
+                var soundId = args[0];
+                var pointKey = args.Length > 1 ? args[1] : "Body";
+
+                var bindManager = tlo.caster.gameObject.GetComponent<UnitBindManager>();
+                if (bindManager)
+                {
+                    var trans = bindManager.GetBindPointByKey((string)pointKey).transform;
+                    GameEntry.Sound.PlaySound((int)soundId, trans.position);
+                }
+
+            }
+        }
+        
 
         ///<summary>
         ///设置timeline的焦点角色的ChaControlState
@@ -188,6 +332,19 @@ namespace DesignerScripts
                 }
             }
         }
+        
+        private static void PlayEffectInWorld(TimelineObj tlo, params object[] args)
+        {
+            var typeId = args[0];
+            var bindManager = tlo.caster.GetComponent<UnitBindManager>();
+            var pos = ((string)args[1]==""?tlo.caster.transform.position:bindManager.GetBindPointByKey((string)args[1]).transform.position);
+            var rotation = args[2];
+            GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(),(int)typeId)
+            {
+                Position = (Vector3)pos,
+                Rotation = (Quaternion)rotation
+            });
+        }
 
         ///<summary>
         ///在timeline焦点角色身上关闭一个视觉特效
@@ -204,6 +361,23 @@ namespace DesignerScripts
                     string effectKey = args.Length >= 2 ? (string)args[1] : "";
                     if (effectKey == "") return;
                     cs.StopSightEffect(bindPointKey, effectKey);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// 由于BindPoints是通过GetComponents
+        /// </summary>
+        /// <param name="tlo"></param>
+        /// <param name="args"></param>
+        private static void SetBindPointChildrenActive(TimelineObj tlo, params object[] args){
+            if (tlo.caster){
+                ChaState cs = tlo.caster.GetComponent<ChaState>();
+                if (cs){
+                    string bindPointKey = args.Length >= 1 ? (string)args[0] : "Body";
+                   
+                    bool targetStatus = args.Length >= 2 ? (bool)args[1] : false;
+                    cs.SetBindPointChildrenActive(bindPointKey,targetStatus);
                 }
             }
         }

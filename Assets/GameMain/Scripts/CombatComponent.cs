@@ -9,6 +9,7 @@ using UnityGameFramework.Runtime;
 using Entity = GameMain.Entity;
 using GameEntry = GameMain.GameEntry;
 
+
 public class CombatComponent : GameFrameworkComponent
 {
 
@@ -51,17 +52,17 @@ public class CombatComponent : GameFrameworkComponent
     {
         s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Player), RelationType.Friendly);
         s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Enemy), RelationType.Hostile);
-        s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Neutral), RelationType.Neutral);
+        s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Neutral), RelationType.Hostile);
         s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Player2), RelationType.Hostile);
         s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Enemy2), RelationType.Hostile);
-        s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Neutral2), RelationType.Neutral);
+        s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Neutral2), RelationType.Friendly);
         s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Unknown), RelationType.Neutral);
 
         s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Enemy), RelationType.Friendly);
         s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Neutral), RelationType.Neutral);
         s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Player2), RelationType.Hostile);
         s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Enemy2), RelationType.Hostile);
-        s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Neutral2), RelationType.Neutral);
+        s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Neutral2), RelationType.Hostile);
 
         s_CampPairToRelation.Add(new CampPair(CampType.Neutral, CampType.Neutral), RelationType.Neutral);
         s_CampPairToRelation.Add(new CampPair(CampType.Neutral, CampType.Player2), RelationType.Neutral);
@@ -143,7 +144,7 @@ public class CombatComponent : GameFrameworkComponent
 
     public void CreateDamage(GameObject attacker,GameObject victim,Damage damage,float damageDegree=0f, float criticalRate=0f, DamageInfoTag[] tags=null)
     {
-        Debug.Log($"attacker对victim造成伤害：{damage.bullet}，{damage.explosion},{damage.mental}");
+        Debug.Log($"{attacker}对{victim}造成伤害：{damage.melee},{damage.bullet}，{damage.explosion},{damage.mental}",attacker.gameObject);
         DamageManager.DoDamage(attacker,victim,damage,damageDegree,criticalRate,tags);
     }
     
@@ -187,9 +188,9 @@ public class CombatComponent : GameFrameworkComponent
         GameEntry.Entity.ShowBulletObj(bulletLauncher, (bulletObj) =>
         {
             //处理bulletObj的数据
-            bulletObj.transform.rotation= bulletLauncher.fireRotation;
+            //bulletObj.transform.rotation= bulletLauncher.localRotation;
         
-            bulletObj.GetComponent<BulletState>().InitByBulletLauncher(
+            bulletObj.gameObject.GetOrAddComponent<BulletState>().InitByBulletLauncher(
                 bulletLauncher, 
                 targets
             );
@@ -218,10 +219,11 @@ public class CombatComponent : GameFrameworkComponent
     ///创建一个aoe对象在场景上
     ///<param name="aoeLauncher">aoe的创建信息</param>
     ///</summary>
-    public void CreateAoE(AoeLauncher aoeLauncher){
+    public int CreateAoE(AoeLauncher aoeLauncher){
         
         
-        GameEntry.Entity.ShowAoeObj(aoeLauncher, (aoeObj) =>
+        Debug.Log($"CreatAoe:{aoeLauncher.model.id},{aoeLauncher.caster}");
+        return GameEntry.Entity.ShowAoeObj(aoeLauncher, (aoeObj) =>
         {
             aoeObj.GetComponent<AoeState>().InitByAoeLauncher(aoeLauncher);
         });

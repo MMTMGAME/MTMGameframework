@@ -16,11 +16,14 @@ namespace DesignerScripts
         public static Dictionary<string, BulletOnHit> onHitFunc = new Dictionary<string, BulletOnHit>(){
             {"CommonBulletHit", CommonBulletHit},
             {"CreateAoEOnHit", CreateAoEOnHit},
-            {"CloakBoomerangHit", CloakBoomerangHit}
+            {"CloakBoomerangHit", CloakBoomerangHit},
+            {"BubbleBulletHit", BubbleBulletHit},
+            {"ExplosionOnHit", ExplosionOnHit}
         };
         public static Dictionary<string, BulletOnRemoved> onRemovedFunc = new Dictionary<string, BulletOnRemoved>(){
             {"CommonBulletRemoved", CommonBulletRemoved},
-            {"CreateAoEOnRemoved", CreateAoEOnRemoved}
+            {"CreateAoEOnRemoved", CreateAoEOnRemoved},
+            {"ExplosionOnRemoved", ExplosionOnRemoved},
         };
         public static Dictionary<string, BulletTween> bulletTween = new Dictionary<string, BulletTween>(){
             {"FollowingTarget", FollowingTarget},
@@ -49,6 +52,7 @@ namespace DesignerScripts
             float critRate = onHitParam.Length > 1 ? (float) onHitParam[1] : 0.00f;
             int sightEffectId = onHitParam.Length > 2 ? (int) onHitParam[2] : 0;
             string bpName = onHitParam.Length > 3 ? (string) onHitParam[3] : "Body";
+            int audioId= onHitParam.Length > 4 ? (int) onHitParam[4] :0;
             if (sightEffectId != 0){
                 UnitBindManager ubm = target.GetComponent<UnitBindManager>();
                 if (ubm){
@@ -57,8 +61,11 @@ namespace DesignerScripts
                 }
             }
 
-            //测试用音效
-            GameEntry.Sound.PlaySound(30000, bullet.transform.position);
+            if (audioId != 0)
+            {
+                GameEntry.Sound.PlaySound(audioId);
+            }
+            
             Debug.Log($"CreateDamage");
             GameEntry.Combat.CreateDamage(
                 bulletState.caster, 
@@ -68,6 +75,51 @@ namespace DesignerScripts
                 critRate,
                 new DamageInfoTag[]{DamageInfoTag.directDamage, }
             );
+        }
+
+        private static void BubbleBulletHit(GameObject bullet, GameObject target)
+        {
+            CombatUtility.CreateAoe("BubbleAoe",bullet.GetComponent<BulletState>().caster,bullet.transform.position,3f,Quaternion.identity, 8,"FloatUp",new object[0]);
+        }
+        
+            
+        private static void ExplosionOnHit(GameObject bullet, GameObject target)
+        {
+            BulletState bulletState = bullet.GetComponent<BulletState>();
+            if (!bulletState) return;
+            object[] onHitParam = bulletState.model.onHitParams;
+            float damageTimes = onHitParam.Length > 0 ? (float)onHitParam[0] : 1.00f;
+            CombatUtility.CreateAoe("ExplosionAoe",bullet.GetComponent<BulletState>().caster,bullet.transform.position,0.05f,Quaternion.identity, 11f,"",new object[0],new Dictionary<string, object>()
+            {
+                {"EffectIds","70001|70002|70003"},{"SoundIds","30005|30006|30007"},{"HitAlly","False"},{"DamageTimes",damageTimes.ToString()}
+            });
+            GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(),70004)
+            {
+                Position = bullet.transform.position,
+            });
+            GameEntry.Sound.PlaySound(31016, bullet.transform.position);
+            CombatUtility.CreateAoe("KnockOffAoe",bullet.GetComponent<BulletState>().caster,bullet.transform.position,0.05f,Quaternion.identity, 11f,"",new object[0],new Dictionary<string, object>()
+            {
+                {"Force","12"},{"Degree","35"}
+            });
+            
+        }
+        private static void ExplosionOnRemoved(GameObject bullet)
+        {
+            CombatUtility.CreateAoe("ExplosionAoe",bullet.GetComponent<BulletState>().caster,bullet.transform.position,0.05f,Quaternion.identity, 11f,"",new object[0],new Dictionary<string, object>()
+            {
+                {"EffectIds","70001|70002|70003"},{"SoundIds","30005|30006|30007"}
+            });
+            GameEntry.Entity.ShowEffect(new EffectData(GameEntry.Entity.GenerateSerialId(),70004)
+            {
+                Position = bullet.transform.position,
+            });
+            GameEntry.Sound.PlaySound(31016, bullet.transform.position);
+            CombatUtility.CreateAoe("KnockOffAoe",bullet.GetComponent<BulletState>().caster,bullet.transform.position,0.05f,Quaternion.identity, 11f,"",new object[0],new Dictionary<string, object>()
+            {
+                {"Force","12"},{"Degree","35"}
+            });
+            
         }
 
         ///<summary>

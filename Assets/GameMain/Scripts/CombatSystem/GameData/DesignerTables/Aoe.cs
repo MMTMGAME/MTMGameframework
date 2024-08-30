@@ -59,7 +59,69 @@ namespace DesingerTables
                 "", new object[0],  //chaLeave
                 "", new object[0],  //bulletEnter
                 "", new object[0]   //bulletLeave
-            )}
+            )},
+            {"AttackAoe", new AoeModel(
+                "AttackAoe", 80000, new string[0], 0, true,
+                "", new object[0],  //create
+                "", new object[0],  //remove
+                "", new object[0],  //tick
+                "DoDamageToEnterCha", new object[]{new Damage(1),1f,true,false,true,"71000|71001","30000|30001|30002|30003|30004"},  //chaEnter
+                "", new object[0],  //chaLeave
+                "", new object[0],  //bulletEnter
+                "", new object[0]   //bulletLeave
+            )},
+            
+            {"KnockOffAoe", new AoeModel(
+                "KnockOffAoe", 80000, new string[0], 0, true,
+                "", new object[0],  //create
+                "", new object[0],  //remove
+                "", new object[0],  //tick
+                "KnockOffEnterCha", new object[]{20,75f,false,true,true,false},  //击飞效果
+                "", new object[0],  //chaLeave
+                "", new object[0],  //bulletEnter
+                "", new object[0]   //bulletLeave
+            )},
+            
+            {"BubbleAoe", new AoeModel(
+                "BubbleAoe", 80004, new string[0], 0.05f, true,
+                "", new object[0],  //create
+                "", new object[0],  //remove
+                "Vortex", new object[]{2f,0.15f,false},  //tick ，vortex填写ontick参数和Damage参数执行效果不一样
+                "", new object[0],  //击飞效果
+                "", new object[0],  //chaLeave
+                "", new object[0],  //bulletEnter
+                "", new object[0]   //bulletLeave
+            )},
+            {"WhirlWindAoe", new AoeModel(
+                "WhirlWindAoe", 80002, new string[0], 0.2f, true,
+                "", new object[0],  //create
+                "", new object[0],  //remove
+                "Vortex", new object[]{1f,1f,true,false},  //tick
+                "", new object[]{new Damage(1,0,0),0.1f,true,false,true,"70001|70002|70003","30005|30006|30007","Body",false},  //击飞效果
+                "", new object[0],  //chaLeave
+                "", new object[0],  //bulletEnter
+                "", new object[0]   //bulletLeave
+            )},
+            {"VortexAoe", new AoeModel(
+                "VortexAoe", 80003, new string[0], 0.2f, true,
+                "", new object[0],  //create
+                "", new object[0],  //remove
+                "Vortex", new object[0],  //tick
+                "", new object[]{new Damage(1,0,0),1f,true,false,true,"70001|70002|70003","30005|30006|30007","Body",false},  //砸地击飞效果，把方向改为负的就可以了
+                "", new object[0],  //chaLeave
+                "", new object[0],  //bulletEnter
+                "", new object[0]   //bulletLeave
+            )},
+            {"VortexAoeOnlyTraction", new AoeModel(//摇摇马的外层，不造成伤害，只牵引
+                "VortexAoe", 80000, new string[0], 0.2f, true,
+                "", new object[0],  //create
+                "", new object[0],  //remove
+                "Vortex", new object[]{0.5f,1f,false,true},  //tick
+                "", new object[]{new Damage(1,0,0),1f,true,false,true,"70001|70002|70003","30005|30006|30007","Body",false},  //砸地击飞效果，把方向改为负的就可以了
+                "", new object[0],  //chaLeave
+                "", new object[0],  //bulletEnter
+                "", new object[0]   //bulletLeave
+            )},
         };
     }
 }

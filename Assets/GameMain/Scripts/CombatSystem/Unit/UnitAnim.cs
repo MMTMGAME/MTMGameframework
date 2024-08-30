@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 
@@ -24,7 +25,8 @@ public struct AnimOrder
 public class UnitAnim : MonoBehaviour{
     private Animator animator;
 
-    private float m_TimeScale=1;
+    [ReadOnly]
+    public float m_TimeScale=1;
     ///<summary>
     ///播放的倍速，作用于每个信息的duration减少速度
     ///</summary>
@@ -57,6 +59,16 @@ public class UnitAnim : MonoBehaviour{
         {
             PlayTrigger(animOrder.param);
         }
+
+        if (animOrder.animOrderType == AnimOrderType.Float)
+        {
+            SetFloat(animOrder.param, (float)animOrder.value);
+        }
+        
+        if (animOrder.animOrderType == AnimOrderType.Bool)
+        {
+            SetBool(animOrder.param, (bool)animOrder.value);
+        }
         
     }
 
@@ -65,10 +77,14 @@ public class UnitAnim : MonoBehaviour{
         animator.SetTrigger(trigger);
     }
 
-    private void PlayBool(string param, bool status)
+    private void SetBool(string param, bool status)
     {
         animator.SetBool(param,status);
+        //Debug.Log("SetBool!!");
     }
-    
 
+    void SetFloat(string param, float value)
+    {
+        animator.SetFloat(param,value);
+    }
 }

@@ -20,5 +20,7 @@ public class RotateY : MonoBehaviour{
             t = t.parent;
         }
         this.transform.RotateAround(this.transform.position, Vector3.up, shouldRotate);
+        
+       
     } 
 }

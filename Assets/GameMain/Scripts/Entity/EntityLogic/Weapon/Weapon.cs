@@ -44,7 +44,7 @@ namespace GameMain
 
         //private float m_NextAttackTime = 0f;
         
-        private WeaponAttack WeaponAttack { get; set; }
+       
 
 #if UNITY_2017_3_OR_NEWER
         protected override void OnInit(object userData)
@@ -78,31 +78,22 @@ namespace GameMain
             }
 
 
-            var battleUnit = ownerEntity.Logic as BattleUnit;
-            GameEntry.Entity.AttachEntity(Entity, m_WeaponData.OwnerId, battleUnit.GetBattleUnitData().GetWeaponPath(m_WeaponData.SlotIndex));
+            GameEntry.Timer.AddFrameTimer(() =>//此时还没有bindManager
+            {
+                var battleUnit = ownerEntity.Logic as BattleUnit;
+                var pathKey = battleUnit.GetBattleUnitData().GetWeaponPath(m_WeaponData.SlotIndex);
+                var bindPoint = battleUnit.chaState.GetBindManager()
+                    .GetBindPointByKey(pathKey);
+
+                GameEntry.Entity.AttachEntity(Entity, m_WeaponData.OwnerId,
+                    bindPoint == null ? battleUnit.transform : bindPoint.transform);
+
+            });
+
             
-            // if(WeaponAttack==null)//避免对象池重复添加
-            //     AddAttackLogicComponent(m_WeaponData.AttackLogicComponent);
-            // else
-            // {
-            //     WeaponAttack.Init(this);
-            // }
         }
         
-        private void AddAttackLogicComponent(string className)
-        {
-            Type attackLogicType = Type.GetType(className);
-            if (attackLogicType != null && attackLogicType.IsSubclassOf(typeof(WeaponAttack)))
-            {
-                WeaponAttack = (WeaponAttack)gameObject.AddComponent(attackLogicType);
-                // 如果需要，这里可以对 attackComponent 进行进一步的配置
-                WeaponAttack.Init(this);
-            }
-            else
-            {
-                Debug.LogError($"Attack logic class '{className}' not found or does not extend WeaponAttack.");
-            }
-        }
+        
 
 #if UNITY_2017_3_OR_NEWER
         protected override void OnAttachTo(EntityLogic parentEntity, Transform parentTransform, object userData)
@@ -117,27 +108,7 @@ namespace GameMain
             CachedTransform.localScale = Vector3.one;
             CachedTransform.localRotation=Quaternion.identity;
         }
-
         
-        public virtual void StartFire()
-        {
-            WeaponAttack.StartFire();
-        }
-
-        public virtual void CancelFire()
-        {
-            WeaponAttack.CancelFire();
-        }
-
-        public virtual void HandleAnimEvent(string eventName)
-        {
-            //WeaponAttack.HandleAnimeEvent(eventName);
-        }
-
-       
-
-        
-
         
     }
 }

@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using GameFramework.Entity;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityGameFramework.Runtime;
 
 namespace GameMain
@@ -21,97 +22,41 @@ namespace GameMain
     [IncludeInSettings(true)]
     public static class AIUtility
     {
-        private static Dictionary<CampPair, RelationType> s_CampPairToRelation = new Dictionary<CampPair, RelationType>();
-        private static Dictionary<KeyValuePair<CampType, RelationType>, CampType[]> s_CampAndRelationToCamps = new Dictionary<KeyValuePair<CampType, RelationType>, CampType[]>();
+        
 
-        static AIUtility()
-        {
-            s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Player), RelationType.Friendly);
-            s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Enemy), RelationType.Hostile);
-            s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Neutral), RelationType.Neutral);
-            s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Player2), RelationType.Hostile);
-            s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Enemy2), RelationType.Hostile);
-            s_CampPairToRelation.Add(new CampPair(CampType.Player, CampType.Neutral2), RelationType.Neutral);
-
-            s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Enemy), RelationType.Friendly);
-            s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Neutral), RelationType.Neutral);
-            s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Player2), RelationType.Hostile);
-            s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Enemy2), RelationType.Hostile);
-            s_CampPairToRelation.Add(new CampPair(CampType.Enemy, CampType.Neutral2), RelationType.Neutral);
-
-            s_CampPairToRelation.Add(new CampPair(CampType.Neutral, CampType.Neutral), RelationType.Neutral);
-            s_CampPairToRelation.Add(new CampPair(CampType.Neutral, CampType.Player2), RelationType.Neutral);
-            s_CampPairToRelation.Add(new CampPair(CampType.Neutral, CampType.Enemy2), RelationType.Neutral);
-            s_CampPairToRelation.Add(new CampPair(CampType.Neutral, CampType.Neutral2), RelationType.Hostile);
-
-            s_CampPairToRelation.Add(new CampPair(CampType.Player2, CampType.Player2), RelationType.Friendly);
-            s_CampPairToRelation.Add(new CampPair(CampType.Player2, CampType.Enemy2), RelationType.Hostile);
-            s_CampPairToRelation.Add(new CampPair(CampType.Player2, CampType.Neutral2), RelationType.Neutral);
-
-            s_CampPairToRelation.Add(new CampPair(CampType.Enemy2, CampType.Enemy2), RelationType.Friendly);
-            s_CampPairToRelation.Add(new CampPair(CampType.Enemy2, CampType.Neutral2), RelationType.Neutral);
-
-            s_CampPairToRelation.Add(new CampPair(CampType.Neutral2, CampType.Neutral2), RelationType.Neutral);
-        }
-
-        /// <summary>
-        /// 获取两个阵营之间的关系。
-        /// </summary>
-        /// <param name="first">阵营一。</param>
-        /// <param name="second">阵营二。</param>
-        /// <returns>阵营间关系。</returns>
-        public static RelationType GetRelation(CampType first, CampType second)
-        {
-            if (first > second)
-            {
-                CampType temp = first;
-                first = second;
-                second = temp;
-            }
-
-            RelationType relationType;
-            if (s_CampPairToRelation.TryGetValue(new CampPair(first, second), out relationType))
-            {
-                return relationType;
-            }
-
-            Log.Warning("Unknown relation between '{0}' and '{1}'.", first.ToString(), second.ToString());
-            return RelationType.None;
-        }
-
-        /// <summary>
-        /// 获取和指定具有特定关系的所有阵营。
-        /// </summary>
-        /// <param name="camp">指定阵营。</param>
-        /// <param name="relation">关系。</param>
-        /// <returns>满足条件的阵营数组。</returns>
-        public static CampType[] GetCamps(CampType camp, RelationType relation)
-        {
-            KeyValuePair<CampType, RelationType> key = new KeyValuePair<CampType, RelationType>(camp, relation);
-            CampType[] result = null;
-            if (s_CampAndRelationToCamps.TryGetValue(key, out result))
-            {
-                return result;
-            }
-
-            // TODO: GC Alloc
-            List<CampType> camps = new List<CampType>();
-            Array campTypes = Enum.GetValues(typeof(CampType));
-            for (int i = 0; i < campTypes.Length; i++)
-            {
-                CampType campType = (CampType)campTypes.GetValue(i);
-                if (GetRelation(camp, campType) == relation)
-                {
-                    camps.Add(campType);
-                }
-            }
-
-            // TODO: GC Alloc
-            result = camps.ToArray();
-            s_CampAndRelationToCamps[key] = result;
-
-            return result;
-        }
+        // /// <summary>
+        // /// 获取和指定具有特定关系的所有阵营。
+        // /// </summary>
+        // /// <param name="camp">指定阵营。</param>
+        // /// <param name="relation">关系。</param>
+        // /// <returns>满足条件的阵营数组。</returns>
+        // public static CampType[] GetCamps(CampType camp, RelationType relation)
+        // {
+        //     KeyValuePair<CampType, RelationType> key = new KeyValuePair<CampType, RelationType>(camp, relation);
+        //     CampType[] result = null;
+        //     if (s_CampAndRelationToCamps.TryGetValue(key, out result))
+        //     {
+        //         return result;
+        //     }
+        //
+        //     // TODO: GC Alloc
+        //     List<CampType> camps = new List<CampType>();
+        //     Array campTypes = Enum.GetValues(typeof(CampType));
+        //     for (int i = 0; i < campTypes.Length; i++)
+        //     {
+        //         CampType campType = (CampType)campTypes.GetValue(i);
+        //         if (GetRelation(camp, campType) == relation)
+        //         {
+        //             camps.Add(campType);
+        //         }
+        //     }
+        //
+        //     // TODO: GC Alloc
+        //     result = camps.ToArray();
+        //     s_CampAndRelationToCamps[key] = result;
+        //
+        //     return result;
+        // }
 
         /// <summary>
         /// 获取实体间的距离。
@@ -125,7 +70,50 @@ namespace GameMain
         }
 
 
-      
+        public static Vector3 RandomNavMeshPos(Vector3 center, float radius)
+        {
+            Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
+            randomDirection += center;
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, 1000, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+            else
+            {
+                // 在初次采样失败后处理
+                const int maxAttempts = 30;
+                for (int i = 0; i < maxAttempts; i++)
+                {
+                    randomDirection = UnityEngine.Random.insideUnitSphere * radius;
+                    randomDirection += center;
+
+                    if (NavMesh.SamplePosition(randomDirection, out hit, radius, NavMesh.AllAreas))
+                    {
+                        return hit.position;
+                    }
+                }
+        
+                // 如果多次尝试都失败，可以返回中心点或者其他默认位置
+                Debug.LogWarning("Failed to find a valid NavMesh position after multiple attempts.");
+                return center;
+            }
+        }
+
+
+        public static Vector3 GetClosestValidPoint(Vector3 origin)
+        {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(origin, out hit, 100f, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+            else
+            {
+                return origin;
+            }
+        }
 
         private static List<IEntity> cachedEntities = new List<IEntity>();
         private static float lastUpdateTime = 0;
@@ -157,10 +145,10 @@ namespace GameMain
                 var entityLogic = ((UnityGameFramework.Runtime.Entity)entity).Logic;
                 if(entityLogic==null || entityLogic==self)
                     continue;
-                if (entityLogic is BattleUnit targetableObject)
+                if ( entity.Handle.IsUnityNull()==false && entityLogic is BattleUnit targetableObject)
                 {
                     if ( Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
-                        && (GetRelation(self.GetBattleUnitData().Camp, targetableObject.GetBattleUnitData().Camp) & relationTypes) != RelationType.None 
+                        && (CombatComponent.GetRelation(self.GetBattleUnitData().Camp, targetableObject.GetBattleUnitData().Camp) & relationTypes) != RelationType.None 
                         && targetableObject.Available && !targetableObject.chaState.dead)
                     {
                         return targetableObject;
@@ -188,10 +176,10 @@ namespace GameMain
         
             foreach (var entity in cachedEntities)
             {
-                if (((UnityGameFramework.Runtime.Entity)entity).Logic is BattleUnit targetableObject)
+                if ( entity!=null && entity.IsUnityNull()==false && ((UnityGameFramework.Runtime.Entity)entity).Logic is BattleUnit targetableObject)
                 {
                     if (Vector3.SqrMagnitude(((GameObject)entity.Handle).transform.position - center) < radius * radius 
-                        && (GetRelation(self.GetBattleUnitData().Camp, targetableObject.GetBattleUnitData().Camp) & relationTypes) != RelationType.None 
+                        && (CombatComponent.GetRelation(self.GetBattleUnitData().Camp, targetableObject.GetBattleUnitData().Camp) & relationTypes) != RelationType.None 
                         && targetableObject.Available && !targetableObject.chaState.dead)
                     {
                        ret.Add(targetableObject);
@@ -340,48 +328,6 @@ namespace GameMain
         //     }
         // }
 
-        private static int CalcDamageHP(int attack, int defense)
-        {
-            if (attack <= 0)
-            {
-                return 0;
-            }
-
-            if (defense < 0)
-            {
-                defense = 0;
-            }
-
-            return attack * attack / (attack + defense);
-        }
-
-        [StructLayout(LayoutKind.Auto)]
-        private struct CampPair
-        {
-            private readonly CampType m_First;
-            private readonly CampType m_Second;
-
-            public CampPair(CampType first, CampType second)
-            {
-                m_First = first;
-                m_Second = second;
-            }
-
-            public CampType First
-            {
-                get
-                {
-                    return m_First;
-                }
-            }
-
-            public CampType Second
-            {
-                get
-                {
-                    return m_Second;
-                }
-            }
-        }
+      
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 ///<summary>
 ///角色的可操作状态，这个是根据游戏玩法来细节设计的，目前就用这个demo需要的
 ///</summary>
+[System.Serializable]
 public struct ChaControlState{
     ///<summary>
     ///是否可以移动坐标
@@ -40,6 +41,7 @@ public struct ChaControlState{
     ///昏迷效果
     ///</summary>
     public static ChaControlState stun = new ChaControlState(false, false, false);
+    public static ChaControlState knockOff = new ChaControlState(false, false, true);
 
     public static ChaControlState operator +(ChaControlState cs1, ChaControlState cs2){
         return new ChaControlState(

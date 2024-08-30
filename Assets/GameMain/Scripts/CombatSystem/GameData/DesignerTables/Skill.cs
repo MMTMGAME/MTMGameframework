@@ -21,7 +21,21 @@ namespace DesingerTables
             {"teleportBullet", new SkillModel("teleportBullet", ChaResource.Null, ChaResource.Null, "skill_teleportBullet_fire", new AddBuffInfo[]{
                 new AddBuffInfo(DesingerTables.Buff.data["TeleportBulletPassive"], null, null, 1, 1, true, true)
             })},
-            {"roll", new SkillModel("roll", ChaResource.Null, ChaResource.Null, "skill_roll", null)}
+            {"roll", new SkillModel("roll", ChaResource.Null, ChaResource.Null, "skill_roll", null)},
+            {"lightAttack", new SkillModel("lightAttack", new ChaResource(0, 0), ChaResource.Null, "skill_lightAttack", null)},
+            {"heavyAttack", new SkillModel("heavyAttack", new ChaResource(0, 0), ChaResource.Null, "skill_heavyAttack", null)},
+            {"shootSurge", new SkillModel("shootSurge", new ChaResource(0, 0), ChaResource.Null, "skill_shootSurge", null)},
+            
+            //哥布林的三种攻击
+            {"goblinRAttack", new SkillModel("goblinRAttack", new ChaResource(0, 0), ChaResource.Null, "skill_goblinRAttack", null)},
+            {"goblinSkill0", new SkillModel("goblinSkill0", new ChaResource(0, 0), ChaResource.Null, "skill_goblinSkill0", null)},
+
+            //哥布林射手的两种攻击
+            {"goblinShooterShoot", new SkillModel("goblinShooterShoot", new ChaResource(0, 0), ChaResource.Null, "skill_goblinShooterShoot", null)},
+            {"goblinShooterSkill0", new SkillModel("goblinShooterSkill0", new ChaResource(0, 0), ChaResource.Null, "skill_goblinShooterSkill0", null)},
+
+            
         };
+        
     }
 }

@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameMain;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace DesignerScripts
@@ -18,11 +21,14 @@ namespace DesignerScripts
             {"BarrelExplosed", BarrelExplosed}
         };
         public static Dictionary<string, AoeOnTick> onTickFunc = new Dictionary<string, AoeOnTick>(){
-            {"BlackHole", BlackHole}
+            {"BlackHole", BlackHole},
+            {"Vortex", Vortex},
+            {"BikeMobAoe", BikeMobAoe},
         };
         public static Dictionary<string, AoeOnCharacterEnter> onChaEnterFunc = new Dictionary<string, AoeOnCharacterEnter>(){
             {"DoDamageToEnterCha", DoDamageToEnterCha},
-            {"AddBuffToEnterCha", AddBuffToEnterCha}
+            {"AddBuffToEnterCha", AddBuffToEnterCha},
+            {"KnockOffEnterCha", KnockOffEnterCha}
         };
         public static Dictionary<string, AoeOnCharacterLeave> onChaLeaveFunc = new Dictionary<string, AoeOnCharacterLeave>(){
             
@@ -37,7 +43,11 @@ namespace DesignerScripts
         };
         public static Dictionary<string, AoeTween> aoeTweenFunc = new Dictionary<string, AoeTween>(){
             {"AroundCaster", AroundCaster},
-            {"SpaceMonkeyBallRolling", SpaceMonkeyBallRolling}
+            {"SpaceMonkeyBallRolling", SpaceMonkeyBallRolling},
+            {"FollowCaster", FollowCaster},
+            {"FloatUp", FloatUp},
+            {"FollowCasterIgnoreY", FollowCasterIgnoreY},
+            {"RandomMove", RandomMoveWithEasing},
         };
 
 
@@ -66,6 +76,58 @@ namespace DesignerScripts
             //Debug.Log("Around Caster " + aoeState.GetHashCode() + " // " + b);
 
             return new AoeMoveInfo(MoveType.fly, targetP, Quaternion.Euler(0,cDeg % 360,0));
+        }
+
+        private static AoeMoveInfo FollowCaster(GameObject aoe, float t)
+        {
+            AoeState aoeState = aoe.GetComponent<AoeState>();
+            if (aoeState == null || aoeState.caster == null) return null;
+            return new AoeMoveInfo(MoveType.ground, aoeState.caster.transform.position - aoe.transform.position,
+                Quaternion.identity);
+        }
+        
+        private static Vector3 currentDirection = Vector3.zero; // 当前移动方向
+
+        private static AoeMoveInfo RandomMoveWithEasing(GameObject aoe, float t)
+        {
+            AoeState aoeState = aoe.GetComponent<AoeState>();
+            if (aoeState == null) return null;
+
+            float moveSpeed = 1f; // 移动速度
+            float directionChangeSpeed = 0.5f; // 控制方向变化的平滑度
+
+            // 生成一个新的随机方向，加入小范围随机
+            Vector3 targetDirection = new Vector3(
+                UnityEngine.Random.Range(-1f, 1f), 
+                0, // 保持Y轴不变，沿地面移动
+                UnityEngine.Random.Range(-1f, 1f)
+            ).normalized;
+
+            // 使用Slerp缓动方向，使其逐渐平滑地向目标方向变化
+            currentDirection = Vector3.Slerp(currentDirection, targetDirection, directionChangeSpeed * Time.deltaTime);
+
+            // 基于缓动后的方向移动
+            Vector3 moveDelta = currentDirection * moveSpeed * Time.deltaTime;
+
+            // 返回相对于原始位置的偏移量
+            return new AoeMoveInfo(MoveType.ground, moveDelta, Quaternion.identity);
+        }
+
+        
+        private static AoeMoveInfo FollowCasterIgnoreY(GameObject aoe, float t)
+        {
+            AoeState aoeState = aoe.GetComponent<AoeState>();
+            if (aoeState == null || aoeState.caster == null) return null;
+            var dir = aoeState.caster.transform.position - aoe.transform.position;
+            dir.y = 0;
+            return new AoeMoveInfo(MoveType.ground, dir,
+                Quaternion.identity);
+        }
+
+        private static AoeMoveInfo FloatUp(GameObject aoe, float t)
+        {
+            return new AoeMoveInfo(MoveType.ground, Vector3.up*3*Time.fixedDeltaTime,
+                Quaternion.identity);
         }
 
         ///<summary>
@@ -171,10 +233,24 @@ namespace DesignerScripts
             aoeState.transform.localScale =Vector3.one* aoeState.radius;
         }
 
+        // private static void DoKnockOffEnterCha(GameObject aoe, List<GameObject> characters)
+        // {
+        //     AoeState aoeState = aoe.GetComponent<AoeState>();
+        //     if (!aoeState) return;
+        //
+        //     object[] p = aoeState.model.onChaEnterParams;
+        //
+        //     for (int i = 0; i < characters.Count; i++)
+        //     {
+        //             
+        //     }
+        // }
+        
+
         ///<summary>
         ///onChaEnter
         ///对于范围内的人造成伤害（治疗得另写一个，这是严肃的），参数：
-        ///[0]Damage：基础伤害
+        ///[0]Damage：基础伤害,表示要取用哪一个数值，或者也可以表示多个数值，如（0，0，1，0）表示造成1倍爆炸伤害，（1，2，1）表示造成1倍Melee伤害，2倍子弹伤害，1倍爆炸伤害
         ///[1]float：施法者攻击倍率
         ///[2]bool：对敌人有效
         ///[3]bool：对盟军有效
@@ -191,10 +267,46 @@ namespace DesignerScripts
             float damageTimes = p.Length > 1 ? (float)p[1] : 0;
             bool toFoe = p.Length > 2 ? (bool)p[2] : true;
             bool toAlly = p.Length > 3 ? (bool)p[3] : false;
-            bool hurtAction = p.Length > 4 ? (bool)p[4] : false;
-            int effect = p.Length > 5 ? (int)p[5] : 0;
-            string bp = p.Length > 6 ? (string)p[6] : "Body";
+            bool hurtAction = p.Length > 4 ? (bool)p[4] : true;
+            string effectIds = p.Length > 5 ? (string)p[5] : "";
+            string soundIds = p.Length > 6 ? (string)p[6] : "";
+            string bp = p.Length > 7 ? (string)p[7] : "Body";
+            bool disableMove = p.Length > 8 ? (bool)p[8] : true;
 
+            //参数覆盖
+            aoeState.param.TryGetValue("MeleeDamage", out var meleeDamageParam);//当然了，还有其他几种Damage，后面要用的时候再写吧
+            aoeState.param.TryGetValue("ExplosionDamage", out var explosionDamageParam);//当然了，还有其他几种Damage，后面要用的时候再写吧
+            aoeState.param.TryGetValue("DamageTimes", out var damageTimesParam);
+            aoeState.param.TryGetValue("ToFoe", out var toFoeParam);
+            aoeState.param.TryGetValue("ToAlly", out var toAllyParam);
+            aoeState.param.TryGetValue("HurtAction", out var hurtActionParam);
+            aoeState.param.TryGetValue("EffectIds", out var effectIdsParam);
+            aoeState.param.TryGetValue("soundIds", out var soundIdsParam);
+            aoeState.param.TryGetValue("Camp", out var campParam);//特殊情况下使用，比如爆炸是在死亡后创造aoe，那爆炸Aoe就不知道创造者是谁，也不知道阵营，所以需要这里传入阵营
+            aoeState.param.TryGetValue("DisableMove", out var disableMoveParam);//特殊情况下使用，比如爆炸是在死亡后创造aoe，那爆炸Aoe就不知道创造者是谁，也不知道阵营，所以需要这里传入阵营
+
+            if (meleeDamageParam != null)
+            {
+                baseDamage.melee = int.Parse((string)meleeDamageParam);
+            }
+            if (explosionDamageParam != null)
+                baseDamage.explosion = int.Parse((string)explosionDamageParam);
+            if (damageTimesParam != null)
+                damageTimes = float.Parse((string)damageTimesParam);
+            if (toFoeParam != null)
+                toFoe = bool.Parse((string)toFoeParam);
+            if (toAllyParam != null)
+                toAlly = bool.Parse((string)toAllyParam);
+            if (hurtActionParam != null)
+                hurtAction = bool.Parse((string)hurtActionParam);
+            if (effectIdsParam != null)
+                effectIds = (string)effectIdsParam;
+            if (soundIdsParam != null)
+                soundIds = (string)soundIdsParam;
+            
+            if(disableMoveParam!=null)
+                disableMove = bool.Parse((string)disableMoveParam);
+            
             Damage damage = baseDamage * (aoeState.propWhileCreate.attack * damageTimes);
 
             CampType camp = CampType.Unknown;
@@ -204,8 +316,48 @@ namespace DesignerScripts
                 if (ccs) camp = ccs.Camp;
             }
 
+            if (campParam != null)
+            {
+                camp = (CampType)campParam;
+            }
+            
+
             for (int i = 0; i < characters.Count; i++){
+                if(characters[i]==null)
+                    continue;
+                
+                
+                //Debug.Log(aoeState.model.id+"DoDamageToEnterCha");
+              
+                
                 ChaState cs = characters[i].GetComponent<ChaState>();
+                
+                //背后检测
+                aoeState.param.TryGetValue("ForceDamageIgnoreBehindCheck", out var forceDamageIgnoreBehindCheck);
+                if (cs.GetBuffById("IgnoreDamageExceptBehind").Count > 0 )
+                {
+                    var canForceDamage = false;
+                    if (forceDamageIgnoreBehindCheck != null)
+                    {
+                        if(bool.Parse((string)forceDamageIgnoreBehindCheck))
+                        {
+                            canForceDamage = true;
+                        }
+                        else
+                        {
+                            canForceDamage = false;
+                           
+                        }
+                    }
+
+                    if (!canForceDamage)
+                    {
+                        if(aoeState.caster!=null && aoeState.caster.transform.right.x * cs.transform.right.x <=0)
+                            return;
+                    }
+                   
+                }
+                
                 if (cs && cs.dead == false && ((toFoe == true && CombatComponent.GetRelation(camp,cs.Camp)!=RelationType.Friendly) || (toAlly == true && CombatComponent.GetRelation(camp,cs.Camp)==RelationType.Friendly))){
                     Vector3 chaToAoe = characters[i].transform.position - aoe.transform.position;
                     GameEntry.Combat.CreateDamage(
@@ -214,19 +366,50 @@ namespace DesignerScripts
                         0.05f, new DamageInfoTag[]{DamageInfoTag.directDamage}
                     );
                     //cs.AddBuff(new AddBuffInfo(DesingerTables.Buff.data["Poison"],aoeState.caster,cs.gameObject,1,10));
-                    if (hurtAction == true) cs.AddAnimOrder(UnitAnim.AnimOrderType.Trigger, "Hurt");
-                    if (effect !=0) cs.PlaySightEffect(bp, effect);
+                    if (hurtAction == true)
+                    {
+                        cs.AddAnimOrder(UnitAnim.AnimOrderType.Trigger, "Hurt");
+                    }
+                    if(disableMove)
+                        cs.AddBuff(new AddBuffInfo(DesingerTables.Buff.data["BeAttacked"],aoeState.caster,cs.gameObject,1,0.3f));
+
+
+                    var effectStrArr = effectIds.Split("|");
+                    if (effectStrArr.Length > 0)
+                    {
+                        var effectIdStr = effectStrArr.RandomNonEmptyElement();
+                        if (!string.IsNullOrEmpty(effectIdStr))
+                        {
+                            int effectId = int.Parse(effectIdStr);
+                            if (effectId !=0) cs.PlaySightEffect(bp, effectId);
+                        }
+                       
+                    }
+                    
+                    var soundStrArr = soundIds.Split("|");
+                    if (soundStrArr.Length > 0)
+                    {
+                        var soundIdStr = soundStrArr.RandomNonEmptyElement();
+                        if (!string.IsNullOrEmpty(soundIdStr))
+                        {
+                            int soundId = int.Parse(soundIdStr);
+                            if (soundId != 0) GameEntry.Sound.PlaySound(soundId, cs.transform.position);
+                        }
+                    }
+                    
                 }
             }
         }
-        
+
+
+       
         
         ///<summary>
         ///AddBuffToEnterCha
         ///对于范围内的人添加buff，参数：
         ///[0]buffId：buffId
         ///[1]stack：buff层数
-        ///[2]stack：持续时间
+        ///[2]duration：持续时间
         ///[3]SetTo：设置buff时间还是增加
         ///[4]bool：对敌人有效
         ///[5]bool：对盟军有效
@@ -269,7 +452,129 @@ namespace DesignerScripts
                 }
             }
         }
+
+
+        public static void KnockOffEnterCha(GameObject aoe, List<GameObject> characters)
+        {
+            AoeState aoeState = aoe.GetComponent<AoeState>();
+            if (!aoeState) return;
+
+            
+            object[] p = aoeState.model.onChaEnterParams;
+            float  force = p.Length > 0 ? (int)p[0] : 7;//力度
+            
+            float upDegree = p.Length > 1 ? (float)p[1] : 30;//向上的角度
+            bool ignoreX = p.Length > 2 ? (bool)p[2] : false;//忽略X轴？
+            bool ignoreZ = p.Length > 3 ? (bool)p[3] : false;//忽略z轴？
+            bool toFoe = p.Length > 4 ? (bool)p[4] : true;
+            bool toAlly = p.Length > 5 ? (bool)p[5] : false;
+            int effect = p.Length > 6 ? (int)p[6] : 0;
+            string bp = p.Length > 7 ? (string)p[7] : "Body";
+
+            float scale = 5;
+            var param=aoeState.param;
+            if (param.TryGetValue("Force", out var newForce))
+            {
+                if(newForce!=null)
+                    force = float.Parse((string)newForce);
+            }
+
+            if (param.TryGetValue("Degree", out var newDegree))
+            {
+                if(newDegree!=null)
+                    upDegree = float.Parse((string)newDegree);
+            }
+
+           
+
+            bool resetVelocityBeforeNewKnockOff=true;
+            if (param.TryGetValue("ResetVelocity", out var resetVelocity))
+            {
+                if(resetVelocity!=null)
+                    resetVelocityBeforeNewKnockOff = bool.Parse((string)resetVelocity);
+            }
+            
+            CampType camp = CampType.Unknown;
+            if (aoeState.caster)
+            {
+                var ccs=aoeState.caster.GetComponent<ChaState>();
+                if (ccs) camp = ccs.Camp;
+            }
+
+            for (int i = 0; i < characters.Count; i++){
+                ChaState cs = characters[i].GetComponent<ChaState>();
+                if (  cs && cs.dead == false && ((toFoe == true && CombatComponent.GetRelation(camp,cs.Camp)!=RelationType.Friendly) || (toAlly == true && CombatComponent.GetRelation(camp,cs.Camp)==RelationType.Friendly)))
+                {
+
+                    float duration = 10f;
+                    bool permanent = true;
+                    if (cs.tags.Contains("Fish"))
+                    {
+                        duration = 3;
+                        permanent = false;
+                    }
+                        
+                   
+                    
+                    cs.AddBuff(new AddBuffInfo(DesingerTables.Buff.data["KnockedOff"],aoeState.caster,cs.gameObject,1,duration,true,permanent));
+                    GameEntry.Timer.AddOnceTimer(300, () =>
+                    {
+                        if (cs != null)
+                        {
+                            cs.AddBuff(new AddBuffInfo(DesingerTables.Buff.data["RemoveKnockedOffBuffOnGround"],
+                                aoeState.caster, cs.gameObject, 1, 10, true, true));
+                            cs.AddBuff(new AddBuffInfo(DesingerTables.Buff.data["CollideAnimHandle"], aoeState.caster,
+                                cs.gameObject, 1, 10, true, true));
+                        }
+                      
+
+                    });
+                    
+                    // 计算平面的击飞方向
+                    var dir = cs.transform.position - aoeState.transform.position;
+                    dir.y = 0;
+                    dir = dir.normalized;
+
+                    // 计算旋转后的方向向量
+                    Vector3 rotatedDir = Quaternion.Euler(-upDegree, 0, 0) * Vector3.forward;
+                    rotatedDir = rotatedDir.normalized;
+
+                    // 根据旋转后的方向向量设置力
+                    Vector3 forceVector = new Vector3(dir.x * rotatedDir.z, rotatedDir.y, dir.z * rotatedDir.z) * force;
+
+                    if (ignoreX)
+                        forceVector.x = 0;
+                    if (ignoreZ)
+                        forceVector.z = 0;
+
+                    // 应用力
+                    var rb = cs.GetComponent<Rigidbody>();
+                    if (rb)
+                    {
+                        if(resetVelocityBeforeNewKnockOff)
+                            rb.velocity=new Vector3(0,rb.velocity.y,0);
+                       
+                        //暂时禁用Inwater,使用无阻力模式
+                        //var inWater = cs.GetBuffById("InWater");//如果有在水中BUff，击飞效果力度减半
+                        var inWater = new List<Buff>();
+                        rb.AddForce(forceVector*(inWater.Count>0?0.3f:1f),ForceMode.Impulse);
+                    }
+                    
+                    
+                    
+                    if (effect !=0) cs.PlaySightEffect(bp, effect);
+                    cs.AddAnimOrder(UnitAnim.AnimOrderType.Trigger,"KnockOff");
+
+                    //朝向玩家
+                    // var tmpDir = cs.transform.position - aoeState.caster.transform.position;
+                    // tmpDir.y = 0;
+                    // var rot = Quaternion.LookRotation(tmpDir);
+                    // cs.OrderRotateTo(rot);
+                }
+            }
+        }
         
+       
 
         ///<summary>
         ///onRemoved
@@ -338,6 +643,73 @@ namespace DesignerScripts
                 }
             }
         }
+        
+        
+        private static void Vortex(GameObject aoe){
+            AoeState ast = aoe.GetComponent<AoeState>();
+            if (!ast) return;
+            
+
+            var onTickParams = ast.model.onTickParams;
+            var forceMultiplier = onTickParams.Length > 0 ? (float)onTickParams[0] : 1;
+            var duration = onTickParams.Length > 1 ? (float)onTickParams[1] : 1;
+            var damageOther = onTickParams.Length > 2 ? (bool)onTickParams[2] : true;
+            var addTime= onTickParams.Length > 3 ? (bool)onTickParams[3] : true;
+            
+            if(ast.caster!=null && addTime)
+                ast.duration += 0.2f;
+            for (int i = 0; i < ast.characterInRange.Count; i++){
+                if(ast.characterInRange[i]==null)
+                    continue;
+                ChaState cs = ast.characterInRange[i].GetComponent<ChaState>();
+                Debug.DrawLine(aoe.transform.position,cs.transform.position);
+                if (cs && cs.dead == false && !cs.tags.Contains("Mine")){
+                    Vector3 disV = aoe.transform.position - cs.transform.position;
+                    cs.AddForceMove(new MovePreorder(disV.normalized*forceMultiplier,duration));//吸引
+                    Debug.DrawRay(cs.transform.position,disV.normalized*forceMultiplier);
+                    if(damageOther)
+                        DoDamageToEnterCha(aoe,ast.characterInRange);
+                }
+            }
+        }
+        
+        public static void BikeMobAoe(GameObject aoe){
+            AoeState ast = aoe.GetComponent<AoeState>();
+            if (!ast) return;
+            
+            if(ast.caster!=null)
+                ast.duration += 0.2f;
+            else
+            {
+                ast.duration = 0;
+                return;
+            }
+            var damageAble = true;
+            ast.param.TryGetValue("LastPos", out var lastPos);
+            if (lastPos != null)
+            {
+                var delta = ast.caster.transform.position - (Vector3)lastPos;
+               
+                ast.param["LastPos"] = ast.caster.transform.position;
+                if (delta.magnitude < 0.52f)
+                    damageAble = false;
+            }
+
+            
+            if (damageAble)
+            {
+                for (int i = 0; i < ast.characterInRange.Count; i++){
+                    if(ast.characterInRange[i]==null)
+                        continue;
+                    ChaState cs = ast.characterInRange[i].GetComponent<ChaState>();
+                    if (cs && cs.dead == false){
+                    
+                        DoDamageToEnterCha(aoe,ast.characterInRange);
+                    }
+                }
+            }
+            
+        }
 
         ///<summary>
         ///OnCreate
@@ -385,7 +757,7 @@ namespace DesignerScripts
             if (p.Length > 4) ap = (Dictionary<string, object>)p[4];
             AoeLauncher al = new AoeLauncher(
                 model, ast.caster, aoe.transform.position, 
-                duration, aoe.transform.rotation, tween, tp, ap
+                duration, aoe.transform.rotation, 1,tween, tp, ap
             );
             GameEntry.Combat.CreateAoE(al);
         }

@@ -1,8 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameFramework.Event;
 using GameMain;
 using UnityEngine;
 
+public class DoDamageEventArgs : GameEventArgs
+{
+    public static readonly int EventId = typeof(DoDamageEventArgs).GetHashCode();
+    public override void Clear()
+    {
+        
+    }
+
+    public override int Id
+    {
+        get
+        {
+            return EventId;
+        }
+    }
+
+    public ChaState attacker;
+    public ChaState victim;
+    public float damageValue;
+    public DoDamageEventArgs(ChaState attacker, ChaState victim, float damageValue)
+    {
+        this.attacker = attacker;
+        this.victim = victim;
+        this.damageValue = damageValue;
+    }
+}
 ///<summary>
 ///负责处理游戏中所有的DamageInfo
 ///</summary>
@@ -73,6 +100,7 @@ public class DamageManager : MonoBehaviour{
             //按游戏设计的规则跳数字，如果要有暴击，也可以丢在策划脚本函数（lua可以返回多参数）也可以随便怎么滴
             //SceneVariants.PopUpNumberOnCharacter(dInfo.defender, Mathf.Abs(dVal), isHeal);
             GameEntry.FlyText.FlyText(dInfo.defender.transform.position,Mathf.Abs(dVal).ToString(),isHeal?Color.green:Color.red);
+            GameEntry.Event.Fire(this,new DoDamageEventArgs(attackerChaState,defenderChaState,dVal));
         }
 
         //伤害流程走完，添加buff

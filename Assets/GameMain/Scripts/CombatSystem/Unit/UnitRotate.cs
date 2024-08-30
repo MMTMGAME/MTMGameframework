@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 
@@ -11,7 +13,8 @@ public class UnitRotate : MonoBehaviour
     ///<summary>
     ///单位当前是否可以旋转角度
     ///</summary>
-    private bool canRotate = true;
+    [ReadOnly]
+    public bool canRotate = true;
 
     ///<summary>
     ///旋转的速度，1秒只能转这么多度（角度）
@@ -22,10 +25,33 @@ public class UnitRotate : MonoBehaviour
 
     private Quaternion targetRotation;  //目标转到多少度，因为旋转发生在围绕y轴旋转，所以只有y就足够了
 
-    void FixedUpdate() {
-        if (this.canRotate == false || DoneRotate() == true) return;
+    private void Start()
+    {
+        targetRotation = transform.rotation;
         
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.fixedDeltaTime);
+    }
+
+    /// <summary>
+    /// 开启后旋转不再缓动到目标旋转，而是直接设置旋转
+    /// </summary>
+    public bool rotateBySet;
+    void FixedUpdate() {
+        
+        if (this.canRotate == false || DoneRotate() == true) return;
+
+        
+        
+        if (rotateBySet)
+        {
+            transform.rotation = targetRotation;
+        }
+        else
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.fixedDeltaTime);
+        }
+        
+        Debug.DrawRay(transform.position,targetRotation*Vector3.forward*5,Color.yellow);
+        
     }
 
     //判断是否完成了旋转
@@ -58,5 +84,6 @@ public class UnitRotate : MonoBehaviour
     ///</summary>
     public void EnableRotate(){
         canRotate = true;
+        targetRotation = transform.rotation;
     }
 }

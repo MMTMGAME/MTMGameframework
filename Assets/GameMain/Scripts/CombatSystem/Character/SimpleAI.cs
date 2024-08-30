@@ -20,7 +20,7 @@ public class SimpleAI:MonoBehaviour{
         new TimelineNode(0.10f, "FireBullet", new object[]{
             new BulletLauncher(
                 DesingerTables.Bullet.data["normal1"], null, Vector3.zero,Quaternion.identity, 6.0f, 10.0f, 0, 
-                null, null, false
+                false,null, null, false
             ), "Muzzle"
         }),
         new TimelineNode(0.50f, "SetCasterControlState", new object[]{true, true, true})

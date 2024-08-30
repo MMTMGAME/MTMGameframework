@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameFramework;
@@ -55,7 +56,9 @@ public class BattleUnit : Entity
 
     [SerializeField] protected List<Armor> m_Armors = new List<Armor>();
 
-    private WeaponAnimEventListener weaponAnimEventListener;//监听武器攻击动画帧事件
+    
+
+    private AnimEventListener m_AnimEventListener;//监听武器攻击动画帧事件
     public BattleUnitData GetBattleUnitData()
     {
         return BattleUnitData;
@@ -64,17 +67,14 @@ public class BattleUnit : Entity
     public ChaState chaState;
 
     //记录id，后面通过键位调用对应index的skill进行调用,在移除武器时也需要通过这个进行Skill的移除
+    //注意，无论是角色节能还是武器技能LearnSkill时都会存储到skill列表，而武器技能还会存储到weaponSkillIds，使用CastWeaponSkill
+    //可以单独调用武器技能
     public List<string> weaponSkillIds = new List<string>();
-
-    //记录通过武器添加的buff，便于切换武器时移除buff
-    public List<string> weaponBuffIds = new List<string>();
     
-    //记录通过Armor添加的Buff，便于切换Armors移除Buff
-    public List<string> armorBuffIds = new List<string>();
-
+   
     public void CastWeaponSkill(int index)
     {
-        chaState.CastSkill(weaponSkillIds[index]);
+        chaState.CastSkill(weaponSkillIds[index]);//武器的技能和角色自带技能区分开，
     }
     public bool IsValid()
     {
@@ -90,12 +90,25 @@ public class BattleUnit : Entity
         return m_Weapons[index];
     }
 
+    protected List<Collider> battleUnitColliders=new List<Collider>();//用于防止自身和通过Attachto到自己的子物体防碰撞
+    protected Rigidbody rb;
+    private static readonly int Die = Animator.StringToHash("Die");
 
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
         chaState = gameObject.GetOrAddComponent<ChaState>();
         chaState.onDead += OnDead;
+        var cols = GetComponentsInChildren<Collider>();
+        foreach (var col in cols)
+        {
+            if (!col.isTrigger)
+            {
+                battleUnitColliders.Add(col);
+            }
+        }
+        
+        rb = GetComponent<Rigidbody>();
     }
 
 
@@ -129,11 +142,48 @@ public class BattleUnit : Entity
             GameEntry.Entity.ShowArmor(armorDatas[i]);
         }
 
-        weaponAnimEventListener = gameObject.AddComponent<WeaponAnimEventListener>();
-        weaponAnimEventListener.Init(this);
+        m_AnimEventListener = gameObject.GetOrAddComponent<AnimEventListener>();
+        m_AnimEventListener.Init(this);
 
-        chaState.InitBaseProp(new ChaProperty(BattleUnitData.baseMoveSpeed,BattleUnitData.baseHP,BattleUnitData.baseMP,BattleUnitData.baseAttack,BattleUnitData.baseDefense,BattleUnitData.baseMoveSpeed));
+        chaState.InitBaseProp(new ChaProperty(BattleUnitData.baseMoveSpeed,BattleUnitData.baseHP,BattleUnitData.baseMP,BattleUnitData.baseAttack,BattleUnitData.baseDefense,BattleUnitData.baseActionSpeed));
         chaState.Camp = BattleUnitData.Camp;
+
+        foreach (var buff in BattleUnitData.buffs)
+        {
+            //举例:"ExplosionOnBeKilled_ExplosionDamage:1|HitAlly:True|HitFoe:False,HealByInterval_Interval:1|HealPercent|3"
+            var arr = buff.Split("_");
+            if(arr.Length==0)
+                return;
+            var buffId = arr[0];
+
+            Dictionary<string, object> buffParam = new Dictionary<string, object>();
+
+            if (arr.Length > 1)
+            {
+                var buffParamStr = arr[1];
+                var buffParamStrArr = buffParamStr.Split("|");
+                foreach (var bp in buffParamStrArr)
+                {
+                    var bpArr = bp.Split(":");
+
+                    if (bpArr.Length == 2)
+                    {
+                        buffParam.Add(bpArr[0],bpArr[1]);
+                    }
+                }
+            }
+           
+            
+            chaState.AddBuff(new AddBuffInfo(DesingerTables.Buff.data[buffId],gameObject,
+                gameObject,1,10,true,true,buffParam));
+        }
+        
+        foreach (var skillId in BattleUnitData.skills)
+        {
+            chaState.LearnSkill(DesingerTables.Skill.data[skillId]);
+        }
+
+        chaState.tags = BattleUnitData.tags;
     }
 
 #if UNITY_2017_3_OR_NEWER
@@ -158,8 +208,7 @@ public class BattleUnit : Entity
         {
             var weapon = (Weapon)childEntity;
             m_Weapons.Add(weapon);
-            if (m_Weapons.Count == 1)
-            {
+            
                 foreach (var skillId in weapon.m_WeaponData.skills)
                 {
                     if(skillId=="")
@@ -167,7 +216,7 @@ public class BattleUnit : Entity
                     chaState.LearnSkill(DesingerTables.Skill.data[skillId]);
                 }
                 weaponSkillIds.AddRange(weapon.m_WeaponData.skills);
-            }
+            
             
             //buff
             foreach (var buffId in weapon.m_WeaponData.buffs)
@@ -198,6 +247,26 @@ public class BattleUnit : Entity
             
             return;
         }
+        
+        StartCoroutine(HandleOnAttachedTransform(childEntity, parentTransform));
+    }
+
+    IEnumerator HandleOnAttachedTransform(EntityLogic childEntity, Transform parentTransform)
+    {
+        yield  return null;
+        
+        //特殊情况下要防止碰撞，要用的时候再解开注释
+        // var colliders = childEntity.GetComponentsInChildren<Collider>();
+        // foreach (var col in colliders)
+        // {
+        //     foreach (var battleUnitCollider in battleUnitColliders)
+        //     {
+        //         Physics.IgnoreCollision(battleUnitCollider,col);
+        //     }
+        //     
+        // }
+        
+        
     }
 
 #if UNITY_2017_3_OR_NEWER
@@ -252,6 +321,7 @@ public class BattleUnit : Entity
         GameEntry.Event.Fire(this,BattleUnitDieEventArgs.Create(this));
         
         
+        CachedAnimator?.SetTrigger(Die);
 
         CustomEvent.Trigger(gameObject, "OnDead"); // "OnDead"是在Visual Scripting中定义的事件名
         
@@ -260,35 +330,20 @@ public class BattleUnit : Entity
         {
             Position = CachedTransform.localPosition,
         });
-        GameEntry.Sound.PlaySound(BattleUnitData.DeadSoundId);
-    }
-
-    
-    public CampType GetCamp()
-    {
-        return BattleUnitData.Camp;
-    }
-    
-   
-
-    protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
-    {
-        base.OnUpdate(elapseSeconds, realElapseSeconds);
+        if (BattleUnitData.DeadSoundId > 0)
+        {
+            GameEntry.Sound.PlaySound(BattleUnitData.DeadSoundId);
+        }
         
-        
-        //TryAttack();
-        //不再用tryAttack了，用状态机进行攻击逻辑控制
+
+        GameEntry.Timer.AddOnceTimer(BattleUnitData.hideTime, () =>
+        {
+            if(Visible)
+                GameEntry.Entity.HideEntity(this);
+        });
+
+       
     }
 
-    // protected virtual void TryAttack()
-    // {
-    //     //举例攻击，因此用简单的写法
-    //     for (int i = 0; i < m_Weapons.Count; i++)
-    //     {
-    //         m_Weapons[i].TryAttack();//因为是举例，武器直接大范围攻击
-    //     }
-    // }
-    
-    
     
 }

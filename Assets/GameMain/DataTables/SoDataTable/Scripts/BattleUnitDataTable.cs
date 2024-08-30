@@ -28,6 +28,11 @@ public class BattleUnitDataRow:SoDataRow
     public string[] skills;
     public string[] buffs;
 
+    [Header("死亡后多久销毁(ms)\n用于播放死亡动画")]
+    public long hideTime;
+
+    [Header("区分单位特征")]
+    public string[] tags;
     public int GetArmorIdAt(int index)
     {
         switch (index)

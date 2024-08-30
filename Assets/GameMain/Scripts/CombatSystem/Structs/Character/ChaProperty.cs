@@ -108,16 +108,17 @@ public struct ChaProperty{
             a.moveType == MoveType.fly || b.moveType == MoveType.fly ? MoveType.fly : MoveType.ground
         );
     }
-    public static ChaProperty operator *(ChaProperty a, ChaProperty b){
+    public static ChaProperty operator *(ChaProperty a, ChaProperty b)
+    {
         return new ChaProperty(
-            Mathf.RoundToInt(a.moveSpeed * (1.0000f + Mathf.Max(b.moveSpeed, -0.9999f))),
-            Mathf.RoundToInt(a.hp * (1.0000f + Mathf.Max(b.hp, -0.9999f))),
-            Mathf.RoundToInt(a.mp * (1.0000f + Mathf.Max(b.mp, -0.9999f))),
-            Mathf.RoundToInt(a.attack * (1.0000f + Mathf.Max(b.attack, -0.9999f))),
-            Mathf.RoundToInt(a.defense * (1.0000f + Mathf.Max(b.defense, -0.9999f))),
-            Mathf.RoundToInt(a.actionSpeed * (1.0000f + Mathf.Max(b.actionSpeed, -0.9999f))),
-            a.bodyRadius * (1.0000f + Mathf.Max(b.bodyRadius, -0.9999f)),
-            a.hitRadius * (1.0000f + Mathf.Max(b.hitRadius, -0.9999f)),
+            Mathf.RoundToInt(a.moveSpeed * (1.0000f + Mathf.Max(b.moveSpeed / 100f, -0.9999f))),
+            Mathf.RoundToInt(a.hp * (1.0000f + Mathf.Max(b.hp / 100f, -0.9999f))),
+            Mathf.RoundToInt(a.mp * (1.0000f + Mathf.Max(b.mp / 100f, -0.9999f))),
+            Mathf.RoundToInt(a.attack * (1.0000f + Mathf.Max(b.attack / 100f, -0.9999f))),
+            Mathf.RoundToInt(a.defense * (1.0000f + Mathf.Max(b.defense / 100f, -0.9999f))),
+            Mathf.RoundToInt(a.actionSpeed * (1.0000f + Mathf.Max(b.actionSpeed / 100f, -0.9999f))),
+            a.bodyRadius * (1.0000f + Mathf.Max(b.bodyRadius / 100f, -0.9999f)),
+            a.hitRadius * (1.0000f + Mathf.Max(b.hitRadius / 100f, -0.9999f)),
             a.moveType == MoveType.fly || b.moveType == MoveType.fly ? MoveType.fly : MoveType.ground
         );
     }
@@ -139,6 +140,8 @@ public struct ChaProperty{
 ///<summary>
 ///角色的资源类属性，比如hp，mp等都属于这个
 ///</summary>
+
+[System.Serializable]
 public class ChaResource{
     ///<summary>
     ///当前生命
@@ -155,10 +158,13 @@ public class ChaResource{
     ///</summary>
     public int stamina;
 
-    public ChaResource(int hp, int mp = 0, int stamina = 0){
+    public float oxygen;
+
+    public ChaResource(int hp, int mp = 0, int stamina = 0,float oxygen=0){
         this.hp = hp;
         this.mp = mp;
         this.stamina = stamina;
+        this.oxygen = oxygen;
     }
 
     ///<summary>
@@ -168,7 +174,8 @@ public class ChaResource{
         return (
             this.hp >= requirement.hp &&
             this.mp >= requirement.mp &&
-            this.stamina >= requirement.stamina
+            this.stamina >= requirement.stamina &&
+            this.oxygen>=requirement.oxygen
         );
     }
 
@@ -176,21 +183,24 @@ public class ChaResource{
         return new ChaResource(
             a.hp + b.hp,
             a.mp + b.mp,
-            a.stamina + b.stamina
+            a.stamina + b.stamina,
+            a.oxygen+b.oxygen
         );
     }
     public static ChaResource operator *(ChaResource a, float b){
         return new ChaResource(
             Mathf.FloorToInt(a.hp * b),
             Mathf.FloorToInt(a.mp * b),
-            Mathf.FloorToInt(a.stamina * b)
+            Mathf.FloorToInt(a.stamina * b),
+            a.oxygen * b
         );
     }
     public static ChaResource operator *(float a, ChaResource b){
         return new ChaResource(
             Mathf.FloorToInt(b.hp * a),
             Mathf.FloorToInt(b.mp * a),
-            Mathf.FloorToInt(b.stamina * a)
+            Mathf.FloorToInt(b.stamina * a),
+            b.oxygen * a
         );
     }
     public static ChaResource operator -(ChaResource a, ChaResource b){

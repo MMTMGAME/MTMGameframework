@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 ///<summary>
@@ -62,10 +63,14 @@ public class DamageInfo{
         this.damage = damage;
         this.criticalRate = baseCriticalRate;
         this.degree = damageDegree;
-        this.tags = new DamageInfoTag[tags.Length];
-        for (int i = 0; i < tags.Length; i++){
-            this.tags[i] = tags[i];
+        this.tags = new DamageInfoTag[tags?.Length ?? 0];
+        if (this.tags.Length > 0)
+        {
+            for (int i = 0; i < tags.Length; i++){
+                this.tags[i] = tags[i];
+            }
         }
+       
     }
 
     ///<summary>
@@ -113,12 +118,16 @@ public class DamageInfo{
 ///游戏中伤害值的struct，这游戏的伤害类型包括子弹伤害（治疗）、爆破伤害（治疗）、精神伤害（治疗）3种，这两种的概念更像是类似物理伤害、金木水火土属性伤害等等这种元素伤害的概念
 ///但是游戏的逻辑可能会依赖于这个伤害做一些文章，比如“受到子弹伤害减少90%”之类的
 ///</summary>
-public struct Damage{
+[IncludeInSettings(true)]
+public struct Damage
+{
+    public int melee;
     public int bullet;
     public int explosion;
     public int mental;
 
-    public Damage(int bullet, int explosion = 0, int mental = 0){
+    public Damage(int melee,int bullet=0, int explosion = 0, int mental = 0){
+        this.melee=melee;
         this.bullet = bullet;
         this.explosion = explosion;
         this.mental = mental;
@@ -130,12 +139,13 @@ public struct Damage{
     ///</summary>
     public int Overall(bool asHeal = false){
         return (asHeal == false) ? 
-            (Mathf.Max(0, bullet) + Mathf.Max(0, explosion) + Mathf.Max(0, mental)):
-            (Mathf.Min(0, bullet) + Mathf.Min(0, explosion) + Mathf.Min(0, mental));
+           ( Mathf.Max(0, melee)+Mathf.Max(0, bullet) + Mathf.Max(0, explosion) + Mathf.Max(0, mental)):
+            (Mathf.Min(0, melee)+ Mathf.Min(0, bullet) + Mathf.Min(0, explosion) + Mathf.Min(0, mental));
     }
 
     public static Damage operator +(Damage a, Damage b){
         return new Damage(
+            a.melee+ b.melee,
             a.bullet + b.bullet,
             a.explosion + b.explosion,
             a.mental + b.mental
@@ -143,6 +153,7 @@ public struct Damage{
     }
     public static Damage operator *(Damage a, float b){
         return new Damage(
+            Mathf.RoundToInt(a.melee * b),
             Mathf.RoundToInt(a.bullet * b),
             Mathf.RoundToInt(a.explosion * b),
             Mathf.RoundToInt(a.mental * b)

@@ -44,6 +44,14 @@ public class BattleUnitData : EntityData
     public int baseMoveSpeed;
     public int baseActionSpeed;
 
+    public string[] skills;
+    public string[] buffs;
+    
+    public string[] tags;
+
+    [Header("死亡后过久隐藏(ms)")]
+    public long hideTime;
+
     public CampType Camp
     {
         get;
@@ -83,6 +91,8 @@ public class BattleUnitData : EntityData
         baseMP = drBattleUnit.baseMp;
         baseMoveSpeed = drBattleUnit.baseMoveSpeed;
         baseActionSpeed = drBattleUnit.baseActionSpeed;
+
+        this.tags = drBattleUnit.tags;
         
         for (int index = 0, weaponId = 0; (weaponId = drBattleUnit.GetWeaponIdAt(index)) > 0; index++)
         {
@@ -97,7 +107,9 @@ public class BattleUnitData : EntityData
         m_DeadEffectId = drBattleUnit.deadEffectId;
         m_DeadSoundId = drBattleUnit.deadSoundId;
 
-        
+        this.hideTime = drBattleUnit.hideTime;
+        this.skills = drBattleUnit.skills;
+        this.buffs = drBattleUnit.buffs;
     }
 
 

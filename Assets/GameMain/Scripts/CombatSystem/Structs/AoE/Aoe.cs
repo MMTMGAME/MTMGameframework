@@ -43,8 +43,9 @@ public class AoeLauncher{
     ///</summary>
     public Dictionary<string, object> param = new Dictionary<string, object>();
 
+    public float scale;
     public AoeLauncher(
-        AoeModel model, GameObject caster, Vector3 position, float duration, Quaternion rotation, 
+        AoeModel model, GameObject caster, Vector3 position, float duration, Quaternion rotation, float scale=1,
         AoeTween tween = null, object[] tweenParam = null, Dictionary<string, object> aoeParam = null
     ){
         this.model = model;
@@ -53,6 +54,7 @@ public class AoeLauncher{
         
         this.duration = duration;
         this.rotation = rotation;
+        this.scale = scale;
         this.tween = tween;
         if (aoeParam != null) this.param = aoeParam;
         if (tweenParam != null) this.tweenParam = tweenParam;
@@ -65,6 +67,7 @@ public class AoeLauncher{
             this.position,
             this.duration,
             this.rotation,
+            this.scale,
             this.tween,
             this.tweenParam,
             this.param
@@ -75,7 +78,8 @@ public class AoeLauncher{
 ///<summary>
 ///AoE的模板数据
 ///</summary>
-public struct AoeModel{
+public struct 
+    AoeModel{
     public string id;
 
     ///<summary>

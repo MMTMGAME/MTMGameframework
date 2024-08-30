@@ -59,8 +59,11 @@ public class UnitBindPoint : MonoBehaviour{
 
         GameEntry.Entity.ShowModelObj(typeId, Vector3.zero, Quaternion.identity,  (effectGO) =>
         {
-            
-            GameEntry.Entity.AttachEntity(effectGO.Entity,transform.GetComponentInParent<Entity>().Entity,transform);
+
+            var parentEntity = transform.GetComponentInParent<Entity>();
+            if(parentEntity==null || parentEntity.IsUnityNull())
+                return;
+            GameEntry.Entity.AttachEntity(effectGO.Entity,parentEntity.Entity,transform);
             
             effectGO.transform.localPosition = this.offset;
             effectGO.transform.localRotation = Quaternion.identity;

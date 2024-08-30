@@ -74,15 +74,17 @@ namespace GameMain
             });
         }
 
-        public static void ShowAoeObj(this EntityComponent entityComponent, AoeLauncher aoeLauncher,
+        public static int ShowAoeObj(this EntityComponent entityComponent, AoeLauncher aoeLauncher,
             Action<Entity> action)
         {
-            entityComponent.ShowEntity(typeof(AoeObj), "AoeObj", Constant.AssetPriority.BulletAsset,new AoeObjData(GameEntry.Entity.GenerateSerialId(),aoeLauncher.model.entityTypeId,aoeLauncher)
+            var serialId = GameEntry.Entity.GenerateSerialId();
+            entityComponent.ShowEntity(typeof(AoeObj), "AoeObj", Constant.AssetPriority.BulletAsset,new AoeObjData(serialId,aoeLauncher.model.entityTypeId,aoeLauncher)
             {
                 Position = aoeLauncher.position,
                 Rotation = aoeLauncher.rotation,
                 OnShowCallBack = action
             });
+            return serialId;
         }
         
         

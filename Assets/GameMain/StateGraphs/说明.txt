@@ -1,8 +1,8 @@
 要在状态机中处理帧事件，帧事件名称必须为TriggerAnimationEvent。
 其中string可以理解触发哪个命令，float,int等为参数，状态机中的AnimationEvent和原生动画帧事件不同，可以传递多个参数。
-详情查看handleAnimEvent。
+详情查看Goblin的动画的帧事件
 
 为了统一设计，建议在制作其他动画帧事件时也使用TriggerAnimationEvent名称，又由于
 unity的原生动画帧事件至多传递一个参数，所以建议在string使用复合命令表示命令和参数。
-如攻击检测事件"hit,0"表示右手武器进行攻击检测，用于播放右手攻击动画时使用，
-"Hit,1"表示左手武器进行攻击检测。
+
+由于当前整合了新的战斗系统，动画帧实际一般为"CreateAoe,AttackAoe,FrontPoint,5"等形式，详情查看AnimEventListener函数。

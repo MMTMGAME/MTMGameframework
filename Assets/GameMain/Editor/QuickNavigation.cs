@@ -43,5 +43,27 @@ public class QuickNavigation : EditorWindow
             Selection.activeObject = AssetDatabase.LoadAssetAtPath("Assets/GameMain/StateGraphs/SubGraph", typeof(Object));
             EditorGUIUtility.PingObject(Selection.activeObject);
         }
+        
+        if (GUILayout.Button("SoDataTable"))
+        {
+            // 设置Project窗口的当前选择路径
+            Selection.activeObject = AssetDatabase.LoadAssetAtPath("Assets/GameMain/DataTables/SoDataTable/Scripts", typeof(Object));
+            EditorGUIUtility.PingObject(Selection.activeObject);
+        }
+        
+        if (GUILayout.Button("GameMainSounds"))
+        {
+            // 设置Project窗口的当前选择路径
+            Selection.activeObject = AssetDatabase.LoadAssetAtPath("Assets/GameMain/Sounds/BulletImpact", typeof(Object));
+            EditorGUIUtility.PingObject(Selection.activeObject);
+        }
+        
+        // 按钮用于快速导航到材质文件夹
+        if (GUILayout.Button("Launcher Scene"))
+        {
+            // 设置Project窗口的当前选择路径
+            Selection.activeObject = AssetDatabase.LoadAssetAtPath("Assets/Launcher.unity", typeof(Object));
+            EditorGUIUtility.PingObject(Selection.activeObject);
+        }
     }
 }

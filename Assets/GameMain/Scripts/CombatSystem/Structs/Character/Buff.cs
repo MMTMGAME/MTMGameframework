@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -109,6 +110,8 @@ public class BuffObj{
     ///</summary>
     public int ticked = 0;
 
+    public float nextTickTime;
+
     ///<summary>
     ///buff的一些参数，这些参数是逻辑使用的，比如wow中牧师的盾还能吸收多少伤害，就可以记录在buffParam里面
     ///</summary>
@@ -210,6 +213,14 @@ public struct BuffModel{
     public BuffOnCast onCast;
     public object[] onCastParams;
 
+    
+    /// <summary>
+    /// 新增碰撞回调点，算是程序类型的Buff会触发的东西吧，
+    /// </summary>
+    public BuffOnCollide onCollide;
+    public object[] onCollideParams;
+    
+    
     ///<summary>
     ///在伤害流程中，持有这个buff的人作为攻击者会发生的事情
     ///<param name="buff">会传递给脚本buffObj作为参数</param>
@@ -248,6 +259,7 @@ public struct BuffModel{
     
     public BuffModel(
         string id, string name, string[] tags, int priority, int maxStack, float tickTime,
+        string onCollide,object[] onCollideParams,
         string onOccur, object[] occurParam,
         string onRemoved, object[] removedParam,
         string onTick, object[] tickParam,
@@ -276,6 +288,8 @@ public struct BuffModel{
             }
         }
 
+        this.onCollide = (onCollide == "") ? null : DesignerScripts.Buff.onCollideFunc[onCollide];
+        this.onCollideParams = onCollideParams;
         this.onOccur = (onOccur == "") ? null : DesignerScripts.Buff.onOccurFunc[onOccur];
         this.onOccurParams = occurParam;
         this.onRemoved = (onRemoved == "") ? null : DesignerScripts.Buff.onRemovedFunc[onRemoved];
@@ -295,6 +309,7 @@ public struct BuffModel{
     }
 }
 
+public delegate void BuffOnCollide(BuffObj buff,GameObject collideObj);
 public delegate void BuffOnOccur(BuffObj buff, int modifyStack);
 public delegate void BuffOnRemoved(BuffObj buff);
 public delegate void BuffOnTick(BuffObj buff);

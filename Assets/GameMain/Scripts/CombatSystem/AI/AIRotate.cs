@@ -56,14 +56,27 @@ public class AIRotate : MonoBehaviour
         if (!rotationDisabled)
         {
             NavMeshAgent.updateRotation = false;
+            NavMeshAgent.updateUpAxis = false;
+            
             rotationDisabled = true;  // Set flag to true after disabling rotation
         }
+       
 
-        if (UnitRotate != null && NavMeshAgent.desiredVelocity.sqrMagnitude > 0.1f)
+        if (UnitRotate != null/* && NavMeshAgent.desiredVelocity.sqrMagnitude > 0.1f*/)
         {
             // Calculate the rotation from the NavMeshAgent's desired velocity
-            Quaternion targetRotation = Quaternion.LookRotation(NavMeshAgent.desiredVelocity.normalized);
+            var targetDir = NavMeshAgent.desiredVelocity.normalized;
+            
            
+            
+            
+            Quaternion targetRotation=transform.rotation;
+            if (targetDir != Vector3.zero)
+            {
+                targetRotation = Quaternion.LookRotation(targetDir);
+            }
+            
+            
             if(ChaState)
                 ChaState.OrderRotateTo(targetRotation);
         }

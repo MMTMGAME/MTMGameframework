@@ -37,7 +37,7 @@ MonoBehaviour:
     volume: 1
     spatialBlend: 0
     maxDistance: 100
-  - id: 30002
+  - id: 30001
     comment: "\u5B50\u5F39\u53D1\u5C04\u97F3\u65481"
     audioClip: {fileID: 8300000, guid: 5fb9235bb7d8ab74ab4e1f3e925ac226, type: 3}
     priority: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
     volume: 1
     spatialBlend: 0
     maxDistance: 100
-  - id: 30003
+  - id: 30002
     comment: "\u5B50\u5F39\u53D1\u5C04\u97F3\u65482"
     audioClip: {fileID: 8300000, guid: 50167ed21e741ca47a4fb7c6ff4036f6, type: 3}
     priority: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
     volume: 1
     spatialBlend: 0
     maxDistance: 100
-  - id: 30004
+  - id: 30003
     comment: "\u5B50\u5F39\u53D1\u5C04\u97F3\u65483"
     audioClip: {fileID: 8300000, guid: 180a50130a458ab4687b3579979b67e0, type: 3}
     priority: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
     volume: 1
     spatialBlend: 0
     maxDistance: 100
-  - id: 30005
+  - id: 30004
     comment: "\u5B50\u5F39\u53D1\u5C04\u97F3\u65484"
     audioClip: {fileID: 8300000, guid: d5028bf16cc922a4c85a0bc7a9a53775, type: 3}
     priority: 0

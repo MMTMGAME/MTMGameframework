@@ -67,12 +67,15 @@ public class TimelineManager : MonoBehaviour{
     ///<param name="timelineModel">要添加的timeline</param>
     ///</summary>
     public void AddTimeline(TimelineObj timeline){
-        Debug.Log("添加Timeline"+timeline.model.id);
+        //Debug.Log("添加Timeline"+timeline.model.id);
         if (timeline.caster != null && CasterHasTimeline(timeline.caster) == true) return;
         this.timelines.Add(timeline);
     }
 
-    public bool CasterHasTimeline(GameObject caster){
+    public bool CasterHasTimeline(GameObject caster)
+    {
+
+        return false;//YK把这里改为了False,因为我需要可以同时播放多个Timeline
         for (var i = 0; i < timelines.Count; i++){
             if (timelines[i].caster == caster) return true;
         }

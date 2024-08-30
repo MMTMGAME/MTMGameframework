@@ -38,7 +38,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
   m_PositionCurves:
   - curve:
       serializedVersion: 2
@@ -73,7 +73,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -107,7 +107,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Hip/RightHand/HandModel
+    path: View/Hip/RightHand/HandModel
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves: []
@@ -195,7 +195,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -232,7 +232,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -269,7 +269,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -297,7 +297,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -325,7 +325,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -353,7 +353,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -390,7 +390,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: Hip/RightHand/HandModel
+    path: View/Hip/RightHand/HandModel
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -427,7 +427,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: Hip/RightHand/HandModel
+    path: View/Hip/RightHand/HandModel
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -464,7 +464,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: Hip/RightHand/HandModel
+    path: View/Hip/RightHand/HandModel
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves:
@@ -475,7 +475,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -485,7 +485,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -495,7 +495,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Hip/LeftHand
+    path: View/Hip/LeftHand
     classID: 4
     script: {fileID: 0}
   m_HasGenericRootTransform: 0

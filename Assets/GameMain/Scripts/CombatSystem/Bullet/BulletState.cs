@@ -111,6 +111,8 @@ public class BulletState:MonoBehaviour{
 
     private Rigidbody rb;
     private Collider[] colliders;
+
+    private bool hitCaster;
     private void Start() {
         
         synchronizedUnits();
@@ -148,9 +150,10 @@ public class BulletState:MonoBehaviour{
         moveForce = baseMoveVec * this.moveForce;
             
         moveForce *= speed;
-
+        Debug.DrawRay(transform.position,moveForce*10,Color.red);
         unitMove.MoveBy(moveForce);
-        unitRotate.RotateTo(Quaternion.LookRotation(moveForce));
+        if(moveForce!=Vector3.zero)
+            unitRotate.RotateTo(Quaternion.LookRotation(moveForce));
     }
 
    
@@ -166,13 +169,15 @@ public class BulletState:MonoBehaviour{
         if (this.caster && caster.GetComponent<ChaState>()){
             this.propWhileCast = caster.GetComponent<ChaState>().property;
         }
-        this.fireRotation = bullet.fireRotation;
+        this.fireRotation = caster.transform.rotation * bullet.localRotation;
+        transform.rotation = this.fireRotation;
         this.speed = bullet.speed;
         this.duration = bullet.duration;
         this.timeElapsed = 0;
         this.tween = bullet.tween;
         this.useFireDegreeForever = bullet.useFireDegreeForever;
         this.canHitAfterCreated = bullet.canHitAfterCreated;
+        this.hitCaster = bullet.hitCaster;
         this.smoothMove = !bullet.model.removeOnObstacle;
         this.moveType = bullet.model.moveType;
         this.hp = bullet.model.hitTimes;
@@ -268,7 +273,7 @@ public class BulletState:MonoBehaviour{
     public bool CanHit(ChaState chaState)
     {
         
-        if (!model.hitSelf && caster == chaState.gameObject)
+        if (!hitCaster && caster == chaState.gameObject)
         {
             Debug.Log("击中自己，跳过");
             return false;
@@ -341,10 +346,7 @@ public class BulletState:MonoBehaviour{
             {
                 model.onRemoved(gameObject);
             }
-
-            var entity = GetComponent<Entity>();
-            Debug.Log("子弹销毁"+entity);
-            GameEntry.Entity.HideEntity(entity);
+            GameEntry.Entity.HideEntity(GetComponent<Entity>());
         }
         
        
@@ -368,11 +370,15 @@ public class BulletState:MonoBehaviour{
 
         if(canHitAfterCreated>0)
             return;
-        var targetChaState = collider.GetComponent<ChaState>();
-        if (targetChaState == null)
+        var targetChaState = collider.GetComponentInParent<ChaState>();
+        if (targetChaState == null )
         {
             Debug.Log($"子弹碰到障碍物{collider.gameObject.name}",collider.gameObject);
-            HitedObstacle = true;
+            if (!smoothMove)
+            {
+                HitedObstacle = true;
+            }
+           
             return;
         }
 

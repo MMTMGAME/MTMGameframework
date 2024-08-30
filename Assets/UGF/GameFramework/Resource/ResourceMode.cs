@@ -32,6 +32,5 @@ namespace GameFramework.Resource
         /// </summary>
         UpdatableWhilePlaying,
         
-        ScriptableObject,
     }
 }

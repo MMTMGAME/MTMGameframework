@@ -133,10 +133,16 @@ public class AoeState : MonoBehaviour{
             this.param[kv.Key] = kv.Value;
         }//aoe.param;
         this.caster = aoe.caster;
+        if (aoe.caster == null)
+        {
+            Debug.Log("InitAoe时AoeCaster为null，Aoe信息"+aoe.model.id);
+        }
         this.propWhileCreate = aoe.caster ? aoe.caster.GetComponent<ChaState>().property : ChaProperty.zero;
         
         this.transform.position = aoe.position;
         this.transform.rotation = aoe.rotation;
+
+        this.transform.localScale = aoe.scale * Vector3.one;
 
         synchronizedUnits();
         inited = true;
@@ -229,11 +235,12 @@ public class AoeState : MonoBehaviour{
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<ChaState>())
+        var cha = other.GetComponentInParent<ChaState>();
+        if (cha!=null)
         {
-            characterInRange.Add(other.gameObject);
+            characterInRange.Add(cha.gameObject);
             if(model.onChaEnter!=null)
-                model.onChaEnter(gameObject, new List<GameObject>() { other.gameObject });
+                model.onChaEnter(gameObject, new List<GameObject>() { cha.gameObject });
         }
 
         var bulletState = other.GetComponentInParent<BulletState>();
@@ -247,12 +254,17 @@ public class AoeState : MonoBehaviour{
 
     private void OnTriggerExit(Collider other)
     {
-        if (characterInRange.Contains(other.gameObject))
+        var cha = other.GetComponentInParent<ChaState>();
+        if (cha != null)
         {
-            characterInRange.Remove(other.gameObject);
-            if(model.onChaLeave!=null)
-                model.onChaLeave(gameObject, new List<GameObject>() { other.gameObject });
+            if (characterInRange.Contains(cha.gameObject))
+            {
+                characterInRange.Remove(cha.gameObject);
+                if(model.onChaLeave!=null)
+                    model.onChaLeave(gameObject, new List<GameObject>() { cha.gameObject });
+            }
         }
+        
         
         var bulletState = other.GetComponentInParent<BulletState>();
         if (bulletState)

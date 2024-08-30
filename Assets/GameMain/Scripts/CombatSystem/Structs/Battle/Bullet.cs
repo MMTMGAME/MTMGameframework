@@ -26,7 +26,7 @@ public class BulletLauncher{
     ///<summary>
     ///发射的角度，单位：角度
     ///</summary>
-    public Quaternion fireRotation;
+    public Quaternion localRotation;
 
     ///<summary>
     ///子弹的初速度，单位：米/秒
@@ -73,6 +73,8 @@ public class BulletLauncher{
     ///</summary>
     public float canHitAfterCreated = 0;
 
+
+    public bool hitCaster;
     ///<summary>
     ///子弹的一些特殊逻辑使用的参数，可以在创建子的时候传递给子弹
     ///</summary>
@@ -81,17 +83,19 @@ public class BulletLauncher{
     //传入的射击ROtation为局部方向，传出的方向为世界方向，因为在设置TimelineModel的时候timelinemodel并不能获取到caster的信息，所以只能设置局部的
     public BulletLauncher(
         BulletModel model, GameObject caster, Vector3 firePos, Quaternion localRotation, float speed, float duration,
-        float canHitAfterCreated = 0,
+        float canHitAfterCreated = 0,bool hitCaster=false,
         BulletTween tween = null, BulletTargettingFunction targetFunc = null, bool useFireDegree = false,
         Dictionary<string, object> param = null
     ){
         this.model = model;
         this.caster = caster;
         this.firePosition = firePos;
-        this.fireRotation = this.caster==null? localRotation : this.caster.transform.rotation*localRotation;
+        this.localRotation = localRotation;
         this.speed = speed;
         this.duration = duration;
         this.tween = tween;
+        this.canHitAfterCreated = canHitAfterCreated;
+        this.hitCaster = hitCaster;
         this.useFireDegreeForever = useFireDegree;
         this.targetFunc = targetFunc;
         this.param = param;
@@ -175,7 +179,7 @@ public struct BulletModel{
     ///</summary>
     public bool hitAlly;
 
-    public bool hitSelf;
+    //public bool hitCaster;
 
     public bool isTrigger;//默认使用Trigger
     public bool useGravity;
@@ -190,7 +194,7 @@ public struct BulletModel{
         object[] onRemovedParams = null,
         MoveType moveType = MoveType.fly, bool removeOnObstacle = true,
         int hitTimes = 1, float sameTargetDelay = 0.1f,
-        bool hitFoe = true, bool hitAlly = false,bool hitSelf=false,bool isTrigger=true,bool useGravity=false
+        bool hitFoe = true, bool hitAlly = false,bool hitCaster=false,bool isTrigger=true,bool useGravity=false
     ){
         this.id = id;
         this.entityTypeId = entityTypeId;
@@ -207,7 +211,7 @@ public struct BulletModel{
         this.removeOnObstacle = removeOnObstacle;
         this.hitAlly = hitAlly;
         this.hitFoe = hitFoe;
-        this.hitSelf = hitSelf;
+        //this.hitCaster = hitCaster;
         this.isTrigger = isTrigger;
         this.useGravity = useGravity;
     }
